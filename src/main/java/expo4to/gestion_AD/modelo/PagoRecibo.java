@@ -14,19 +14,15 @@ import java.sql.Date;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Representante {
+public class PagoRecibo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String cedula;
-    private String nombre1;
-    private String nombre2;
-    private String apellido1;
-    private String apellido2;
-    private String telefono;
-    private Date fechaN;
-    private String direccion;
-    private boolean estado;
+    private Integer id_pago_recibo;
+    private Integer id_estudiante;
+    private Float monto_total;
+    private Float monto_pagado;
+    private Boolean estado;
+    private Date fecha_pago;
 
 }

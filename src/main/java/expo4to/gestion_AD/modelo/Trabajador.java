@@ -24,11 +24,11 @@ public class Trabajador {
     private String nombre2;
     private String apellido1;
     private String apellido2;
-    private String direccion;
-    private String numTelf;
-    private Date fechaNac;
+    private String telefono;
     private String correo;
+    private Date fechaN;
+    private String direccion;
+    private Boolean estado;
     private String contrasena;
-    private Integer idCargo;
 
 }

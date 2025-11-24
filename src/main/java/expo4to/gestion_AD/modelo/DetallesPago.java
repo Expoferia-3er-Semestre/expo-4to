@@ -6,27 +6,25 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-import java.sql.Date;
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class Representante {
+public class DetallesPago {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String cedula;
-    private String nombre1;
-    private String nombre2;
-    private String apellido1;
-    private String apellido2;
-    private String telefono;
-    private Date fechaN;
-    private String direccion;
-    private boolean estado;
+    private Integer id_pago_recibo;
+    private Integer id_tipo_pago;
+    private String metodo_pago;
+    private String num_trans;
+    private Integer id_ano_escolar;
+    private String descripcion;
+    private String mes_correspondiente;
+    private Float monto_total;
+    private Float monto_pagado;
 
 }
