@@ -1,8 +1,11 @@
 package expo4to.gestion_AD.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+@Component
 public class Verificador {
 
     // Regex para validar Nombres y Apellidos (admite letras, tildes, ñ, espacios y apóstrofes)

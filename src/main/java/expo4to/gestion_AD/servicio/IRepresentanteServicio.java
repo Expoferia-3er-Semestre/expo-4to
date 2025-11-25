@@ -10,6 +10,8 @@ public interface IRepresentanteServicio {
 
     public Representante buscarRepresentantePorId(Integer id);
 
+    public Representante buscarRepresentantePorCedula(String cedula);
+
     //Funciona tanto para actualizar o registrar segun el valor de id (null o not null)
     public void guardarRepresentante(Representante representante);
 

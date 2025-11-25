@@ -16,12 +16,12 @@ public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String cedulaRep;
+    private String cedula_rep;
     private String nombre1;
     private String nombre2;
     private String apellido1;
     private String apellido2;
-    private Date fechaN;
+    private Date fecha_nacimiento;
     private String direccion;
     private String grado;
     private Boolean nivel_academico;
