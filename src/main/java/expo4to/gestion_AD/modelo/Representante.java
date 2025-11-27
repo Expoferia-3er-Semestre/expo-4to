@@ -1,9 +1,7 @@
 package expo4to.gestion_AD.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jdk.jfr.Name;
 import lombok.*;
 
 import java.sql.Date;
@@ -25,6 +23,7 @@ public class Representante {
     private String apellido1;
     private String apellido2;
     private String telefono;
+    @Column(name = "fechaN")
     private Date fechaN;
     private String direccion;
     private boolean estado;

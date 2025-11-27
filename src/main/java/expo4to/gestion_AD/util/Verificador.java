@@ -2,6 +2,7 @@ package expo4to.gestion_AD.util;
 
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -206,6 +207,80 @@ public class Verificador {
         }
 
         return true;
+    }
+
+    // --- 2. VALIDACIÓN ECONÓMICA Y DE LÍMITES ---
+
+    /**
+     * Verifica que un monto numérico NO sea negativo.
+     * Se recomienda usar BigDecimal para dinero para evitar errores de punto flotante.
+     * @param monto El valor a verificar.
+     * @return true si el monto es cero o positivo (>= 0).
+     */
+    public boolean esMontoPositivo(BigDecimal monto) {
+        if (monto == null) {
+            return false; // El monto no debe ser nulo en transacciones
+        }
+        // Compara si el monto es mayor o igual a cero (BigDecimal.ZERO)
+        return monto.compareTo(BigDecimal.ZERO) >= 0;
+    }
+
+    // Acepta números enteros o decimales (con o sin signo)
+    private static final Pattern NUMERO_DECIMAL_PATTERN = Pattern.compile("^-?\\d+(\\.\\d+)?$");
+
+    // --- 1. VALIDACIÓN DE FORMATO GENERAL Y PRECISIÓN ---
+
+    /**
+     * Verifica si una cadena de texto es un número decimal válido (ej. "100.50").
+     * @param cadena El string a verificar (ej. "100.50").
+     * @return true si es un número con el formato correcto.
+     */
+    public boolean esNumeroDecimalValido(String cadena) {
+        if (cadena == null || cadena.trim().isEmpty()) {
+            return false;
+        }
+        return NUMERO_DECIMAL_PATTERN.matcher(cadena.trim()).matches();
+    }
+
+    /**
+     * Verifica que el texto de un monto no exceda el número máximo de decimales.
+     * Crucial para manejar dinero (generalmente 2 decimales).
+     * @param montoString La cadena del monto a verificar.
+     * @param maxDecimales El número máximo de decimales permitidos (ej. 2).
+     * @return true si el número de decimales es igual o menor a maxDecimales.
+     */
+    public boolean tieneMaximoDecimales(String montoString, int maxDecimales) {
+        if (!esNumeroDecimalValido(montoString)) {
+            return false;
+        }
+
+        String texto = montoString.trim();
+        int indicePunto = texto.indexOf('.');
+
+        // Si no hay punto, siempre es válido (ej. "100")
+        if (indicePunto == -1) {
+            return true;
+        }
+
+        // Contar los dígitos después del punto
+        int decimalesActuales = texto.length() - 1 - indicePunto;
+
+        return decimalesActuales <= maxDecimales;
+    }
+
+    // --- 2. VALIDACIÓN DE REGLA DE NEGOCIO (POST-CONVERSIÓN) ---
+
+    /**
+     * Verifica que un monto BigDecimal NO sea negativo.
+     * @param monto El valor BigDecimal a verificar.
+     * @return true si el monto es cero o positivo (>= 0).
+     */
+    public boolean esMontoPositivoOCero(BigDecimal monto) {
+        if (monto == null) {
+            return false;
+        }
+        // Compara si el monto es mayor o igual a cero (BigDecimal.ZERO)
+        return monto.compareTo(BigDecimal.ZERO) >= 0;
     }
 
     // --- Ejemplo de Uso ---

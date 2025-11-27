@@ -41,9 +41,9 @@ public class RepresentanteServicio implements IRepresentanteServicio{
 
         String cedulaABuscar = representante.getCedula();
         Representante repreEncontrado = representanteRepositorio.findByCedula(cedulaABuscar).orElse(null);
-        if (repreEncontrado == null) {
+        if (repreEncontrado != null) {
             throw new IllegalArgumentException("Error: No se puede guardar el representante. " +
-                    "La cédula de representante (" + cedulaABuscar + ") ya existe en la base de datos.");
+                    "La cédula de representante (" + cedulaABuscar + ") ya existe en el sistema.");
         }
 
         if (!verificador.esNombreOApellidoValido(representante.getNombre1()) ||

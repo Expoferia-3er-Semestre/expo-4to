@@ -6,11 +6,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor
 public class EstudianteControlador {
+
+    public List<Estudiante> listarEstudiantes() {
+        try {
+            return estudianteServicio.listarEstudiantes();
+        } catch (Exception e) {
+            System.err.println("WARN: Error al listar estudiantes: " + e.getMessage());
+            return null;
+        }
+    }
 
     private final IEstudianteServicio estudianteServicio;
 
@@ -34,6 +44,15 @@ public class EstudianteControlador {
         } catch (NoSuchElementException e) {
             System.err.println("WARN: Estudiante no encontrado: " + e.getMessage());
             return null;
+        }
+    }
+
+    public void eliminarEstudiante(Estudiante estudiante) {
+
+        try {
+            estudianteServicio.eliminarEstudiante(estudiante);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar: " + e.getMessage());
         }
     }
 

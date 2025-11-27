@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 @Entity
@@ -19,12 +20,12 @@ public class Abono {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_abono;
-    private Integer id_detalles_pagos;
-    private Date fecha_abono;
-    private Float monto_abonado;
+    private Integer idAbono;
+    private Integer idDetallesPagos;
+    private Date fechaAbono;
+    private BigDecimal montoAbonado;
     private String descripcion;
-    private String metodo_pago;
-    private String num_trans;
+    private String metodoPago;
+    private String numTrans;
 
 }

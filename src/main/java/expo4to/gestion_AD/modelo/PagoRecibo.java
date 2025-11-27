@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 @Entity
@@ -18,11 +19,11 @@ public class PagoRecibo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_pago_recibo;
-    private Integer id_estudiante;
-    private Float monto_total;
-    private Float monto_pagado;
+    private Integer idPagoRecibo;
+    private Integer idEstudiante;
+    private BigDecimal montoTotal;
+    private BigDecimal montoPagado;
     private Boolean estado;
-    private Date fecha_pago;
+    private Date fechaPago;
 
 }

@@ -1,12 +1,13 @@
 package expo4to.gestion_AD.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jdk.jfr.Name;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
+@Table(name = "tipo_pago")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class TipoPago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String categoria;
-    private Float costo;
+    private BigDecimal costo;
     private Boolean estado;
 
 }
