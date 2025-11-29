@@ -1,5 +1,6 @@
 package expo4to.gestion_AD.servicio;
 
+import expo4to.gestion_AD.dto.TipoPagoDTO;
 import expo4to.gestion_AD.modelo.TipoPago;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface ITipoPagoServicio {
 
     public TipoPago buscarTipoPago(Integer id);
 
-    public void guardarTipoPago(TipoPago tp, String costo);
+    public void guardarTipoPago(TipoPagoDTO tipoPagoDTO, String costo);
 
-    public void eliminarTipoPago(TipoPago tp);
+    public void eliminarTipoPago(Integer id);
 }

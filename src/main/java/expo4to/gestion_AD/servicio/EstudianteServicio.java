@@ -1,5 +1,6 @@
 package expo4to.gestion_AD.servicio;
 
+import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.modelo.Estudiante;
 import expo4to.gestion_AD.repositorio.EstudianteRepositorio;
 import expo4to.gestion_AD.repositorio.RepresentanteRepositorio;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EstudianteServicio implements IEstudianteServicio{
@@ -16,7 +18,6 @@ public class EstudianteServicio implements IEstudianteServicio{
     private EstudianteRepositorio estudianteRepositorio;
     @Autowired
     private RepresentanteRepositorio representanteRepositorio;
-
     @Autowired
     private Verificador verificador;
 
@@ -35,9 +36,9 @@ public class EstudianteServicio implements IEstudianteServicio{
     }
 
     @Override
-    public void guardarEstudiante(Estudiante estudiante) {
+    public void guardarEstudiante(EstudianteDTO estudianteDTO) {
 
-        String cedulaRep = estudiante.getCedula_rep();
+        String cedulaRep = estudianteDTO.getCedulaRep();
 
         expo4to.gestion_AD.modelo.Representante representante = representanteRepositorio.
                 findByCedula(cedulaRep).orElse(null);
@@ -48,26 +49,49 @@ public class EstudianteServicio implements IEstudianteServicio{
                     "La cédula de representante (" + cedulaRep + ") no existe en la base de datos.");
         }
 
-        if (!verificador.esNombreOApellidoValido(estudiante.getNombre1()) ||
-                !verificador.esNombreOApellidoValido(estudiante.getNombre2())) {
+
+        if (!verificador.esNombreOApellidoValido(estudianteDTO.getNombre1()) ||
+                !verificador.esNombreOApellidoValido(estudianteDTO.getNombre2())) {
             throw new IllegalArgumentException("El nombre ingresado no es valido.");
         }
-        if (!verificador.esNombreOApellidoValido(estudiante.getApellido1()) ||
-                !verificador.esNombreOApellidoValido(estudiante.getApellido2())) {
+        if (!verificador.esNombreOApellidoValido(estudianteDTO.getApellido1()) ||
+                !verificador.esNombreOApellidoValido(estudianteDTO.getApellido2())) {
             throw new IllegalArgumentException("El apellido ingresado no es valido.");
         }
-        if (!verificador.esCedulaValida(estudiante.getCedula_rep())) {
+        if (!verificador.esCedulaValida(estudianteDTO.getCedulaRep())) {
             throw new IllegalArgumentException("La cédula ingresada no es valida.");
         }
-        if (!verificador.esDireccionValida(estudiante.getDireccion())) {
+        if (!verificador.esDireccionValida(estudianteDTO.getDireccion())) {
             throw new IllegalArgumentException("La dirección ingresada no es valida.");
         }
+
+        Estudiante estudiante = transformarDto(estudianteDTO);
 
         estudianteRepositorio.save(estudiante);
     }
 
     @Override
-    public void eliminarEstudiante(Estudiante estudiante) {
-        estudianteRepositorio.delete(estudiante);
+    public void eliminarEstudiante(Integer id) {
+        estudianteRepositorio.deleteById(id);
     }
+
+    public Estudiante transformarDto(EstudianteDTO estudianteDTO) {
+
+        Boolean estado = Objects.requireNonNullElse(estudianteDTO.getEstado(), true);
+
+        return new Estudiante(
+                estudianteDTO.getId(),
+                estudianteDTO.getCedulaRep(),
+                estudianteDTO.getNombre1(),
+                estudianteDTO.getNombre2(),
+                estudianteDTO.getApellido1(),
+                estudianteDTO.getApellido2(),
+                estudianteDTO.getFechaNacimiento(),
+                estudianteDTO.getDireccion(),
+                estudianteDTO.getGrado(),
+                estudianteDTO.getNivelAcademico(),
+                estado
+        );
+    }
+
 }

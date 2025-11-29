@@ -1,5 +1,6 @@
 package expo4to.gestion_AD.controlador;
 
+import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.modelo.Estudiante;
 import expo4to.gestion_AD.servicio.IEstudianteServicio;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class EstudianteControlador {
 
+    private final IEstudianteServicio estudianteServicio;
+
     public List<Estudiante> listarEstudiantes() {
         try {
             return estudianteServicio.listarEstudiantes();
@@ -22,12 +25,10 @@ public class EstudianteControlador {
         }
     }
 
-    private final IEstudianteServicio estudianteServicio;
-
-    public String guardarEstudiante(Estudiante estudiante) {
+    public String guardarEstudiante(EstudianteDTO estudianteDTO) {
         try {
 
-            estudianteServicio.guardarEstudiante(estudiante);
+            estudianteServicio.guardarEstudiante(estudianteDTO);
             return "Éxito: Estudiante guardado/actualizado."; // Retorna el mensaje de éxito
 
         } catch (IllegalArgumentException e) {
@@ -47,10 +48,10 @@ public class EstudianteControlador {
         }
     }
 
-    public void eliminarEstudiante(Estudiante estudiante) {
+    public void eliminarEstudiante(Integer id) {
 
         try {
-            estudianteServicio.eliminarEstudiante(estudiante);
+            estudianteServicio.eliminarEstudiante(id);
         } catch (Exception e) {
             throw new RuntimeException("Error al eliminar: " + e.getMessage());
         }

@@ -1,9 +1,7 @@
 package expo4to.gestion_AD.controlador;
 
-import expo4to.gestion_AD.modelo.Representante;
+import expo4to.gestion_AD.dto.TrabajadorDTO;
 import expo4to.gestion_AD.servicio.ITrabajadorServicio;
-import expo4to.gestion_AD.servicio.TrabajadorServicio;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import expo4to.gestion_AD.modelo.Trabajador;
@@ -27,10 +25,10 @@ public class TrabajadorControlador {
 
     }
 
-    public String guardarTrabajador(Trabajador trabajador) {
+    public String guardarTrabajador(TrabajadorDTO trabajadorDTO) {
 
         try {
-            trabajadorServicio.guardarTrabajador(trabajador);
+            trabajadorServicio.guardarTrabajador(trabajadorDTO);
             return "Éxito: Trabajador guardado/actualizado.";
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Error de Validación: " + e.getMessage());
@@ -49,10 +47,10 @@ public class TrabajadorControlador {
         }
     }
 
-    public void eliminarRepresentante(Trabajador trabajador) {
+    public void eliminarRepresentante(Integer id) {
 
         try {
-            trabajadorServicio.eliminarTrabajador(trabajador);
+            trabajadorServicio.eliminarTrabajador(id);
         } catch (Exception e) {
             throw new RuntimeException("Error al eliminar: " + e.getMessage());
         }

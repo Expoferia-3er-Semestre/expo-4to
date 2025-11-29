@@ -1,5 +1,6 @@
 package expo4to.gestion_AD.controlador;
 
+import expo4to.gestion_AD.dto.RepresentanteDTO;
 import expo4to.gestion_AD.modelo.Estudiante;
 import expo4to.gestion_AD.modelo.Representante;
 import expo4to.gestion_AD.servicio.IRepresentanteServicio;
@@ -25,10 +26,10 @@ public class RepresentanteControlador {
         }
     }
 
-    public String guardarRepresentante(Representante representante) {
+    public String guardarRepresentante(RepresentanteDTO representanteDTO) {
         try {
 
-            representanteServicio.guardarRepresentante(representante);
+            representanteServicio.guardarRepresentante(representanteDTO);
             return "Éxito: Representante guardado/actualizado.";
 
         } catch (IllegalArgumentException e) {
@@ -49,10 +50,10 @@ public class RepresentanteControlador {
 
     }
 
-    public void eliminarRepresentante(Representante representante) {
+    public void eliminarRepresentante(Integer id) {
 
         try {
-            representanteServicio.eliminarRepresentante(representante);
+            representanteServicio.eliminarRepresentante(id);
         } catch (Exception e) {
             throw new RuntimeException("Error al eliminar: " + e.getMessage());
         }

@@ -29,11 +29,11 @@ public class GestionAdApplication {
             e1.setApellido1("Bermudez");
             e1.setApellido2("Cáceres");
             e1.setDireccion("La Coromoto, calle 4, Casa 45-B");
-            e1.setCedula_rep("10000000");
+            e1.setCedulaRep("10000000");
 //
 //
             System.out.println("\nIntentando guardar Estudiante VÁLIDO...");
-            controlador.guardarEstudiante(e1);
+//            controlador.guardarEstudiante(e1);
 //
 //            // --- PRUEBA 2: Error de Validación ---
 //            // Asume que tu servicio lanza IllegalArgumentException si la cédula es mala

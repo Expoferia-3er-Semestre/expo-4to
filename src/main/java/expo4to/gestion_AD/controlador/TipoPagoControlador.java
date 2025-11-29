@@ -1,5 +1,6 @@
 package expo4to.gestion_AD.controlador;
 
+import expo4to.gestion_AD.dto.TipoPagoDTO;
 import expo4to.gestion_AD.servicio.ITipoPagoServicio;
 import expo4to.gestion_AD.servicio.TipoPagoServicio;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,10 @@ public class TipoPagoControlador {
         }
     }
 
-    public String guardarTipoPago(TipoPago tp, String monto) {
+    public String guardarTipoPago(TipoPagoDTO tipoPagoDTO, String monto) {
 
         try {
-            tpServicio.guardarTipoPago(tp, monto);
+            tpServicio.guardarTipoPago(tipoPagoDTO, monto);
             return "Éxito: Tipo de pago guardado/actualizado.";
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Error de Validación: " + e.getMessage());
@@ -36,10 +37,10 @@ public class TipoPagoControlador {
 
     }
 
-    public void eliminarTipoPago(TipoPago tp) {
+    public void eliminarTipoPago(Integer id) {
 
         try {
-            tpServicio.eliminarTipoPago(tp);
+            tpServicio.eliminarTipoPago(id);
         } catch (Exception e) {
             throw new RuntimeException("Error al eliminar: " + e.getMessage());
         }

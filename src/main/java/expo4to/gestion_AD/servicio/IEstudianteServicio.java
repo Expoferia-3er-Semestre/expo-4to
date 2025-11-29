@@ -1,5 +1,6 @@
 package expo4to.gestion_AD.servicio;
 
+import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.modelo.Estudiante;
 
 import java.util.List;
@@ -10,8 +11,8 @@ public interface IEstudianteServicio {
 
     public Estudiante buscarEstudiantePorId(Integer id);
 
-    public void guardarEstudiante(Estudiante estudiante);
+    public void guardarEstudiante(EstudianteDTO estudianteDTO);
 
-    public void eliminarEstudiante(Estudiante estudiante);
+    public void eliminarEstudiante(Integer id);
 
 }
