@@ -1,9 +1,6 @@
 package expo4to.gestion_AD.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 
@@ -21,7 +18,9 @@ public class Abono {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAbono;
-    private Integer idDetallesPagos;
+    @ManyToOne
+    @JoinColumn(name = "id_detalle_pagos") // Mapea a la columna física
+    private DetallesPago detallesPago;
     private Date fechaAbono;
     private BigDecimal montoAbonado;
     private String descripcion;

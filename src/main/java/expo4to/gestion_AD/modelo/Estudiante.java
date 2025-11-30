@@ -16,7 +16,9 @@ public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String cedulaRep;
+    @ManyToOne
+    @JoinColumn(name = "cedula_rep", referencedColumnName = "cedula")
+    private Representante representante;
     private String nombre1;
     private String nombre2;
     private String apellido1;

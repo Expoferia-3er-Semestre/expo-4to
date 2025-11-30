@@ -5,6 +5,7 @@ import jdk.jfr.Name;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -23,9 +24,10 @@ public class Representante {
     private String apellido1;
     private String apellido2;
     private String telefono;
-    @Column(name = "fechaN")
     private Date fechaN;
     private String direccion;
     private boolean estado;
+    @OneToMany(mappedBy = "representante")
+    private List<Estudiante> estudiantes;
 
 }

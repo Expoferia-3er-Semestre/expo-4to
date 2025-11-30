@@ -3,11 +3,11 @@ package expo4to.gestion_AD.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class DetallesPagoDTO {
 
-    private Integer idPagoRecibo;
     private Integer idTipoPago;
     private Integer idAnoEscolar;
 
@@ -16,7 +16,13 @@ public class DetallesPagoDTO {
     private String descripcion;
     private String mesCorrespondiente;
 
-    private BigDecimal montoTotal;
-    private BigDecimal montoPagado;
+    private String montoTotal;
+    private String montoPagado;
+
+    private List<AbonoDTO> abonoDTOList;
+
+    public void addAbonoDTO(AbonoDTO dto) {
+        abonoDTOList.add(dto);
+    }
 
 }

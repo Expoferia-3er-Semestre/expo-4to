@@ -91,7 +91,8 @@ public class RepresentanteServicio implements IRepresentanteServicio{
                 representanteDTO.getTelefono(),
                 representanteDTO.getFechaN(),
                 representanteDTO.getDireccion(),
-                estado
+                estado,
+                null
         );
 
     }

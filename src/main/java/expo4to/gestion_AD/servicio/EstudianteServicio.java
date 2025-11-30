@@ -2,6 +2,7 @@ package expo4to.gestion_AD.servicio;
 
 import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.modelo.Estudiante;
+import expo4to.gestion_AD.modelo.Representante;
 import expo4to.gestion_AD.repositorio.EstudianteRepositorio;
 import expo4to.gestion_AD.repositorio.RepresentanteRepositorio;
 import expo4to.gestion_AD.util.Verificador;
@@ -49,7 +50,6 @@ public class EstudianteServicio implements IEstudianteServicio{
                     "La cédula de representante (" + cedulaRep + ") no existe en la base de datos.");
         }
 
-
         if (!verificador.esNombreOApellidoValido(estudianteDTO.getNombre1()) ||
                 !verificador.esNombreOApellidoValido(estudianteDTO.getNombre2())) {
             throw new IllegalArgumentException("El nombre ingresado no es valido.");
@@ -65,7 +65,7 @@ public class EstudianteServicio implements IEstudianteServicio{
             throw new IllegalArgumentException("La dirección ingresada no es valida.");
         }
 
-        Estudiante estudiante = transformarDto(estudianteDTO);
+        Estudiante estudiante = transformarDto(estudianteDTO, representante);
 
         estudianteRepositorio.save(estudiante);
     }
@@ -75,13 +75,13 @@ public class EstudianteServicio implements IEstudianteServicio{
         estudianteRepositorio.deleteById(id);
     }
 
-    public Estudiante transformarDto(EstudianteDTO estudianteDTO) {
+    public Estudiante transformarDto(EstudianteDTO estudianteDTO, Representante representante) {
 
         Boolean estado = Objects.requireNonNullElse(estudianteDTO.getEstado(), true);
 
         return new Estudiante(
                 estudianteDTO.getId(),
-                estudianteDTO.getCedulaRep(),
+                representante,
                 estudianteDTO.getNombre1(),
                 estudianteDTO.getNombre2(),
                 estudianteDTO.getApellido1(),

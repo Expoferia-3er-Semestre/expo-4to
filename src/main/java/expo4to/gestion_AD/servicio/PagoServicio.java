@@ -2,80 +2,129 @@ package expo4to.gestion_AD.servicio;
 
 import expo4to.gestion_AD.dto.AbonoDTO;
 import expo4to.gestion_AD.dto.DetallesPagoDTO;
+import expo4to.gestion_AD.dto.MontosDTO;
 import expo4to.gestion_AD.dto.PagoReciboDTO;
-import expo4to.gestion_AD.modelo.Abono;
-import expo4to.gestion_AD.modelo.DetallesPago;
-import expo4to.gestion_AD.modelo.PagoRecibo;
-import expo4to.gestion_AD.repositorio.AbonoRepositorio;
-import expo4to.gestion_AD.repositorio.DetallesPagoRepositorio;
-import expo4to.gestion_AD.repositorio.PagoReciboRepositorio;
+import expo4to.gestion_AD.modelo.*;
+import expo4to.gestion_AD.repositorio.*;
+import expo4to.gestion_AD.util.Verificador;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class PagoServicio implements IPagoServicio{
 
     @Autowired
     PagoReciboRepositorio reciboRepositorio;
     @Autowired
-    DetallesPagoRepositorio DetallesRepositorio;
+    EstudianteRepositorio estudianteRepositorio;
     @Autowired
-    AbonoRepositorio abonoRepositorio;
+    TipoPagoRepositorio tipoPagoRepositorio;
+    @Autowired
+    AnosEscolaresRepositorio anosEscolaresRepositorio;
+    @Autowired
+    Verificador verificador;
 
+    @Transactional
     @Override
-    public void registrarNuevoPago(PagoReciboDTO prDTO, List<DetallesPagoDTO> dpsDTO, List<AbonoDTO> absDTO) {
+    public void registrarNuevoPago( PagoReciboDTO datosPago) {
+
+        expo4to.gestion_AD.modelo.PagoRecibo recibo = transformarDatosPago(datosPago);
+
+        reciboRepositorio.save(recibo);
 
     }
 
-    public DetallesPago transformarDetallesDTO(DetallesPagoDTO dto){
+    private MontosDTO contarMontos(List<DetallesPago> detalles) {
 
-        return new DetallesPago(
-                null,
-                dto.getIdPagoRecibo(),
-                dto.getIdTipoPago(),
-                dto.getMetodoPago(),
-                dto.getNumTrans(),
-                dto.getIdAnoEscolar(),
-                dto.getDescripcion(),
-                dto.getMesCorrespondiente(),
-                dto.getMontoTotal(),
-                dto.getMontoPagado()
-        );
+        if (detalles == null || detalles.isEmpty()) {
+            throw new RuntimeException();
+        }
 
-    }
+        BigDecimal total = BigDecimal.ZERO;
+        BigDecimal pagado = BigDecimal.ZERO;
 
-    public PagoRecibo transformarReciboDTO(PagoReciboDTO dto){
+        for (DetallesPago dp : detalles) {
+            total = total.add(dp.getMontoTotal());
+            pagado = pagado.add(dp.getMontoPagado());
+        }
 
-        BigDecimal pendiente = dto.getMontoTotal().subtract(dto.getMontoPagado());
-
-        //Se redondea según estandares bancarios
-        BigDecimal pendienteRound = pendiente.setScale(2, RoundingMode.HALF_UP);
-        Boolean estado = pendienteRound.compareTo(BigDecimal.ZERO) > 0;
-
-        return new PagoRecibo(
-                null,
-                dto.getIdEstudiante(),
-                dto.getMontoTotal(),
-                dto.getMontoPagado(),
-                estado,
-                dto.getFechaPago()
-        );
+        return new MontosDTO(total, pagado);
 
     }
 
-    public Abono transformarAbonoDTO(AbonoDTO dto) {
+    public PagoRecibo transformarDatosPago(PagoReciboDTO datosPago) {
 
-        return new Abono(
-                null,
-                dto.getIdDetallesPagos(),
-                dto.getFechaAbono(),
-                dto.getMontoAbonado(),
-                dto.getDescripcion(),
-                dto.getMetodoPago(),
-                dto.getNumTrans()
-        );
+        Estudiante estudiante = estudianteRepositorio.findById(datosPago.getIdEstudiante()).orElseThrow(null);
+
+        List<DetallesPagoDTO> detallesDTO = datosPago.getDetallesPagoDTOList();
+        PagoRecibo recibo = new PagoRecibo();
+
+        for (DetallesPagoDTO dto : detallesDTO) {
+
+            TipoPago tipoPago = tipoPagoRepositorio.findById(dto.getIdTipoPago()).orElseThrow(null);
+            AnosEscolares anoEscolar = anosEscolaresRepositorio.findById(dto.getIdAnoEscolar()).orElseThrow(null);
+
+            DetallesPago detalle = new DetallesPago();
+
+            if (dto.getAbonoDTOList() != null) {
+                for (AbonoDTO ab : dto.getAbonoDTOList()) {
+
+                    BigDecimal montoAbonado = new BigDecimal(ab.getMontoAbonado());
+                    detalle.addAbono(new Abono(
+                            null,
+                            null,
+                            new Date(System.currentTimeMillis()),
+                            montoAbonado,
+                            ab.getDescripcion(),
+                            ab.getMetodoPago(),
+                            ab.getNumTrans()
+                    ));
+
+                }
+            }
+
+            String montoPagadoString = dto.getMontoPagado();
+            String montoTotalString = dto.getMontoTotal();
+            BigDecimal montoPagado;
+            BigDecimal montoTotal;
+
+            try {
+                montoPagado = new BigDecimal(montoPagadoString);
+                montoTotal = new BigDecimal(montoTotalString);
+
+                if (montoPagado.compareTo(BigDecimal.ZERO) <= 0 || montoTotal.compareTo(BigDecimal.ZERO) <= 0) {
+                    throw new IllegalArgumentException("El monto debe ser mayor que 0.");
+                }
+
+                detalle.setTipoPago(tipoPago);
+                detalle.setAnoEscolar(anoEscolar);
+                detalle.setNumTrans(dto.getNumTrans());
+                detalle.setDescripcion(dto.getDescripcion());
+                detalle.setMesCorrespondiente(dto.getMesCorrespondiente());
+                detalle.setMontoTotal(montoTotal);
+                detalle.setMontoPagado(montoPagado);
+                recibo.addDetalle(detalle);
+
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Error de formato en un ítem de pago");
+            }
+
+        }
+
+        MontosDTO montos = contarMontos(recibo.getDetalles());
+        recibo.setMontoPagado(montos.getPagadoTotal());
+        recibo.setMontoTotal(montos.getMontoTotal());
+        recibo.setFechaPago(new Date(System.currentTimeMillis()));
+        recibo.setEstudiante(estudiante);
+        recibo.setEstado(montos.tienependiente());
+        return recibo;
 
     }
+
 }

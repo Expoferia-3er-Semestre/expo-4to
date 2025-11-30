@@ -1,6 +1,8 @@
 package expo4to.gestion_AD.servicio;
 
 import expo4to.gestion_AD.modelo.DetallesPago;
+import expo4to.gestion_AD.modelo.Estudiante;
+import expo4to.gestion_AD.modelo.PagoRecibo;
 import expo4to.gestion_AD.repositorio.DetallesPagoRepositorio;
 import expo4to.gestion_AD.repositorio.PagoReciboRepositorio;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -20,24 +22,25 @@ public class DetallesPagoServicio implements IDetallesPagoServicio {
     @Override
     public List<DetallesPago> listarPagosSinMensualidades(Integer idEstudiante) {
 
-        List<Integer> idsPagos = prRepo.findByIdEstudiante(idEstudiante);
+        List<PagoRecibo> idsPagos = prRepo.findByEstudianteId(idEstudiante);
 
-        return dpRepo.findByIdPagoReciboInAndMesCorrespondienteIsNull(idsPagos);
+        return dpRepo.findByPagoReciboInAndMesCorrespondienteIsNull(idsPagos);
 
     }
 
     @Override
     public List<DetallesPago> listarTodos(Integer idEstudiante) {
-        List<Integer> idsPagos = prRepo.findByIdEstudiante(idEstudiante);
 
-        return dpRepo.findByIdPagoReciboIn(idsPagos);
+        List<PagoRecibo> idsPagos = prRepo.findByEstudianteId(idEstudiante);
+
+        return dpRepo.findByPagoReciboIn(idsPagos);
     }
 
     @Override
     public List<DetallesPago> listarMensualidades(Integer idEstudiante) {
-        List<Integer> idsPagos = prRepo.findByIdEstudiante(idEstudiante);
+        List<PagoRecibo> idsPagos = prRepo.findByEstudianteId(idEstudiante);
 
-        return dpRepo.findByIdPagoReciboInAndMesCorrespondienteNotNull(idsPagos);
+        return dpRepo.findByPagoReciboInAndMesCorrespondienteNotNull(idsPagos);
     }
 
     @Override

@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class PagoReciboDTO {
@@ -13,6 +14,10 @@ public class PagoReciboDTO {
     private BigDecimal montoTotal;
     private BigDecimal montoPagado;
 
-    private Date fechaPago;
+    private List<DetallesPagoDTO> detallesPagoDTOList;
+
+    public void addDetalleDTO(DetallesPagoDTO dto) {
+        detallesPagoDTOList.add(dto);
+    }
 
 }

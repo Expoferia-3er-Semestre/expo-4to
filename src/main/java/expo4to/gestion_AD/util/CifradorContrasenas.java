@@ -1,12 +1,14 @@
 package expo4to.gestion_AD.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  * Clase para manejar el hashing seguro de contraseñas usando BCrypt.
  * BCrypt es un algoritmo unidireccional (hashing) diseñado para ser lento, 
  * lo cual lo hace resistente a ataques de fuerza bruta.
  */
+@Component
 public class CifradorContrasenas {
 
     // Inicializamos el codificador de BCrypt. 

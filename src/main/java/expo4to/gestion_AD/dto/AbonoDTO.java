@@ -8,11 +8,7 @@ import java.sql.Date;
 @Data
 public class AbonoDTO {
 
-    private Integer idDetallesPagos;
-
-    private Date fechaAbono;
-
-    private BigDecimal montoAbonado;
+    private String montoAbonado;
 
     private String descripcion;
     private String metodoPago;
