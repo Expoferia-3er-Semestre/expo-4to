@@ -17,6 +17,7 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
      */
     public ControlEstudiosHomeF() {
         initComponents();
+        
     }
 
     /**
@@ -68,6 +69,11 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         ButtonEstudiantes.setBackground(new java.awt.Color(184, 232, 249));
         ButtonEstudiantes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/graduado.png"))); // NOI18N
         ButtonEstudiantes.setBorderPainted(false);
+        ButtonEstudiantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonEstudiantesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -101,6 +107,11 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         ButtonRepresentantes.setBackground(new java.awt.Color(184, 232, 249));
         ButtonRepresentantes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/familia.png"))); // NOI18N
         ButtonRepresentantes.setBorderPainted(false);
+        ButtonRepresentantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonRepresentantesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -374,8 +385,24 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEmpleadosActionPerformed
-        // TODO add your handling code here:
+        gestionEmpleadosF gestionEmpleados = new gestionEmpleadosF();
+        dispose();
+        gestionEmpleados.setVisible(true);
     }//GEN-LAST:event_ButtonEmpleadosActionPerformed
+
+    private void ButtonEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEstudiantesActionPerformed
+
+        gestionEstudiantesF gestionEstudiante = new gestionEstudiantesF();
+        dispose();
+        gestionEstudiante.setVisible(true);
+        
+    }//GEN-LAST:event_ButtonEstudiantesActionPerformed
+
+    private void ButtonRepresentantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonRepresentantesActionPerformed
+        gestionRepresentantesF gestionRepresentante = new gestionRepresentantesF();
+        dispose();
+        gestionRepresentante.setVisible(true);
+    }//GEN-LAST:event_ButtonRepresentantesActionPerformed
 
     /**
      * @param args the command line arguments

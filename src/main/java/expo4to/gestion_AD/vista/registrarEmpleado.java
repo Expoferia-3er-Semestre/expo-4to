@@ -17,6 +17,7 @@ public class registrarEmpleado extends javax.swing.JFrame {
      */
     public registrarEmpleado() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -57,7 +58,6 @@ public class registrarEmpleado extends javax.swing.JFrame {
         jComboBoxCargo = new javax.swing.JComboBox<>();
         jTextFieldTelefono = new javax.swing.JTextField();
         jButtonGuardar = new javax.swing.JButton();
-        jButtonSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -219,10 +219,6 @@ public class registrarEmpleado extends javax.swing.JFrame {
         jButtonGuardar.setText("Guardar");
         jButtonGuardar.setBorderPainted(false);
 
-        jButtonSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/cancelar.png"))); // NOI18N
-        jButtonSalir.setBorder(null);
-        jButtonSalir.setBorderPainted(false);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -233,22 +229,17 @@ public class registrarEmpleado extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 555, Short.MAX_VALUE)
-                                .addComponent(jButtonSalir))))
+                            .addComponent(jLabel1)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(334, 334, 334)
                         .addComponent(jButtonGuardar)))
-                .addGap(35, 35, 35))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jButtonSalir))
+                .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -298,7 +289,6 @@ public class registrarEmpleado extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Direccion;
     private javax.swing.JButton jButtonGuardar;
-    private javax.swing.JButton jButtonSalir;
     private javax.swing.JComboBox<String> jComboBoxCargo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

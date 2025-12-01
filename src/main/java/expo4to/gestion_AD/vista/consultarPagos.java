@@ -17,6 +17,7 @@ public class consultarPagos extends javax.swing.JFrame {
      */
     public consultarPagos() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

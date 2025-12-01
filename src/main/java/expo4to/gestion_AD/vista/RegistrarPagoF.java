@@ -508,7 +508,9 @@ public class RegistrarPagoF extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldEstudianteRepreActionPerformed
 
     private void ButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonConsultarActionPerformed
-        // TODO add your handling code here:
+        consultarPagos consultar = new consultarPagos();
+        //dispose(); debe dejarse la pantalla de pagos atras, por si el usuario registro transacciones!
+        consultar.setVisible(true);
     }//GEN-LAST:event_ButtonConsultarActionPerformed
 
     private void ButtonTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonTarjetaActionPerformed

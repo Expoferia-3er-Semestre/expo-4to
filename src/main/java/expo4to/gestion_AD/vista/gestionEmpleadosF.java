@@ -63,11 +63,21 @@ public class gestionEmpleadosF extends javax.swing.JFrame {
         ButtonAgregar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         ButtonAgregar.setText("Agregar");
         ButtonAgregar.setBorderPainted(false);
+        ButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonAgregarActionPerformed(evt);
+            }
+        });
 
         ButtonActualizar.setBackground(new java.awt.Color(51, 153, 255));
         ButtonActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         ButtonActualizar.setText("Actualizar");
         ButtonActualizar.setBorderPainted(false);
+        ButtonActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonActualizarActionPerformed(evt);
+            }
+        });
 
         ButtonArchivar.setBackground(new java.awt.Color(255, 51, 51));
         ButtonArchivar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -196,6 +206,18 @@ public class gestionEmpleadosF extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void ButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAgregarActionPerformed
+        registrarEmpleado registrar = new registrarEmpleado();
+        dispose();
+        registrar.setVisible(true);     
+    }//GEN-LAST:event_ButtonAgregarActionPerformed
+
+    private void ButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonActualizarActionPerformed
+        registrarEmpleado registrar = new registrarEmpleado();
+        dispose();
+        registrar.setVisible(true);     
+    }//GEN-LAST:event_ButtonActualizarActionPerformed
 
     /**
      * @param args the command line arguments
