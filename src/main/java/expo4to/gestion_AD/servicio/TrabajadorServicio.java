@@ -8,6 +8,7 @@ import expo4to.gestion_AD.util.Verificador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,18 +23,25 @@ public class TrabajadorServicio implements ITrabajadorServicio{
     Verificador verificador;
 
     @Override
-    public List<Trabajador> listarTrabajadores() {
-        return trabajadorRepositorio.findAll();
+    public List<TrabajadorDTO> listarTrabajadores() {
+
+        List<TrabajadorDTO> trabajadoresDTO = new ArrayList<>();
+        List<Trabajador> trabajadores = trabajadorRepositorio.findAll();
+        for (Trabajador trabajador : trabajadores) {
+            TrabajadorDTO trabajadorDTO = transformarTrabajador(trabajador);
+            trabajadoresDTO.add(trabajadorDTO);
+        }
+        return trabajadoresDTO;
     }
 
     @Override
-    public Trabajador buscarTrabajadorPorId(Integer id) {
-        return trabajadorRepositorio.findById(id).orElse(null);
+    public TrabajadorDTO buscarTrabajadorPorId(Integer id) {
+        return transformarTrabajador(trabajadorRepositorio.findById(id).orElseThrow(null));
     }
 
     @Override
-    public Trabajador buscarTrabajadorPorCorreo(String correo) {
-        return trabajadorRepositorio.findByCorreo(correo).orElseThrow(null);
+    public TrabajadorDTO buscarTrabajadorPorCorreo(String correo) {
+        return transformarTrabajador(trabajadorRepositorio.findByCorreo(correo).orElseThrow(null));
     }
 
     @Override
@@ -93,6 +101,31 @@ public class TrabajadorServicio implements ITrabajadorServicio{
                 trabajadorDTO.getContrasena()
         );
 
+
+    }
+
+    public TrabajadorDTO transformarTrabajador(Trabajador trabajador) {
+
+        if (trabajador == null) {
+            return null;
+        }
+
+        TrabajadorDTO trabajadorDTO = new TrabajadorDTO();
+
+        trabajadorDTO.setContrasena(trabajador.getContrasena());
+        trabajadorDTO.setId(trabajador.getId());
+        trabajadorDTO.setCorreo(trabajador.getCorreo());
+        trabajadorDTO.setCedula(trabajador.getCedula());
+        trabajadorDTO.setEstado(trabajador.getEstado());
+        trabajadorDTO.setNombre1(trabajador.getNombre1());
+        trabajadorDTO.setNombre2(trabajador.getNombre2());
+        trabajadorDTO.setApellido1(trabajador.getApellido1());
+        trabajadorDTO.setApellido2(trabajador.getApellido2());
+        trabajadorDTO.setDireccion(trabajador.getDireccion());
+        trabajadorDTO.setFechaN(trabajador.getFechaN());
+        trabajadorDTO.setTelefono(trabajador.getTelefono());
+
+        return trabajadorDTO;
 
     }
 

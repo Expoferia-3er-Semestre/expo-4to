@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ITrabajadorServicio {
 
-    public List<Trabajador> listarTrabajadores();
+    public List<TrabajadorDTO> listarTrabajadores();
 
-    public Trabajador buscarTrabajadorPorId(Integer id);
+    public TrabajadorDTO buscarTrabajadorPorId(Integer id);
 
-    public Trabajador buscarTrabajadorPorCorreo(String correo);
+    public TrabajadorDTO buscarTrabajadorPorCorreo(String correo);
 
     public void guardarTrabajador(TrabajadorDTO trabajadorDTO);
 

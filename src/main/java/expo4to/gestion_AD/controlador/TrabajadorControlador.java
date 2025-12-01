@@ -2,11 +2,13 @@ package expo4to.gestion_AD.controlador;
 
 import expo4to.gestion_AD.dto.TrabajadorDTO;
 import expo4to.gestion_AD.servicio.ITrabajadorServicio;
+import expo4to.gestion_AD.util.CifradorContrasenas;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import expo4to.gestion_AD.modelo.Trabajador;
 
 import javax.swing.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,7 +18,10 @@ public class TrabajadorControlador {
 
     private final ITrabajadorServicio trabajadorServicio;
 
-    public List<Trabajador> listarTrabajadores() {
+    @Autowired
+    CifradorContrasenas cifrador;
+
+    public List<TrabajadorDTO> listarTrabajadores() {
 
         try {
             return trabajadorServicio.listarTrabajadores();
@@ -40,7 +45,7 @@ public class TrabajadorControlador {
 
     }
 
-    public Trabajador buscarTrabajador(Integer id) {
+    public TrabajadorDTO buscarTrabajador(Integer id) {
         try {
             return trabajadorServicio.buscarTrabajadorPorId(id);
         } catch (NoSuchElementException e) {
@@ -59,14 +64,27 @@ public class TrabajadorControlador {
 
     }
 
-    public TrabajadorDTO loginTrabajador(String correo) {
+    public TrabajadorDTO loginTrabajador(String correo, JPasswordField campoContrasena) {
         try {
+            TrabajadorDTO dto = trabajadorServicio.buscarTrabajadorPorCorreo(correo);
+
+            if (dto != null) {
+                String contraIngresada = new String(campoContrasena.getPassword());
+                if (cifrador.compararContrasenas(contraIngresada, dto.getContrasena())) {
+                    return dto;
+                } else {
+                    throw new NoSuchElementException("Correo o contraseña incorrecta.");
+                }
+            } else {
+                throw new IllegalArgumentException("Correo o contraseña incorrecta.");
+            }
+
 
         } catch (Exception e) {
-
+            System.err.println("ERROR: Ocurrió un error al intentar iniciar sesión.");
+            return null;
         }
 
-        return new TrabajadorDTO();
     }
 
 }

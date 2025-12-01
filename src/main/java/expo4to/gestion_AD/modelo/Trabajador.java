@@ -28,5 +28,6 @@ public class Trabajador {
     private String direccion;
     private Boolean estado;
     private String contrasena;
+    private Integer rol;
 
 }

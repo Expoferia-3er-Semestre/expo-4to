@@ -24,4 +24,6 @@ public class TrabajadorDTO {
     private String correo;
     private String contrasena;
 
+    private Integer rol;
+
 }
