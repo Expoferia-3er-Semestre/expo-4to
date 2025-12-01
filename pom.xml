@@ -53,7 +53,13 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-crypto</artifactId>
-                <version>6.1.5</version> </dependency>
+                <version>6.1.5</version>
+            </dependency>
+        <dependency>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>RELEASE125</version>
+        </dependency>
 	</dependencies>
 
 	<build>

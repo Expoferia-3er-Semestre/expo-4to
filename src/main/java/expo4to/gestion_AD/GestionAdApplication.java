@@ -1,34 +1,29 @@
 package expo4to.gestion_AD;
 
 import expo4to.gestion_AD.controlador.EstudianteControlador;
-import expo4to.gestion_AD.modelo.Estudiante; // Necesitas la entidad
-import expo4to.gestion_AD.modelo.Representante;
-import expo4to.gestion_AD.servicio.EstudianteServicio;
-import expo4to.gestion_AD.servicio.RepresentanteServicio;
-import org.springframework.beans.factory.annotation.Autowired;
+import expo4to.gestion_AD.vista.login;
 import org.springframework.boot.CommandLineRunner; // Interfaz para ejecutar código al iniciar
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import java.awt.*;
 
 @SpringBootApplication
 public class GestionAdApplication {
 
     public static void main(String[] args) {
-        // Inicia Spring y ejecuta el CommandLineRunner
+        ConfigurableApplicationContext context = new SpringApplicationBuilder(GestionAdApplication.class)
+                .headless(false) // IMPORTANTE: Permite que aparezcan ventanas
+                .run(args);        // Inicia Spring y ejecuta el CommandLineRunner
+
+        // 2. Obtenemos el Bean de la ventana del contexto
+        EventQueue.invokeLater(() -> {
+                    // Es buena práctica de Swing iniciar la UI en el Event Dispatch Thread
+                    login frame = context.getBean(login.class);
+                    frame.setVisible(true);
         SpringApplication.run(GestionAdApplication.class, args);
-    }
-
-    // Define un Bean que implementa CommandLineRunner
-    // Spring ejecutará el método 'run' después de inicializar el contexto.
-    @Bean
-    public CommandLineRunner runControllerTest(EstudianteControlador controlador) {
-
-        return args -> {
-            System.out.println("--- PRUEBAS DEL CONTROLADOR SIN UI SWING ---");
-
-
-
-        };
+        });
     }
 }

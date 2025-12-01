@@ -4,10 +4,13 @@
  */
 package expo4to.gestion_AD.vista;
 
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author usuario
  */
+@Component
 public class login extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(login.class.getName());

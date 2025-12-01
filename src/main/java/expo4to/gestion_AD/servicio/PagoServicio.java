@@ -76,7 +76,8 @@ public class PagoServicio implements IPagoServicio{
                 for (AbonoDTO ab : dto.getAbonoDTOList()) {
 
                     BigDecimal montoAbonado = new BigDecimal(ab.getMontoAbonado());
-                    detalle.addAbono(new Abono(
+
+                    Abono abono = new Abono(
                             null,
                             null,
                             new Date(System.currentTimeMillis()),
@@ -84,7 +85,9 @@ public class PagoServicio implements IPagoServicio{
                             ab.getDescripcion(),
                             ab.getMetodoPago(),
                             ab.getNumTrans()
-                    ));
+                    );
+
+                    detalle.addAbono(abono);
 
                 }
             }
