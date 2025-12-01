@@ -17,6 +17,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
      */
     public registrarEstudiantesRepresentantes() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -69,7 +70,6 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         jButtonBorrarR = new javax.swing.JButton();
         jButtonBuscar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jButtonSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -288,10 +288,6 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         jButton1.setText("Guardar");
         jButton1.setBorderPainted(false);
 
-        jButtonSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/cancelar.png"))); // NOI18N
-        jButtonSalir.setBorder(null);
-        jButtonSalir.setBorderPainted(false);
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -306,27 +302,19 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
-                                .addComponent(jButtonSalir))))
+                            .addComponent(jLabel2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(426, 426, 426)
                         .addComponent(jButton1)))
-                .addGap(31, 31, 31))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jButtonSalir)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -383,7 +371,6 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonBorrarR;
     private javax.swing.JButton jButtonBuscar;
-    private javax.swing.JButton jButtonSalir;
     private javax.swing.JComboBox<String> jComboBoxGradoyAnio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

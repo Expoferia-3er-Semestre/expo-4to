@@ -243,7 +243,7 @@ public class ProfesorHomeF extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonEstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonEstudiantesActionPerformed
-
+        
     }//GEN-LAST:event_ButtonEstudiantesActionPerformed
 
     private void ButtonCambiarClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCambiarClaveActionPerformed

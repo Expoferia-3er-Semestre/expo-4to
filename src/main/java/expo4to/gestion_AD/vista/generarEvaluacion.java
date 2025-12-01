@@ -17,6 +17,7 @@ public class generarEvaluacion extends javax.swing.JFrame {
      */
     public generarEvaluacion() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**

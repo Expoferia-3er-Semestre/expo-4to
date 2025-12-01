@@ -95,6 +95,11 @@ public class cargaCalificaciones extends javax.swing.JFrame {
         jButtonGenerar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonGenerar.setText("Generar");
         jButtonGenerar.setBorderPainted(false);
+        jButtonGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenerarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -179,6 +184,11 @@ public class cargaCalificaciones extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerarActionPerformed
+        generarEvaluacion generar = new generarEvaluacion();
+        generar.setVisible(true);
+    }//GEN-LAST:event_jButtonGenerarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -57,11 +57,21 @@ public class gestionRepresentantesF extends javax.swing.JFrame {
         jButtonAgregar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonAgregar.setText("Agregar");
         jButtonAgregar.setBorderPainted(false);
+        jButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregarActionPerformed(evt);
+            }
+        });
 
         jButtonActualizar.setBackground(new java.awt.Color(51, 153, 255));
         jButtonActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonActualizar.setText("Actualizar");
         jButtonActualizar.setBorderPainted(false);
+        jButtonActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonActualizarActionPerformed(evt);
+            }
+        });
 
         jButtonArchivar.setBackground(new java.awt.Color(255, 51, 51));
         jButtonArchivar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -148,9 +158,24 @@ public class gestionRepresentantesF extends javax.swing.JFrame {
         jMenu1Estudiantes.setText("Estudiantes");
         jMenu1Estudiantes.setFocusPainted(true);
         jMenu1Estudiantes.setPreferredSize(new java.awt.Dimension(90, 26));
+        jMenu1Estudiantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu1EstudiantesActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jMenu1Estudiantes);
 
         jMenu2Representantes.setText("Representanes");
+        jMenu2Representantes.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jMenu2RepresentantesMouseDragged(evt);
+            }
+        });
+        jMenu2Representantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2RepresentantesActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jMenu2Representantes);
 
         jMenu3Empleados.setText("Empleados");
@@ -190,6 +215,32 @@ public class gestionRepresentantesF extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenu2RepresentantesMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2RepresentantesMouseDragged
+
+    }//GEN-LAST:event_jMenu2RepresentantesMouseDragged
+
+    private void jMenu2RepresentantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2RepresentantesActionPerformed
+//        gestionRepresentantesF gestionRepresentantes = new gestionRepresentantesF();
+//        dispose();
+//        gestionRepresentantes.setVisible(true);
+    }//GEN-LAST:event_jMenu2RepresentantesActionPerformed
+
+    private void jMenu1EstudiantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1EstudiantesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu1EstudiantesActionPerformed
+
+    private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
+        registrarEstudiantesRepresentantes registrar = new registrarEstudiantesRepresentantes();
+        dispose();
+        registrar.setVisible(true);
+    }//GEN-LAST:event_jButtonAgregarActionPerformed
+
+    private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
+        registrarEstudiantesRepresentantes registrar = new registrarEstudiantesRepresentantes();
+        dispose();
+        registrar.setVisible(true);
+    }//GEN-LAST:event_jButtonActualizarActionPerformed
 
     /**
      * @param args the command line arguments
