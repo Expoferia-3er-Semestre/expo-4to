@@ -5,6 +5,8 @@ import expo4to.gestion_AD.servicio.ITrabajadorServicio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import expo4to.gestion_AD.modelo.Trabajador;
+
+import javax.swing.*;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -47,7 +49,7 @@ public class TrabajadorControlador {
         }
     }
 
-    public void eliminarRepresentante(Integer id) {
+    public void eliminarTrabajador(Integer id) {
 
         try {
             trabajadorServicio.eliminarTrabajador(id);
@@ -57,5 +59,14 @@ public class TrabajadorControlador {
 
     }
 
+    public TrabajadorDTO loginTrabajador(String correo) {
+        try {
+
+        } catch (Exception e) {
+
+        }
+
+        return new TrabajadorDTO();
+    }
 
 }

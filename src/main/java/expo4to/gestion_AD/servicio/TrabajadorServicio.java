@@ -32,6 +32,11 @@ public class TrabajadorServicio implements ITrabajadorServicio{
     }
 
     @Override
+    public Trabajador buscarTrabajadorPorCorreo(String correo) {
+        return trabajadorRepositorio.findByCorreo(correo).orElseThrow(null);
+    }
+
+    @Override
     public void guardarTrabajador(TrabajadorDTO trabajadorDTO) {
 
         String passwordPlana = trabajadorDTO.getContrasena();

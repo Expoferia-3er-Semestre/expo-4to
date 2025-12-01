@@ -11,8 +11,12 @@ public interface ITrabajadorServicio {
 
     public Trabajador buscarTrabajadorPorId(Integer id);
 
+    public Trabajador buscarTrabajadorPorCorreo(String correo);
+
     public void guardarTrabajador(TrabajadorDTO trabajadorDTO);
 
     public void eliminarTrabajador(Integer id);
+
+
 
 }
