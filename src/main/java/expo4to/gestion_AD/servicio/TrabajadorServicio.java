@@ -98,7 +98,8 @@ public class TrabajadorServicio implements ITrabajadorServicio{
                 trabajadorDTO.getFechaN(),
                 trabajadorDTO.getDireccion(),
                 estado,
-                trabajadorDTO.getContrasena()
+                trabajadorDTO.getContrasena(),
+                trabajadorDTO.getRol()
         );
 
 
@@ -124,6 +125,7 @@ public class TrabajadorServicio implements ITrabajadorServicio{
         trabajadorDTO.setDireccion(trabajador.getDireccion());
         trabajadorDTO.setFechaN(trabajador.getFechaN());
         trabajadorDTO.setTelefono(trabajador.getTelefono());
+        trabajadorDTO.setRol(trabajador.getRol());
 
         return trabajadorDTO;
 
