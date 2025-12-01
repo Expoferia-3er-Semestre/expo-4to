@@ -65,26 +65,48 @@ public class TrabajadorControlador {
     }
 
     public TrabajadorDTO loginTrabajador(String correo, JPasswordField campoContrasena) {
+
+        String contraIngresada = new String(campoContrasena.getPassword());
+
         try {
             TrabajadorDTO dto = trabajadorServicio.buscarTrabajadorPorCorreo(correo);
 
             if (dto != null) {
-                String contraIngresada = new String(campoContrasena.getPassword());
+
+                // 2. Comprobar la contraseña
                 if (cifrador.compararContrasenas(contraIngresada, dto.getContrasena())) {
-                    return dto;
+
+                    // Limpiar la contraseña en memoria inmediatamente después de usarla
+                    // Nota: new String(char[]) debe ser manejada con cuidado, pero es el estándar en Swing.
+                    campoContrasena.setText("");
+
+                    return dto; // Éxito en el login
+
                 } else {
-                    throw new NoSuchElementException("Correo o contraseña incorrecta.");
+                    // 3. 🛑 ERROR: Contraseña incorrecta (Credenciales inválidas)
+                    throw new IllegalArgumentException("Contraseña incorrecta para el usuario: " + correo);
                 }
+
             } else {
-                throw new IllegalArgumentException("Correo o contraseña incorrecta.");
+                // 4. 🛑 ERROR: Trabajador no encontrado
+                throw new NoSuchElementException("Trabajador con correo " + correo + " no encontrado.");
             }
 
+        } catch (NoSuchElementException e) {
+            // Captura si el usuario no existe
+            System.err.println("LOGIN FALLIDO: " + e.getMessage());
+            throw new IllegalArgumentException("Usuario o contraseña incorrectos.");
+
+        } catch (IllegalArgumentException e) {
+            // Captura si la contraseña fue incorrecta
+            System.err.println("LOGIN FALLIDO: " + e.getMessage());
+            throw new IllegalArgumentException("Usuario o contraseña incorrectos.");
 
         } catch (Exception e) {
-            System.err.println("ERROR: Ocurrió un error al intentar iniciar sesión.");
-            return null;
+            // Captura cualquier otro error inesperado (conexión DB, NullPointer, etc.)
+            System.err.println("ERROR INESPERADO en login: " + e.getMessage());
+            throw new RuntimeException("Error interno al intentar iniciar sesión.");
         }
-
     }
 
 }

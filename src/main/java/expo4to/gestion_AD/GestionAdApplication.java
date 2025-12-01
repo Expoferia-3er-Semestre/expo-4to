@@ -4,6 +4,7 @@ import expo4to.gestion_AD.controlador.EstudianteControlador;
 import expo4to.gestion_AD.vista.login;
 import org.springframework.boot.CommandLineRunner; // Interfaz para ejecutar código al iniciar
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -16,6 +17,7 @@ public class GestionAdApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = new SpringApplicationBuilder(GestionAdApplication.class)
                 .headless(false) // IMPORTANTE: Permite que aparezcan ventanas
+                .web(WebApplicationType.NONE)
                 .run(args);        // Inicia Spring y ejecuta el CommandLineRunner
 
         // 2. Obtenemos el Bean de la ventana del contexto

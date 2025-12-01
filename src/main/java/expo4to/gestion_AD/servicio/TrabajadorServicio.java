@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class TrabajadorServicio implements ITrabajadorServicio{
@@ -27,6 +28,11 @@ public class TrabajadorServicio implements ITrabajadorServicio{
 
         List<TrabajadorDTO> trabajadoresDTO = new ArrayList<>();
         List<Trabajador> trabajadores = trabajadorRepositorio.findAll();
+
+        if (trabajadores.isEmpty()) {
+            return null;
+        }
+
         for (Trabajador trabajador : trabajadores) {
             TrabajadorDTO trabajadorDTO = transformarTrabajador(trabajador);
             trabajadoresDTO.add(trabajadorDTO);
@@ -36,12 +42,25 @@ public class TrabajadorServicio implements ITrabajadorServicio{
 
     @Override
     public TrabajadorDTO buscarTrabajadorPorId(Integer id) {
-        return transformarTrabajador(trabajadorRepositorio.findById(id).orElseThrow(null));
+
+        Optional<Trabajador> optional = trabajadorRepositorio.findById(id);
+
+        if (optional.isEmpty()) {
+            return null;
+        }
+
+        return transformarTrabajador(optional.get());
     }
 
     @Override
     public TrabajadorDTO buscarTrabajadorPorCorreo(String correo) {
-        return transformarTrabajador(trabajadorRepositorio.findByCorreo(correo).orElseThrow(null));
+        Optional<Trabajador> optional = trabajadorRepositorio.findByCorreo(correo);
+
+        if (optional.isEmpty()) {
+            return null; // Devuelve null si no lo encuentra
+        }
+
+        return transformarTrabajador(optional.get());
     }
 
     @Override

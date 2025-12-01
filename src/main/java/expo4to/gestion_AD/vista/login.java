@@ -4,7 +4,11 @@
  */
 package expo4to.gestion_AD.vista;
 
+import expo4to.gestion_AD.controlador.TrabajadorControlador;
+import expo4to.gestion_AD.dto.TrabajadorDTO;
 import org.springframework.stereotype.Component;
+
+import javax.swing.*;
 
 /**
  *
@@ -14,11 +18,13 @@ import org.springframework.stereotype.Component;
 public class login extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(login.class.getName());
-
+    private TrabajadorControlador trabajadorControlador;
     /**
      * Creates new form login
      */
     public login() {
+
+        this.trabajadorControlador = expo4to.gestion_AD.controlador.ApplicationContextProvider.getBean(TrabajadorControlador.class);
         initComponents();
         setLocationRelativeTo(null); // centra la ventana en pantalla
 
@@ -37,10 +43,10 @@ public class login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        correoCampo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         loginButton = new javax.swing.JButton();
+        campoContra = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -65,33 +71,30 @@ public class login extends javax.swing.JFrame {
         jLabel3.setText("Correo Electronico");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, -1, -1));
 
-        jTextField1.setForeground(new java.awt.Color(217, 217, 217));
-        jTextField1.setText("tu-correo@ejemplo.com");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        correoCampo.setForeground(new java.awt.Color(217, 217, 217));
+        correoCampo.setText("tu-correo@ejemplo.com");
+        correoCampo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                correoCampoActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 250, -1));
+        jPanel1.add(correoCampo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 250, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Contraseña");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, -1, -1));
 
-        jTextField2.setForeground(new java.awt.Color(217, 217, 217));
-        jTextField2.setText("*******************");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 250, -1));
-
         loginButton.setBackground(new java.awt.Color(0, 0, 0));
         loginButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         loginButton.setForeground(new java.awt.Color(255, 255, 255));
         loginButton.setText("Iniciar Sesion");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 380, 250, -1));
+        jPanel1.add(campoContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 250, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logo_liceo.png"))); // NOI18N
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 430, 360));
@@ -112,13 +115,35 @@ public class login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void correoCampoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoCampoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_correoCampoActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+        iniciarSesion();
+    }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void iniciarSesion() {
+
+        TrabajadorDTO dto = trabajadorControlador.loginTrabajador(
+                correoCampo.getText().trim(), campoContra);
+
+        switch (dto.getRol()) {
+            case 1:
+                new RegistrarPagoF(dto).setVisible(true);
+                break;
+            case 2:
+                new ProfesorHomeF(dto);
+                break;
+            case 3:
+                new ControlEstudiosHomeF(dto);
+                break;
+            default:
+                break;
+        }
+
+    }
 
     /**
      * @param args the command line arguments
@@ -146,14 +171,14 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPasswordField campoContra;
+    private javax.swing.JTextField correoCampo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JButton loginButton;
     // End of variables declaration//GEN-END:variables
 }

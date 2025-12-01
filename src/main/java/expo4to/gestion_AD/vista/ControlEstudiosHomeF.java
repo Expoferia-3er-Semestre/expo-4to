@@ -4,6 +4,12 @@
  */
 package expo4to.gestion_AD.vista;
 
+import expo4to.gestion_AD.controlador.ApplicationContextProvider;
+import expo4to.gestion_AD.controlador.EstudianteControlador;
+import expo4to.gestion_AD.controlador.RepresentanteControlador;
+import expo4to.gestion_AD.controlador.TrabajadorControlador;
+import expo4to.gestion_AD.dto.TrabajadorDTO;
+
 /**
  *
  * @author usuario
@@ -11,11 +17,18 @@ package expo4to.gestion_AD.vista;
 public class ControlEstudiosHomeF extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ControlEstudiosHomeF.class.getName());
-
+    private final EstudianteControlador estudianteControlador;
+    private final RepresentanteControlador representanteControlador;
+    private final TrabajadorControlador trabajadorControlador;
+    private final TrabajadorDTO trabajador;
     /**
      * Creates new form ControlEstudiosHomeF
      */
-    public ControlEstudiosHomeF() {
+    public ControlEstudiosHomeF(TrabajadorDTO trabajador) {
+        this.estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
+        this.representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
+        this.trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
+        this.trabajador = trabajador;
         initComponents();
         
     }
@@ -403,31 +416,6 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         dispose();
         gestionRepresentante.setVisible(true);
     }//GEN-LAST:event_ButtonRepresentantesActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new ControlEstudiosHomeF().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonBoletin;
