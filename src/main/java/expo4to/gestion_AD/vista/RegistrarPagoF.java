@@ -6,7 +6,19 @@ package expo4to.gestion_AD.vista;
 
 import expo4to.gestion_AD.controlador.ApplicationContextProvider;
 import expo4to.gestion_AD.controlador.PagoControlador;
+import expo4to.gestion_AD.dto.EstudianteDTO;
+import expo4to.gestion_AD.dto.PagoReciboDTO;
+import expo4to.gestion_AD.dto.RepresentanteDTO;
 import expo4to.gestion_AD.dto.TrabajadorDTO;
+import expo4to.gestion_AD.controlador.EstudianteControlador;
+import expo4to.gestion_AD.controlador.RepresentanteControlador;
+import expo4to.gestion_AD.vista.customize.EstudianteRenderer;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -16,15 +28,34 @@ public class RegistrarPagoF extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistrarPagoF.class.getName());
 
+    private final RepresentanteControlador  representanteControlador;
+    private final EstudianteControlador estudianteControlador;
     private final PagoControlador pagoControlador;
     private final TrabajadorDTO trabajador;
+    private RepresentanteDTO representante;
+    private EstudianteDTO estudiante;
     /**
      * Creates new form RegistrarPagoF
      */
     public RegistrarPagoF(TrabajadorDTO trabajador) {
         this.trabajador = trabajador;
+        this.representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
+        this.estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
         this.pagoControlador = ApplicationContextProvider.getBean(PagoControlador.class);
         initComponents();
+        comboEstudiantes.setRenderer(new EstudianteRenderer());
+
+        jTextFieldCedulaRepre.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Llama a la función cuando se presiona Enter
+                buscarRepresentante();
+            }
+        });
+
+        datosEstudiante.setText(" ");
+        datosRepresentante.setText(" ");
+        datosGrado.setText("");
     }
 
     /**
@@ -41,7 +72,6 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextFieldCedulaRepre = new javax.swing.JTextField();
-        jTextFieldEstudianteRepre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         ButtonConsultar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -68,15 +98,22 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        datosRepresentante = new javax.swing.JLabel();
+        datosEstudiante = new javax.swing.JLabel();
+        datosGrado = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
+        datosFecha = new javax.swing.JLabel();
+        datosFactura = new javax.swing.JLabel();
+        datosTasa = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         ButtonImprimir = new javax.swing.JButton();
+        comboEstudiantes = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,12 +126,6 @@ public class RegistrarPagoF extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Cedula Representante");
-
-        jTextFieldEstudianteRepre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldEstudianteRepreActionPerformed(evt);
-            }
-        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Estudiante del Representante");
@@ -298,6 +329,12 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel19.setText("Grado/Año");
 
+        datosRepresentante.setText("agregar datos representante");
+
+        datosEstudiante.setText("agregar datos estudiante");
+
+        datosGrado.setText("agregar datos grado");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -305,21 +342,31 @@ public class RegistrarPagoF extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel17)
-                    .addComponent(jLabel18)
-                    .addComponent(jLabel19))
-                .addContainerGap(91, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel17)
+                        .addComponent(jLabel18)
+                        .addComponent(jLabel19)
+                        .addComponent(datosRepresentante, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                        .addComponent(datosEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(datosGrado, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel17)
-                .addGap(45, 45, 45)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(datosRepresentante)
+                .addGap(17, 17, 17)
                 .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(datosEstudiante)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel19)
-                .addGap(30, 30, 30))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(datosGrado)
+                .addGap(8, 8, 8))
         );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
@@ -334,6 +381,12 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel22.setText("Tasa Dolar");
 
+        datosFecha.setText("agregar datos fecha");
+
+        datosFactura.setText("agregar datos factura");
+
+        datosTasa.setText("agregar datos tasa");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -341,21 +394,31 @@ public class RegistrarPagoF extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel20)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel22))
-                .addContainerGap(77, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabel20)
+                        .addComponent(jLabel21)
+                        .addComponent(jLabel22)
+                        .addComponent(datosFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(datosFactura, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
+                    .addComponent(datosTasa, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel20)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(datosFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel21)
-                .addGap(40, 40, 40)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(datosFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel22)
-                .addGap(25, 25, 25))
+                .addGap(3, 3, 3)
+                .addComponent(datosTasa)
+                .addContainerGap())
         );
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -408,6 +471,12 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         ButtonImprimir.setText("Imprimir Recibo");
         ButtonImprimir.setBorderPainted(false);
 
+        comboEstudiantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboEstudiantesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -421,15 +490,14 @@ public class RegistrarPagoF extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGap(29, 29, 29)
                                         .addComponent(ButtonConsultar))
                                     .addComponent(jLabel2)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jTextFieldEstudianteRepre, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextFieldCedulaRepre, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(jTextFieldCedulaRepre)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboEstudiantes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(32, 32, 32)
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -463,9 +531,9 @@ public class RegistrarPagoF extends javax.swing.JFrame {
                                 .addComponent(jTextFieldCedulaRepre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldEstudianteRepre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21)
                                 .addComponent(ButtonConsultar))
                             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
@@ -511,14 +579,15 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextFieldEstudianteRepreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEstudianteRepreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldEstudianteRepreActionPerformed
-
     private void ButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonConsultarActionPerformed
-        consultarPagos consultar = new consultarPagos();
-        //dispose(); debe dejarse la pantalla de pagos atras, por si el usuario registro transacciones!
-        consultar.setVisible(true);
+
+        if (estudiante == null) {
+
+            return;
+        }
+
+        List<PagoReciboDTO> pagos = pagoControlador.buscarPagos(estudiante.getId());
+
     }//GEN-LAST:event_ButtonConsultarActionPerformed
 
     private void ButtonTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonTarjetaActionPerformed
@@ -541,6 +610,47 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonEfectivoActionPerformed
 
+    private void comboEstudiantesActionPerformed(ActionEvent evt) {//GEN-FIRST:event_comboEstudiantesActionPerformed
+        // TODO add your handling code here:
+        estudiante = (EstudianteDTO) comboEstudiantes.getSelectedItem();
+
+        if (estudiante != null) {
+        datosEstudiante.setText(estudiante.getNombre1() + " " + estudiante.getApellido1());
+        datosGrado.setText(estudiante.getGrado());
+        } else {
+            datosEstudiante.setText(" ");
+            datosGrado.setText(" ");
+        }
+
+    }//GEN-LAST:event_comboEstudiantesActionPerformed
+
+    public void buscarRepresentante() {
+        String cedula = jTextFieldCedulaRepre.getText().trim();
+        try{
+            RepresentanteDTO representante = representanteControlador.buscarRepresentantePorCedula(cedula);
+            this.representante = representante;
+
+            datosRepresentante.setText(representante.getNombre1() + " " + representante.getApellido1());
+
+            for (EstudianteDTO dto : representante.getEstudiantes()) {
+            comboEstudiantes.addItem(dto);
+            }
+
+        } catch (NoSuchElementException e) {
+            JOptionPane.showMessageDialog(null,
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE);
+        }
+
+    }
+
+    public void consultarPagos() {
+
+
+
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonAbono;
     private javax.swing.JButton ButtonAgregar;
@@ -549,6 +659,13 @@ public class RegistrarPagoF extends javax.swing.JFrame {
     private javax.swing.JButton ButtonLimpiar;
     private javax.swing.JButton ButtonTarjeta;
     private javax.swing.JButton ButtonTransferencia;
+    private javax.swing.JComboBox<EstudianteDTO> comboEstudiantes;
+    private javax.swing.JLabel datosEstudiante;
+    private javax.swing.JLabel datosFactura;
+    private javax.swing.JLabel datosFecha;
+    private javax.swing.JLabel datosGrado;
+    private javax.swing.JLabel datosRepresentante;
+    private javax.swing.JLabel datosTasa;
     private javax.swing.JButton jButtonEfectivo;
     private javax.swing.JComboBox<String> jComboBoxTipoPago;
     private javax.swing.JLabel jLabel1;
@@ -580,7 +697,6 @@ public class RegistrarPagoF extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldCedulaRepre;
     private javax.swing.JTextField jTextFieldConceptoPago;
-    private javax.swing.JTextField jTextFieldEstudianteRepre;
     private javax.swing.JTextField jTextFieldMonto;
     private javax.swing.JTextField jTextFieldReferencia;
     // End of variables declaration//GEN-END:variables

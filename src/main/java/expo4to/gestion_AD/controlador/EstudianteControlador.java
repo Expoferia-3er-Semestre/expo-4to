@@ -16,7 +16,7 @@ public class EstudianteControlador {
 
     private final IEstudianteServicio estudianteServicio;
 
-    public List<Estudiante> listarEstudiantes() {
+    public List<EstudianteDTO> listarEstudiantes() {
         try {
             return estudianteServicio.listarEstudiantes();
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class EstudianteControlador {
         }
     }
 
-    public Estudiante buscarEstudiante(Integer id) {
+    public EstudianteDTO buscarEstudiante(Integer id) {
 
         try {
             return estudianteServicio.buscarEstudiantePorId(id);

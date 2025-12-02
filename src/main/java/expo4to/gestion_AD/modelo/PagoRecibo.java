@@ -27,7 +27,7 @@ public class PagoRecibo {
     private Boolean estado;
     private Date fechaPago;
     @OneToMany(mappedBy = "pagoRecibo", cascade = CascadeType.ALL) // 'pagoRecibo' es el nombre del campo en la otra entidad
-    private List<DetallesPago> detalles;
+    private List<DetallesPago> detalles = new ArrayList<>();
 
     public void addDetalle(DetallesPago detallesPago) {
         if (this.detalles == null) {

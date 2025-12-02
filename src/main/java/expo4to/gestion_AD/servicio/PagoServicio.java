@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PagoServicio implements IPagoServicio{
@@ -30,11 +31,29 @@ public class PagoServicio implements IPagoServicio{
     @Autowired
     Verificador verificador;
 
+
+    @Override
+    public List<PagoReciboDTO> listarPagosPorIdEstudiante(Integer id) {
+
+        List<PagoRecibo> pagos = reciboRepositorio.findByEstudianteId(id);
+        List<PagoReciboDTO> pagosDTO = new ArrayList<>();
+
+        if (pagos.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        for (PagoRecibo pago : pagos) {
+            pagosDTO.add(transformarDatosPago(pago));
+        }
+
+        return pagosDTO;
+
+    }
+
     @Transactional
     @Override
     public void registrarNuevoPago( PagoReciboDTO datosPago) {
 
-        expo4to.gestion_AD.modelo.PagoRecibo recibo = transformarDatosPago(datosPago);
+        expo4to.gestion_AD.modelo.PagoRecibo recibo = transformarDatosPagoDTO(datosPago);
 
         reciboRepositorio.save(recibo);
 
@@ -58,11 +77,11 @@ public class PagoServicio implements IPagoServicio{
 
     }
 
-    public PagoRecibo transformarDatosPago(PagoReciboDTO datosPago) {
+    public PagoRecibo transformarDatosPagoDTO(PagoReciboDTO datosPagoDTO) {
 
-        Estudiante estudiante = estudianteRepositorio.findById(datosPago.getIdEstudiante()).orElseThrow(null);
+        Estudiante estudiante = estudianteRepositorio.findById(datosPagoDTO.getIdEstudiante()).orElseThrow(null);
 
-        List<DetallesPagoDTO> detallesDTO = datosPago.getDetallesPagoDTOList();
+        List<DetallesPagoDTO> detallesDTO = datosPagoDTO.getDetallesPagoDTOList();
         PagoRecibo recibo = new PagoRecibo();
 
         for (DetallesPagoDTO dto : detallesDTO) {
@@ -128,6 +147,14 @@ public class PagoServicio implements IPagoServicio{
         recibo.setEstado(montos.tienependiente());
         return recibo;
 
+    }
+
+    public PagoReciboDTO transformarDatosPago(PagoRecibo datosPago) {
+        PagoReciboDTO pagoReciboDTO = new PagoReciboDTO();
+
+
+
+        return pagoReciboDTO;
     }
 
 }

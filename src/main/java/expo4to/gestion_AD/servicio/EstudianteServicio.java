@@ -1,16 +1,20 @@
 package expo4to.gestion_AD.servicio;
 
 import expo4to.gestion_AD.dto.EstudianteDTO;
+import expo4to.gestion_AD.dto.RepresentanteDTO;
 import expo4to.gestion_AD.modelo.Estudiante;
 import expo4to.gestion_AD.modelo.Representante;
 import expo4to.gestion_AD.repositorio.EstudianteRepositorio;
 import expo4to.gestion_AD.repositorio.RepresentanteRepositorio;
 import expo4to.gestion_AD.util.Verificador;
+import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class EstudianteServicio implements IEstudianteServicio{
@@ -23,28 +27,40 @@ public class EstudianteServicio implements IEstudianteServicio{
     private Verificador verificador;
 
     @Override
-    public List<Estudiante> listarEstudiantes() {
-        return estudianteRepositorio.findAll();
+    public List<EstudianteDTO> listarEstudiantes() {
+
+        List<Estudiante> lista = estudianteRepositorio.findAll();
+        List<EstudianteDTO> dtos = new ArrayList<>();
+
+        for (Estudiante estudiante : lista) {
+            dtos.add(transformarEstudiante(estudiante));
+        }
+
+        return dtos;
+
     }
 
     @Override
-    public Estudiante buscarEstudiantePorId(Integer id) {
-        // NoSuchElementException es una excepción estándar de Java
-        // que se usa para indicar que un elemento no existe.
-        return estudianteRepositorio.findById(id).orElseThrow(
-                () -> new java.util.NoSuchElementException("Estudiante con ID " + id + " no encontrado.")
-        );
+    public EstudianteDTO buscarEstudiantePorId(Integer id) {
+
+        Optional<Estudiante> optional = estudianteRepositorio.findById(id);
+
+        if (optional.isEmpty()) {
+            return null;
+        }
+
+        return transformarEstudiante(optional.get());
     }
 
     @Override
     public void guardarEstudiante(EstudianteDTO estudianteDTO) {
 
-        String cedulaRep = estudianteDTO.getCedulaRep();
+        String cedulaRep = estudianteDTO.getRepresentante().getCedula();
 
-        expo4to.gestion_AD.modelo.Representante representante = representanteRepositorio.
-                findByCedula(cedulaRep).orElse(null);
+        Optional<Representante> representante = representanteRepositorio.
+                findByCedula(cedulaRep);
 
-        if (representante == null) {
+        if (representante.isEmpty()) {
             // Se usa IllegalArgumentException para que el Controlador pueda informar a la UI.
             throw new IllegalArgumentException("Error: No se puede guardar el estudiante. " +
                     "La cédula de representante (" + cedulaRep + ") no existe en la base de datos.");
@@ -58,14 +74,14 @@ public class EstudianteServicio implements IEstudianteServicio{
                 !verificador.esNombreOApellidoValido(estudianteDTO.getApellido2())) {
             throw new IllegalArgumentException("El apellido ingresado no es valido.");
         }
-        if (!verificador.esCedulaValida(estudianteDTO.getCedulaRep())) {
+        if (!verificador.esCedulaValida(estudianteDTO.getRepresentante().getCedula())) {
             throw new IllegalArgumentException("La cédula ingresada no es valida.");
         }
         if (!verificador.esDireccionValida(estudianteDTO.getDireccion())) {
             throw new IllegalArgumentException("La dirección ingresada no es valida.");
         }
 
-        Estudiante estudiante = transformarDto(estudianteDTO, representante);
+        Estudiante estudiante = transformarDto(estudianteDTO, representante.get());
 
         estudianteRepositorio.save(estudiante);
     }
@@ -92,6 +108,40 @@ public class EstudianteServicio implements IEstudianteServicio{
                 estudianteDTO.getNivelAcademico(),
                 estado
         );
+    }
+
+    public EstudianteDTO transformarEstudiante(Estudiante estudiante) {
+
+        EstudianteDTO dto = new EstudianteDTO();
+
+        dto.setId(estudiante.getId());
+
+        RepresentanteDTO representanteDTO = new RepresentanteDTO();
+
+        Representante representante = estudiante.getRepresentante();
+
+        representanteDTO.setCedula(representante.getCedula());
+        representanteDTO.setEstado(representante.getEstado());
+        representanteDTO.setNombre1(representante.getNombre1());
+        representanteDTO.setNombre2(representante.getNombre2());
+        representanteDTO.setApellido1(representante.getApellido1());
+        representanteDTO.setApellido2(representante.getApellido2());
+        representanteDTO.setDireccion(representante.getDireccion());
+        representanteDTO.setFechaN(representante.getFechaN());
+        representanteDTO.setTelefono(representante.getTelefono());
+
+        dto.setRepresentante(representanteDTO);
+        dto.setNombre1(estudiante.getNombre1());
+        dto.setNombre2(estudiante.getNombre2());
+        dto.setApellido1(estudiante.getApellido1());
+        dto.setApellido2(estudiante.getApellido2());
+        dto.setFechaNacimiento(estudiante.getFechaNacimiento());
+        dto.setNivelAcademico(estudiante.getNivelAcademico());
+        dto.setGrado(estudiante.getGrado());
+        dto.setDireccion(estudiante.getDireccion());
+        dto.setEstado(estudiante.getEstado());
+
+        return dto;
     }
 
 }

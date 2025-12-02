@@ -7,11 +7,9 @@ import java.util.List;
 
 public interface IRepresentanteServicio {
 
-    public List<Representante> listarRepresentantes();
+    public List<RepresentanteDTO> listarRepresentantes();
 
-    public Representante buscarRepresentantePorId(Integer id);
-
-    public Representante buscarRepresentantePorCedula(String cedula);
+    public RepresentanteDTO buscarRepresentantePorCedula(String cedula);
 
     //Funciona tanto para actualizar o registrar segun el valor de id (null o not null)
     public void guardarRepresentante(RepresentanteDTO representanteDTO);

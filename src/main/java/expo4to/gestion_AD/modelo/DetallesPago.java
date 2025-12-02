@@ -35,7 +35,7 @@ public class DetallesPago {
     private BigDecimal montoTotal;
     private BigDecimal montoPagado;
     @OneToMany(mappedBy = "detallesPago", cascade = CascadeType.ALL)
-    private List<Abono> abonos;
+    private List<Abono> abonos = new ArrayList<>();
 
     public void addAbono(Abono abono) {
         if (this.abonos == null) {

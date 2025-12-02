@@ -9,6 +9,8 @@ import expo4to.gestion_AD.dto.TrabajadorDTO;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -18,7 +20,7 @@ import javax.swing.*;
 public class login extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(login.class.getName());
-    private TrabajadorControlador trabajadorControlador;
+    private final TrabajadorControlador trabajadorControlador;
     /**
      * Creates new form login
      */
@@ -27,6 +29,14 @@ public class login extends javax.swing.JFrame {
         this.trabajadorControlador = expo4to.gestion_AD.controlador.ApplicationContextProvider.getBean(TrabajadorControlador.class);
         initComponents();
         setLocationRelativeTo(null); // centra la ventana en pantalla
+
+        campoContra.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Llama a la función cuando se presiona Enter
+                iniciarSesion();
+            }
+        });
 
     }
 
@@ -129,15 +139,22 @@ public class login extends javax.swing.JFrame {
         TrabajadorDTO dto = trabajadorControlador.loginTrabajador(
                 correoCampo.getText().trim(), campoContra);
 
-        switch (dto.getRol()) {
+        Integer rol = dto.getRol();
+        dto.setContrasena("");
+        campoContra.setText("");
+
+        switch (rol) {
             case 1:
                 new RegistrarPagoF(dto).setVisible(true);
+                dispose();
                 break;
             case 2:
                 new ProfesorHomeF(dto);
+                dispose();
                 break;
             case 3:
                 new ControlEstudiosHomeF(dto);
+                dispose();
                 break;
             default:
                 break;

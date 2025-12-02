@@ -1,14 +1,16 @@
 package expo4to.gestion_AD.servicio;
 
+import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.dto.RepresentanteDTO;
+import expo4to.gestion_AD.modelo.Estudiante;
 import expo4to.gestion_AD.modelo.Representante;
 import expo4to.gestion_AD.repositorio.RepresentanteRepositorio;
 import expo4to.gestion_AD.util.Verificador;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class RepresentanteServicio implements IRepresentanteServicio{
@@ -17,25 +19,37 @@ public class RepresentanteServicio implements IRepresentanteServicio{
     private RepresentanteRepositorio representanteRepositorio;
 
     @Autowired
+    private EstudianteServicio estudianteServicio;
+
+    @Autowired
     private Verificador verificador;
 
     @Override
-    public List<Representante> listarRepresentantes() {
-        return representanteRepositorio.findAll();
+    public List<RepresentanteDTO> listarRepresentantes() {
+        List<Representante> lista = representanteRepositorio.findAll();
+        List<RepresentanteDTO> dtos = new ArrayList<>();
+
+        for (Representante representante : lista) {
+            dtos.add(transformarRepresentante(representante));
+        }
+
+        return dtos;
     }
 
+    @Transactional
     @Override
-    public Representante buscarRepresentantePorId(Integer id) {
-        return representanteRepositorio.findById(id).orElseThrow(
-                () -> new java.util.NoSuchElementException("Representante con ID "+ id + "no encontrado.")
-        );
-    }
+    public RepresentanteDTO buscarRepresentantePorCedula(String cedula) {
 
-    @Override
-    public Representante buscarRepresentantePorCedula(String cedula) {
-        return representanteRepositorio.findByCedula(cedula).orElseThrow(
-                () -> new java.util.NoSuchElementException("Representante con cedula " + cedula + " no encontrado.")
-        );
+        Optional<Representante> optional = representanteRepositorio.findByCedula(cedula);
+
+        if (optional.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        Representante representante = optional.get();
+        representante.getEstudiantes().size();
+
+        return transformarRepresentante(representante);
+
     }
 
     @Override
@@ -43,27 +57,28 @@ public class RepresentanteServicio implements IRepresentanteServicio{
 
         String cedulaABuscar = representanteDTO.getCedula();
 
-        Representante repreEncontrado = representanteRepositorio.findByCedula(cedulaABuscar).orElse(null);
-        if (repreEncontrado != null) {
+        Optional<Representante> repreEncontrado = representanteRepositorio.findByCedula(cedulaABuscar);
+
+        if (repreEncontrado.isPresent()) {
             throw new IllegalArgumentException("Error: No se puede guardar el representante. " +
                     "La cédula de representante (" + cedulaABuscar + ") ya existe en el sistema.");
         }
 
-        if (!verificador.esNombreOApellidoValido(representanteDTO.getNombre1()) ||
-                !verificador.esNombreOApellidoValido(representanteDTO.getNombre2())) {
+        if (!this.verificador.esNombreOApellidoValido(representanteDTO.getNombre1()) ||
+                !this.verificador.esNombreOApellidoValido(representanteDTO.getNombre2())) {
             throw new IllegalArgumentException("El nombre ingresado no es valido.");
         }
-        if (!verificador.esNombreOApellidoValido(representanteDTO.getApellido1()) ||
-                !verificador.esNombreOApellidoValido(representanteDTO.getApellido2())) {
+        if (!this.verificador.esNombreOApellidoValido(representanteDTO.getApellido1()) ||
+                !this.verificador.esNombreOApellidoValido(representanteDTO.getApellido2())) {
             throw new IllegalArgumentException("El apellido ingresado no es valido.");
         }
-        if (!verificador.esCedulaValida(representanteDTO.getCedula())) {
+        if (!this.verificador.esCedulaValida(representanteDTO.getCedula())) {
             throw new IllegalArgumentException("La cédula ingresada no es valida.");
         }
-        if (!verificador.esDireccionValida(representanteDTO.getDireccion())) {
+        if (!this.verificador.esDireccionValida(representanteDTO.getDireccion())) {
             throw new IllegalArgumentException("La dirección ingresada no es valida.");
         }
-        if (!verificador.esTelefonoValido(representanteDTO.getTelefono())) {
+        if (!this.verificador.esTelefonoValido(representanteDTO.getTelefono())) {
             throw new IllegalArgumentException("El teléfono ingresado no es valido.");
         }
 
@@ -82,7 +97,6 @@ public class RepresentanteServicio implements IRepresentanteServicio{
         Boolean estado = Objects.requireNonNullElse(representanteDTO.getEstado(), true);
 
         return new Representante(
-                representanteDTO.getId(),
                 representanteDTO.getCedula(),
                 representanteDTO.getNombre1(),
                 representanteDTO.getNombre2(),
@@ -97,4 +111,27 @@ public class RepresentanteServicio implements IRepresentanteServicio{
 
     }
 
+    public RepresentanteDTO transformarRepresentante(Representante representante) {
+
+        RepresentanteDTO representanteDTO = new RepresentanteDTO();
+
+        representanteDTO.setCedula(representante.getCedula());
+        representanteDTO.setEstado(representante.getEstado());
+        representanteDTO.setNombre1(representante.getNombre1());
+        representanteDTO.setNombre2(representante.getNombre2());
+        representanteDTO.setApellido1(representante.getApellido1());
+        representanteDTO.setApellido2(representante.getApellido2());
+        representanteDTO.setDireccion(representante.getDireccion());
+        representanteDTO.setFechaN(representante.getFechaN());
+        representanteDTO.setTelefono(representante.getTelefono());
+
+        for (Estudiante estudiante : representante.getEstudiantes()) {
+            EstudianteDTO dto = estudianteServicio.transformarEstudiante(estudiante);
+            representanteDTO.addEstudiante(dto);
+            System.out.println("añadido");
+        }
+
+        return representanteDTO;
+
+    }
 }

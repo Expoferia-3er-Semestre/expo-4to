@@ -1,14 +1,18 @@
 package expo4to.gestion_AD.dto;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.sql.Date;
 
 @Data
+@ToString
 public class EstudianteDTO {
 
     private Integer id;
-    private String cedulaRep;
+
+    @ToString.Exclude
+    private RepresentanteDTO representante;
 
     private String nombre1;
     private String nombre2;

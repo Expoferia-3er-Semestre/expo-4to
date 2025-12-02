@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IPagoServicio {
 
+    public List<PagoReciboDTO> listarPagosPorIdEstudiante(Integer id);
+
     public void registrarNuevoPago(PagoReciboDTO prDTOs);
 
 }

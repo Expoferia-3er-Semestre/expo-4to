@@ -1,11 +1,14 @@
 package expo4to.gestion_AD.dto;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString
 public class DetallesPagoDTO {
 
     private Integer idTipoPago;
@@ -19,9 +22,13 @@ public class DetallesPagoDTO {
     private String montoTotal;
     private String montoPagado;
 
-    private List<AbonoDTO> abonoDTOList;
+    @ToString.Exclude
+    private List<AbonoDTO> abonoDTOList = new ArrayList<>();
 
     public void addAbonoDTO(AbonoDTO dto) {
+        if (abonoDTOList == null) {
+            abonoDTOList = new ArrayList<>();
+        }
         abonoDTOList.add(dto);
     }
 

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IEstudianteServicio {
 
-    public List<Estudiante> listarEstudiantes();
+    public List<EstudianteDTO> listarEstudiantes();
 
-    public Estudiante buscarEstudiantePorId(Integer id);
+    public EstudianteDTO buscarEstudiantePorId(Integer id);
 
     public void guardarEstudiante(EstudianteDTO estudianteDTO);
 

@@ -16,7 +16,7 @@ public class RepresentanteControlador {
 
     private final IRepresentanteServicio representanteServicio;
 
-    public List<Representante> listarRepresentantes() {
+    public List<RepresentanteDTO> listarRepresentantes() {
 
         try {
             return representanteServicio.listarRepresentantes();
@@ -39,12 +39,17 @@ public class RepresentanteControlador {
         }
     }
 
-    public Representante buscarRepresentante(Integer id) {
+    public RepresentanteDTO buscarRepresentantePorCedula(String cedula) {
 
         try {
-            return representanteServicio.buscarRepresentantePorId(id);
+            RepresentanteDTO representanteDTO = representanteServicio.buscarRepresentantePorCedula(cedula);
+
+            return  representanteDTO;
+
         } catch (NoSuchElementException e) {
-            System.err.println("WARN: Representante no encontrado: " + e.getMessage());
+            throw new NoSuchElementException("Error: El representante no existe en el sistema.");
+        } catch (Exception e) {
+            System.err.println("WARN: Ocurrió un error al buscar al representante: " + e.getMessage());
             return null;
         }
 
