@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ITipoPagoServicio {
 
-    public List<TipoPago> listarTipoPagos();
+    public List<TipoPagoDTO> listarTipoPagos();
 
-    public TipoPago buscarTipoPago(Integer id);
+    public TipoPagoDTO buscarTipoPago(Integer id);
 
     public void guardarTipoPago(TipoPagoDTO tipoPagoDTO, String costo);
 

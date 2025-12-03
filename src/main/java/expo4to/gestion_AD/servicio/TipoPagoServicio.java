@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class TipoPagoServicio implements ITipoPagoServicio{
@@ -20,13 +19,29 @@ public class TipoPagoServicio implements ITipoPagoServicio{
     Verificador verificador;
 
     @Override
-    public List<TipoPago> listarTipoPagos() {
-        return tpRepositorio.findAll();
+    public List<TipoPagoDTO> listarTipoPagos() {
+        List<TipoPago> tipos = tpRepositorio.findAll();
+        List<TipoPagoDTO> dtos = new ArrayList<>();
+
+        if (tipos.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        for (TipoPago tp : tipos){
+            dtos.add(transformarTipoPago(tp));
+        }
+
+        return dtos;
+
     }
 
     @Override
-    public TipoPago buscarTipoPago(Integer id) {
-        return tpRepositorio.findById(id).orElse(null);
+    public TipoPagoDTO buscarTipoPago(Integer id) {
+        Optional<TipoPago> optional = tpRepositorio.findById(id);
+
+        if (optional.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return transformarTipoPago(optional.get());
     }
 
     @Override
@@ -79,6 +94,18 @@ public class TipoPagoServicio implements ITipoPagoServicio{
                 tipoPagoDTO.getCosto(),
                 estado
         );
+
+    }
+
+    public TipoPagoDTO transformarTipoPago(TipoPago tipoPago) {
+
+        TipoPagoDTO dto = new TipoPagoDTO();
+        dto.setId(tipoPago.getId());
+        dto.setEstado(tipoPago.getEstado());
+        dto.setCosto(tipoPago.getCosto());
+        dto.setCategoria(tipoPago.getCategoria());
+
+        return dto;
 
     }
 

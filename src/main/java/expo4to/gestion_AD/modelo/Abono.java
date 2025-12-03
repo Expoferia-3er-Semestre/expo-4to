@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 
 @Entity
+@Table(name = "abonos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

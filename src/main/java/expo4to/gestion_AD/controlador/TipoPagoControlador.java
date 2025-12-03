@@ -14,7 +14,7 @@ public class TipoPagoControlador {
 
     private final ITipoPagoServicio tpServicio;
 
-    public List<TipoPago> listarTipoTapos() {
+    public List<TipoPagoDTO> listarTipoTapos() {
 
         try {
             return tpServicio.listarTipoPagos();

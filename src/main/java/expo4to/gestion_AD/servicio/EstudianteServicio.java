@@ -11,10 +11,7 @@ import org.aspectj.apache.bcel.classfile.Module;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EstudianteServicio implements IEstudianteServicio{
@@ -62,7 +59,7 @@ public class EstudianteServicio implements IEstudianteServicio{
 
         if (representante.isEmpty()) {
             // Se usa IllegalArgumentException para que el Controlador pueda informar a la UI.
-            throw new IllegalArgumentException("Error: No se puede guardar el estudiante. " +
+            throw new NoSuchElementException("Error: No se puede guardar el estudiante. " +
                     "La cédula de representante (" + cedulaRep + ") no existe en la base de datos.");
         }
 

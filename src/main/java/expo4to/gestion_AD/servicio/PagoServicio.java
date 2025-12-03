@@ -1,9 +1,6 @@
 package expo4to.gestion_AD.servicio;
 
-import expo4to.gestion_AD.dto.AbonoDTO;
-import expo4to.gestion_AD.dto.DetallesPagoDTO;
-import expo4to.gestion_AD.dto.MontosDTO;
-import expo4to.gestion_AD.dto.PagoReciboDTO;
+import expo4to.gestion_AD.dto.*;
 import expo4to.gestion_AD.modelo.*;
 import expo4to.gestion_AD.repositorio.*;
 import expo4to.gestion_AD.util.Verificador;
@@ -27,7 +24,7 @@ public class PagoServicio implements IPagoServicio{
     @Autowired
     TipoPagoRepositorio tipoPagoRepositorio;
     @Autowired
-    AnosEscolaresRepositorio anosEscolaresRepositorio;
+    IAnosEscolaresServicio anosEscolaresServicio;
     @Autowired
     Verificador verificador;
 
@@ -51,7 +48,7 @@ public class PagoServicio implements IPagoServicio{
 
     @Transactional
     @Override
-    public void registrarNuevoPago( PagoReciboDTO datosPago) {
+    public void registrarNuevoPago(PagoReciboDTO datosPago) {
 
         expo4to.gestion_AD.modelo.PagoRecibo recibo = transformarDatosPagoDTO(datosPago);
 
@@ -80,27 +77,24 @@ public class PagoServicio implements IPagoServicio{
     public PagoRecibo transformarDatosPagoDTO(PagoReciboDTO datosPagoDTO) {
 
         Estudiante estudiante = estudianteRepositorio.findById(datosPagoDTO.getIdEstudiante()).orElseThrow(null);
+        AnosEscolaresDTO anoActual = anosEscolaresServicio.buscarAnoActivo();
+        datosPagoDTO.actualizarMontosPagados();
 
         List<DetallesPagoDTO> detallesDTO = datosPagoDTO.getDetallesPagoDTOList();
         PagoRecibo recibo = new PagoRecibo();
 
         for (DetallesPagoDTO dto : detallesDTO) {
 
-            TipoPago tipoPago = tipoPagoRepositorio.findById(dto.getIdTipoPago()).orElseThrow(null);
-            AnosEscolares anoEscolar = anosEscolaresRepositorio.findById(dto.getIdAnoEscolar()).orElseThrow(null);
-
             DetallesPago detalle = new DetallesPago();
 
             if (dto.getAbonoDTOList() != null) {
                 for (AbonoDTO ab : dto.getAbonoDTOList()) {
 
-                    BigDecimal montoAbonado = new BigDecimal(ab.getMontoAbonado());
-
                     Abono abono = new Abono(
                             null,
                             null,
                             new Date(System.currentTimeMillis()),
-                            montoAbonado,
+                            ab.getMontoAbonado(),
                             ab.getDescripcion(),
                             ab.getMetodoPago(),
                             ab.getNumTrans()
@@ -111,26 +105,34 @@ public class PagoServicio implements IPagoServicio{
                 }
             }
 
-            String montoPagadoString = dto.getMontoPagado();
-            String montoTotalString = dto.getMontoTotal();
-            BigDecimal montoPagado;
-            BigDecimal montoTotal;
-
             try {
-                montoPagado = new BigDecimal(montoPagadoString);
-                montoTotal = new BigDecimal(montoTotalString);
 
-                if (montoPagado.compareTo(BigDecimal.ZERO) <= 0 || montoTotal.compareTo(BigDecimal.ZERO) <= 0) {
+                if (dto.getMontoPagado().compareTo(BigDecimal.ZERO) <= 0 || dto.getMontoTotal().compareTo(BigDecimal.ZERO) <= 0) {
                     throw new IllegalArgumentException("El monto debe ser mayor que 0.");
                 }
+
+                TipoPago tipoPago = new TipoPago(
+                        dto.getTipoPagoDTO().getId(),
+                        dto.getTipoPagoDTO().getCategoria(),
+                        dto.getTipoPagoDTO().getCosto(),
+                        dto.getTipoPagoDTO().getEstado()
+                );
+
+                AnosEscolares anoEscolar = new AnosEscolares(
+                        anoActual.getId(),
+                        anoActual.getPeriodoInicio(),
+                        anoActual.getPeriodoFin(),
+                        anoActual.getEstado()
+                );
 
                 detalle.setTipoPago(tipoPago);
                 detalle.setAnoEscolar(anoEscolar);
                 detalle.setNumTrans(dto.getNumTrans());
                 detalle.setDescripcion(dto.getDescripcion());
+                detalle.setMetodoPago(dto.getMetodoPago());
                 detalle.setMesCorrespondiente(dto.getMesCorrespondiente());
-                detalle.setMontoTotal(montoTotal);
-                detalle.setMontoPagado(montoPagado);
+                detalle.setMontoTotal(dto.getMontoTotal());
+                detalle.setMontoPagado(dto.getMontoPagado());
                 recibo.addDetalle(detalle);
 
             } catch (NumberFormatException e) {

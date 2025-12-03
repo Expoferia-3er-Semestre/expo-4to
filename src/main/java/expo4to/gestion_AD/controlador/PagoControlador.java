@@ -15,7 +15,7 @@ public class PagoControlador {
 
     private final IPagoServicio pagoServicio;
 
-    public List<PagoReciboDTO> buscarPagos(Integer idEstudiante) {
+    public List<PagoReciboDTO> listarPagos(Integer idEstudiante) {
 
         List<PagoReciboDTO> pagos = new ArrayList<>();
 
@@ -28,5 +28,18 @@ public class PagoControlador {
         return pagos;
     }
 
+    public void guardarPago(PagoReciboDTO recibo) {
+
+        try {
+
+            pagoServicio.registrarNuevoPago(recibo);
+
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException("Error: ocurrió un error al guardar el pago: " + e.getMessage());
+        }
+
+    }
 
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "detalles_pagos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
