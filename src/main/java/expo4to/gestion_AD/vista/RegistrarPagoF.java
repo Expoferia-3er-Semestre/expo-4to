@@ -6,8 +6,7 @@ package expo4to.gestion_AD.vista;
 
 import expo4to.gestion_AD.controlador.*;
 import expo4to.gestion_AD.dto.*;
-import expo4to.gestion_AD.modelo.AnosEscolares;
-import expo4to.gestion_AD.modelo.TipoPago;
+import expo4to.gestion_AD.mapper.AnoEscolarMapper;
 import expo4to.gestion_AD.vista.customize.EstudianteRenderer;
 import expo4to.gestion_AD.vista.customize.TipoPagoRenderer;
 
@@ -27,20 +26,18 @@ import java.util.NoSuchElementException;
  * @author usuario
  */
 public class RegistrarPagoF extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistrarPagoF.class.getName());
 
     private final RepresentanteControlador  representanteControlador;
-    private final EstudianteControlador estudianteControlador;
     private final PagoControlador pagoControlador;
     private final TipoPagoControlador tipoPagoControlador;
+    private final AnoEscolarControlador anoEscolarControlador;
     private final TrabajadorDTO trabajador;
     private RepresentanteDTO representante;
     private EstudianteDTO estudiante;
     private PagoReciboDTO recibo = new PagoReciboDTO();
     private TipoPagoDTO tipoPagoDTO;
     private AnosEscolaresDTO anoEscolar;
-    private DetallesPagoDTO mesAPagar = new DetallesPagoDTO();
+    private DetallesPagoDTO mesAPagar;
     private String metodoPago;
     private boolean esAbono = false;
     private static final List<String> MESES_ESCOLARES = Arrays.asList(
@@ -54,10 +51,12 @@ public class RegistrarPagoF extends javax.swing.JFrame {
     public RegistrarPagoF(TrabajadorDTO trabajador) {
         this.trabajador = trabajador;
         this.representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
-        this.estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
         this.pagoControlador = ApplicationContextProvider.getBean(PagoControlador.class);
         this.tipoPagoControlador = ApplicationContextProvider.getBean(TipoPagoControlador.class);
+        this.anoEscolarControlador = ApplicationContextProvider.getBean(AnoEscolarControlador.class);
+        anoEscolar = AnoEscolarMapper.toDTO(anoEscolarControlador.buscarAnoActivo());
         initComponents();
+
         comboEstudiantes.setRenderer(new EstudianteRenderer());
         jComboBoxTipoPago.setRenderer(new TipoPagoRenderer());
 
@@ -86,7 +85,7 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         datosFecha.setText(fechaFormateada);
 
         java.util.List<TipoPagoDTO> tipos = tipoPagoControlador.listarTipoTapos();
-
+        jComboBoxTipoPago.addItem(null);
         for (TipoPagoDTO dto : tipos) {
             jComboBoxTipoPago.addItem(dto);
         }
@@ -669,7 +668,42 @@ public class RegistrarPagoF extends javax.swing.JFrame {
     private void jComboBoxTipoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoPagoActionPerformed
         // TODO add your handling code here:
         tipoPagoDTO = (TipoPagoDTO) jComboBoxTipoPago.getSelectedItem();
-        jTextFieldMonto.setText(String.valueOf(tipoPagoDTO.getCosto()));
+        if (tipoPagoDTO == null) {
+            return;
+        }
+        System.out.println(tipoPagoDTO.getCosto());
+        String monto = String.valueOf(tipoPagoDTO.getCosto());
+
+        if (tipoPagoDTO.getCategoria().contains("MENSUALIDAD")) {
+
+            mesAPagar = pagoControlador.obtenerMensualidadPendiente(estudiante.getId());
+
+            ButtonAbono.setEnabled(true);
+            // Si mesAPagar es null, el estudiante tiene el año solvente.
+            if (mesAPagar == null) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "El estudiante tiene el año solvente.",
+                        "Aviso",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                ButtonAbono.setEnabled(false);
+                return;
+            } else if (mesAPagar.tieneSaldoPendiente()) {
+                monto = String.valueOf(mesAPagar.calcularPendiente());
+                // Si tiene saldo pendiente, es prioridad para pagar.
+            }
+
+        } else if (tipoPagoDTO.getCategoria().contains("INSCRIPCIÓN ")) {
+
+
+            esAbono = false;
+            ButtonAbono.setEnabled(false);
+        } else {
+            esAbono = false;
+            ButtonAbono.setEnabled(false);
+        }
+            jTextFieldMonto.setText(monto);
     }//GEN-LAST:event_jComboBoxTipoPagoActionPerformed
 
     private void ButtonAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAbonoActionPerformed
@@ -693,36 +727,7 @@ public class RegistrarPagoF extends javax.swing.JFrame {
 
     private void comboEstudiantesActionPerformed(ActionEvent evt) {//GEN-FIRST:event_comboEstudiantesActionPerformed
         // TODO add your handling code here:
-
-        estudiante = (EstudianteDTO) comboEstudiantes.getSelectedItem();
-
-        if (estudiante != null) {
-            datosEstudiante.setText(estudiante.getNombre1() + " " + estudiante.getApellido1());
-            datosGrado.setText(estudiante.getGrado());
-
-        // Habilitamos los campos deshabilitados
-            jTextFieldConceptoPago.setEnabled(true);
-            jTextFieldReferencia.setEnabled(true);
-            jComboBoxTipoPago.setEnabled(true);
-            jButtonEfectivo.setEnabled(true);
-            ButtonTarjeta.setEnabled(true);
-            ButtonTransferencia.setEnabled(true);
-            ButtonConsultar.setEnabled(true);
-
-        } else {
-            datosEstudiante.setText(" ");
-            datosGrado.setText(" ");
-
-            jTextFieldConceptoPago.setEnabled(false);
-            jTextFieldReferencia.setEnabled(false);
-            jComboBoxTipoPago.setEnabled(false);
-            jButtonEfectivo.setEnabled(false);
-            ButtonTarjeta.setEnabled(false);
-            ButtonTransferencia.setEnabled(false);
-            ButtonConsultar.setEnabled(false);
-
-        }
-
+        elegirEstudiante();
     }//GEN-LAST:event_comboEstudiantesActionPerformed
 
     private void ButtonImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonImprimirActionPerformed
@@ -745,20 +750,34 @@ public class RegistrarPagoF extends javax.swing.JFrame {
 
     private void ButtonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLimpiarActionPerformed
         // TODO add your handling code here:
-        List<DetallesPagoDTO> pagos = recibo.getDetallesPagoDTOList();
-
-        for (DetallesPagoDTO dto : pagos) {
-            dto.getAbonoDTOList().clear();
-        }
-
-        recibo.getDetallesPagoDTOList().clear();
-        pagos.clear();
-
+        recibo.borrarRegistros();
     }//GEN-LAST:event_ButtonLimpiarActionPerformed
 
     private void ButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAgregarActionPerformed
         // TODO add your handling code here:
         if (metodoPago == null) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Debes elegir un método de pago.",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        } else if (metodoPago.contains("Transferencia") && jTextFieldReferencia.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Debes llenar el campo de referencia",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        } else if (jTextFieldConceptoPago.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Debes llenar el campo de concepto",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
             return;
         }
         if (metodoPago.contains("Transferencia")) {
@@ -771,12 +790,21 @@ public class RegistrarPagoF extends javax.swing.JFrame {
 
     public void buscarRepresentante() {
         String cedula = jTextFieldCedulaRepre.getText().trim();
+
+        if (representante != null) {
+            if (representante.getCedula().contains(cedula)) {
+                return;
+            }
+        }
+
+        comboEstudiantes.removeAllItems();
+
         try{
             RepresentanteDTO representante = representanteControlador.buscarRepresentantePorCedula(cedula);
             this.representante = representante;
 
             datosRepresentante.setText(representante.getNombre1() + " " + representante.getApellido1());
-
+            comboEstudiantes.addItem(null);
             for (EstudianteDTO dto : representante.getEstudiantes()) {
             comboEstudiantes.addItem(dto);
             }
@@ -790,62 +818,159 @@ public class RegistrarPagoF extends javax.swing.JFrame {
                     e.getMessage(),
                     "Error",
                     JOptionPane.WARNING_MESSAGE);
+            comboEstudiantes.setEnabled(false);
         }
 
     }
 
+    public void elegirEstudiante() {
+
+        estudiante = (EstudianteDTO) comboEstudiantes.getSelectedItem();
+
+        if (estudiante != null) {
+            datosEstudiante.setText(estudiante.getNombre1() + " " + estudiante.getApellido1());
+            datosGrado.setText(estudiante.getGrado());
+
+            mesAPagar = pagoControlador.obtenerMensualidadPendiente(estudiante.getId());
+
+            // Habilitamos los campos deshabilitados
+            jTextFieldConceptoPago.setEnabled(true);
+            jTextFieldReferencia.setEnabled(true);
+            jComboBoxTipoPago.setEnabled(true);
+            jButtonEfectivo.setEnabled(true);
+            ButtonTarjeta.setEnabled(true);
+            ButtonTransferencia.setEnabled(true);
+            ButtonConsultar.setEnabled(true);
+
+        } else {
+            estudiante = null;
+            datosEstudiante.setText(" ");
+            datosGrado.setText(" ");
+
+            jTextFieldConceptoPago.setEnabled(false);
+            jTextFieldReferencia.setEnabled(false);
+            jComboBoxTipoPago.setEnabled(false);
+            jButtonEfectivo.setEnabled(false);
+            ButtonTarjeta.setEnabled(false);
+            ButtonTransferencia.setEnabled(false);
+            ButtonConsultar.setEnabled(false);
+
+        }
+    }
+
     public void consultarPagos() {
-
-
 
     }
 
     public void agregarPago() {
 
-        BigDecimal monto;
-        boolean tienePendiente = false;
-        try {
-            monto = new BigDecimal(jTextFieldMonto.getText().trim());
-            BigDecimal pendiente = tipoPagoDTO.getCosto().subtract(monto);
+        if (recibo == null) {
+            recibo = new PagoReciboDTO();
+        }
 
-            //Se redondea según estandares bancarios
+        BigDecimal montoIngresado;
+        boolean tienePendiente;
+        try {
+            montoIngresado = new BigDecimal(jTextFieldMonto.getText().trim());
+
+            // El costo de referencia es el costo del tipo de pago seleccionado
+            BigDecimal costoReferencia = tipoPagoDTO.getCosto();
+
+            // Calcula la diferencia (Costo - MontoIngresado)
+            BigDecimal pendiente = costoReferencia.subtract(montoIngresado);
+
+            // Se redondea y se comprueba si el PENDIENTE es mayor que cero (Hay saldo pendiente)
             BigDecimal pendienteRound = pendiente.setScale(2, RoundingMode.HALF_UP);
             tienePendiente = pendienteRound.compareTo(BigDecimal.ZERO) > 0;
+
+            // ** Validación de Monto **
+            if (montoIngresado.compareTo(BigDecimal.ZERO) <= 0) {
+                JOptionPane.showMessageDialog(null, "El monto a pagar debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Solo puede ingresar números decimales.",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
         } catch (Exception e) {
-
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Ocurrió un error al agregar el pago: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
         }
+        DetallesPagoDTO pago;
+        AbonoDTO abono;
 
-        //  si el estudiante tiene un detalle pago con pendiente,
-        //  se toma ese detalle pago como prioridad a pagar
-        if (mesAPagar != null) {
+        if (tipoPagoDTO.getCategoria().contains("MENSUALIDAD")) {
 
-            DetallesPagoDTO pago = crearDetalle();
-            AbonoDTO abono = crearAbono();
+            if (mesAPagar != null) {
 
-            recibo.addDetalleDTO(pago);
-            pago.addAbonoDTO(abono);
+                // Si tiene pendiente, entonces es un registro ya existente en la BD con un saldo restante
+                if (mesAPagar.tieneSaldoPendiente() && mesAPagar.getId() != null) {
 
+                    pago = crearDetalle();
+                    // IMPORTANTE para actualizarlo
+                    pago.setId(mesAPagar.getId());
+                    pago.setMesCorrespondiente(mesAPagar.getMesCorrespondiente());
+                    pago.setTipoPagoDTO(mesAPagar.getTipoPagoDTO());
+                    pago.setAnoEscolar(mesAPagar.getAnoEscolar());
+                    pago.setMontoTotal(mesAPagar.getMontoTotal());
 
-        // Si el tipo pago es mensualidad,
-        // el checkbox de abono está seleccionado
-        // y el monto es menor al total,
-        // se toma como un abono, creando un nuevo detalle con su abono.
-        } else if (tipoPagoDTO.getCategoria().contains("Mensualidad") && esAbono && tienePendiente) {
+                    abono = crearAbono();
+                    if (abono != null) {pago.addAbonoDTO(abono);} else {return;}
 
-            AbonoDTO abono = crearAbono();
+                    // Sino tiene pendiente, entonces es un nuevo mes a pagar
+                } else {
+                    pago = crearDetalle();
+                    pago.setMesCorrespondiente(mesAPagar.getMesCorrespondiente());
+                    pago.setTipoPagoDTO(mesAPagar.getTipoPagoDTO());
+                    pago.setAnoEscolar(mesAPagar.getAnoEscolar());
+                    pago.setMontoTotal(mesAPagar.getMontoTotal());
 
+                    if (pago == null) {return;}
 
-            // Si no, es un nuevo detalle pago sin saldo pendiente.
+                    if (tienePendiente) {
+                        abono = crearAbono();
+                        if (abono != null) {pago.addAbonoDTO(abono);} else {return;}
+                    }
+                }
+
+                recibo.addDetalleDTO(pago);
+            }
+
         } else {
-            recibo.addDetalleDTO(crearDetalle());
+            pago = crearDetalle();
+            if (pago == null) {return;}
+            recibo.addDetalleDTO(pago);
         }
+
+        jTextFieldConceptoPago.setText("");
+        jTextFieldReferencia.setText("");
+        jTextFieldMonto.setText(String.valueOf(tipoPagoDTO.getCosto()));
+        esAbono = false;
+        metodoPago = null;
 
     }
 
     public void imprimirPago() {
+
         try {
             recibo.setIdEstudiante(estudiante.getId());
+            recibo.actualizarMontosPagados();
             pagoControlador.guardarPago(recibo);
+
+            // Se eliminan los datos del anterior recibo
+            // Esto equivale a iniciar un pago nuevo
+            recibo.borrarRegistros();
+
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(
                     null,
@@ -853,6 +978,7 @@ public class RegistrarPagoF extends javax.swing.JFrame {
                     "Error",
                     JOptionPane.WARNING_MESSAGE
             );
+            return;
         }
     }
 
@@ -862,13 +988,13 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         abono.setMontoAbonado(new BigDecimal(jTextFieldMonto.getText().trim()));
         abono.setDescripcion(jTextFieldConceptoPago.getText().trim());
         abono.setMetodoPago(metodoPago);
-        abono.setNumTrans(jTextFieldReferencia.getText().trim());
+        abono.setNumTrans(metodoPago.contains("Transferencia") ? jTextFieldReferencia.getText().trim() : null);
         return abono;
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(
                     null,
                     "Solo puede ingresar números decimales.",
-                    "Error",
+                    "Alerta",
                     JOptionPane.WARNING_MESSAGE
             );
             return null;
@@ -880,12 +1006,21 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         try {
             DetallesPagoDTO pago = new DetallesPagoDTO();
 
+            AnosEscolaresDTO anoActivo = AnoEscolarMapper.toDTO(anoEscolarControlador.buscarAnoActivo());
+
+            if (anoActivo != null) {
+                System.out.println(anoActivo.getId());
+                pago.setAnoEscolar(anoActivo);
+            } else {
+                // Si no hay año activo, esto debería ser un error fatal del sistema.
+                throw new RuntimeException("No se encontró un Año Escolar activo para asignar al pago.");
+            }
+
             pago.setTipoPagoDTO((TipoPagoDTO) jComboBoxTipoPago.getSelectedItem());
             pago.setMetodoPago(metodoPago);
-            pago.setNumTrans(jTextFieldReferencia.getText().trim());
+            pago.setNumTrans(metodoPago.contains("Transferencia") ? jTextFieldReferencia.getText().trim() : "");
             pago.setDescripcion(jTextFieldConceptoPago.getText().trim());
-            pago.setMesCorrespondiente(mesAPagar.getMesCorrespondiente());
-            pago.setMontoTotal(pago.getTipoPagoDTO().getCosto());
+            pago.setMontoTotal(tipoPagoDTO.getCosto());
             pago.setMontoPagado(new BigDecimal(jTextFieldMonto.getText().trim()));
 
             return pago;

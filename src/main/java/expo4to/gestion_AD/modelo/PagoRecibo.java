@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class PagoRecibo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idPagoRecibo;
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_estudiante")
     private Estudiante estudiante;
@@ -36,6 +37,16 @@ public class PagoRecibo {
         }
         this.detalles.add(detallesPago);
         detallesPago.setPagoRecibo(this);
+    }
+
+    public boolean tienependiente() {
+
+        BigDecimal pendiente = montoTotal.subtract(montoPagado);
+
+        //Se redondea según estandares bancarios
+        BigDecimal pendienteRound = pendiente.setScale(2, RoundingMode.HALF_UP);
+        return pendienteRound.compareTo(BigDecimal.ZERO) > 0;
+
     }
 
 
