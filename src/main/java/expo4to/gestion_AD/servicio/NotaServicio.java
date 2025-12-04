@@ -27,9 +27,4 @@ public class NotaServicio implements INotaServicio{
     public void guardarNota(Nota nota) {
         notaRepositorio.save(nota);
     }
-
-    @Override
-    public void eliminarNota(Nota nota) {
-        notaRepositorio.delete(nota);
-    }
 }
