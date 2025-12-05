@@ -28,8 +28,11 @@ public class PagoRecibo {
     private BigDecimal montoPagado;
     private Boolean estado;
     private Date fechaPago;
-    @OneToMany(mappedBy = "pagoRecibo", cascade = CascadeType.ALL) // 'pagoRecibo' es el nombre del campo en la otra entidad
-    private List<DetallesPago> detalles = new ArrayList<>();
+    @OneToMany(mappedBy = "pagoRecibo", cascade = {
+            CascadeType.PERSIST, // Para los nuevos detalles
+            CascadeType.MERGE // ⬅️ ¡ESTE ES EL NECESARIO para actualizar los existentes!
+    }, orphanRemoval = true)
+    private List<DetallesPago> detalles;
 
     public void addDetalle(DetallesPago detallesPago) {
         if (this.detalles == null) {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -29,6 +30,8 @@ public class login extends javax.swing.JFrame {
         this.trabajadorControlador = expo4to.gestion_AD.controlador.ApplicationContextProvider.getBean(TrabajadorControlador.class);
         initComponents();
         setLocationRelativeTo(null); // centra la ventana en pantalla
+        correoCampo.setText("");
+
 
         campoContra.addActionListener(new ActionListener() {
             @Override
@@ -37,6 +40,14 @@ public class login extends javax.swing.JFrame {
                 iniciarSesion();
             }
         });
+        correoCampo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Llama a la función cuando se presiona Enter
+                iniciarSesion();
+            }
+        });
+        correoCampo.requestFocusInWindow();
 
     }
 
@@ -136,8 +147,45 @@ public class login extends javax.swing.JFrame {
 
     private void iniciarSesion() {
 
-        TrabajadorDTO dto = trabajadorControlador.loginTrabajador(
-                correoCampo.getText().trim(), campoContra);
+        if (correoCampo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "El correo no puede quedar vacio.",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+        if (campoContra.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "La contraseña no puede quedar vacia.",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+        TrabajadorDTO dto;
+        try {
+            dto = trabajadorControlador.loginTrabajador(
+                    correoCampo.getText().trim(), campoContra);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Correo o contraseña incorrecta, intente de nuevo.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        } catch (NoSuchElementException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Correo no registrado en el sistema, intente de nuevo.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
 
         Integer rol = dto.getRol();
         dto.setContrasena("");
@@ -149,11 +197,11 @@ public class login extends javax.swing.JFrame {
                 dispose();
                 break;
             case 2:
-                new ProfesorHomeF(dto);
+                new ProfesorHomeF(dto).setVisible(true);
                 dispose();
                 break;
             case 3:
-                new ControlEstudiosHomeF(dto);
+                new ControlEstudiosHomeF(dto).setVisible(true);
                 dispose();
                 break;
             default:

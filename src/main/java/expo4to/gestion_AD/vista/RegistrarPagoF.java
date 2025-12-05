@@ -704,6 +704,7 @@ public class RegistrarPagoF extends javax.swing.JFrame {
             ButtonAbono.setEnabled(false);
         }
             jTextFieldMonto.setText(monto);
+        jTextFieldCedulaRepre.requestFocusInWindow();
     }//GEN-LAST:event_jComboBoxTipoPagoActionPerformed
 
     private void ButtonAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAbonoActionPerformed
