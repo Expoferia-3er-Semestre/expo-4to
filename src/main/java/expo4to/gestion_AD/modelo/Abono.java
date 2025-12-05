@@ -1,7 +1,6 @@
 package expo4to.gestion_AD.modelo;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -18,7 +17,7 @@ public class Abono {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idAbono;
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_detalle_pagos") // Mapea a la columna física
     private DetallesPago detallesPago;

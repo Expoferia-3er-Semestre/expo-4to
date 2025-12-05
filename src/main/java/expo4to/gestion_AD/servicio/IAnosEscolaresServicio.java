@@ -7,7 +7,7 @@ import java.sql.Date;
 
 public interface IAnosEscolaresServicio {
 
-    public AnosEscolaresDTO buscarAnoActivo();
+    public AnosEscolares buscarAnoActivo();
 
     public void guardarAno(AnosEscolaresDTO anosEscolaresDTO);
 
