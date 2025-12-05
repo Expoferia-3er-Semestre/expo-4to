@@ -36,7 +36,6 @@ public class RegistrarPagoF extends javax.swing.JFrame {
     private EstudianteDTO estudiante;
     private PagoReciboDTO recibo = new PagoReciboDTO();
     private TipoPagoDTO tipoPagoDTO;
-    private AnosEscolaresDTO anoEscolar;
     private DetallesPagoDTO mesAPagar;
     private String metodoPago;
     private boolean esAbono = false;
@@ -54,7 +53,6 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         this.pagoControlador = ApplicationContextProvider.getBean(PagoControlador.class);
         this.tipoPagoControlador = ApplicationContextProvider.getBean(TipoPagoControlador.class);
         this.anoEscolarControlador = ApplicationContextProvider.getBean(AnoEscolarControlador.class);
-        anoEscolar = AnoEscolarMapper.toDTO(anoEscolarControlador.buscarAnoActivo());
         initComponents();
 
         comboEstudiantes.setRenderer(new EstudianteRenderer());
@@ -75,13 +73,13 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         // 1. Crear el objeto Date a partir de los milisegundos
         Date fecha = new Date(System.currentTimeMillis());
 
-// 2. Definir el formato (yyyy para año, MM para mes, dd para día)
+        // 2. Definir el formato (yyyy para año, MM para mes, dd para día)
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
-// 3. Formatear la fecha
+        // 3. Formatear la fecha
         String fechaFormateada = formatter.format(fecha);
 
-// 4. Asignar al JTextField
+        // 4. Asignar al JTextField
         datosFecha.setText(fechaFormateada);
 
         java.util.List<TipoPagoDTO> tipos = tipoPagoControlador.listarTipoTapos();
@@ -804,9 +802,9 @@ public class RegistrarPagoF extends javax.swing.JFrame {
             RepresentanteDTO representante = representanteControlador.buscarRepresentantePorCedula(cedula);
             this.representante = representante;
 
-            datosRepresentante.setText(representante.getNombre1() + " " + representante.getApellido1());
+            datosRepresentante.setText(this.representante.getNombre1() + " " + this.representante.getApellido1());
             comboEstudiantes.addItem(null);
-            for (EstudianteDTO dto : representante.getEstudiantes()) {
+            for (EstudianteDTO dto : this.representante.getEstudiantes()) {
             comboEstudiantes.addItem(dto);
             }
 
@@ -971,6 +969,12 @@ public class RegistrarPagoF extends javax.swing.JFrame {
             // Se eliminan los datos del anterior recibo
             // Esto equivale a iniciar un pago nuevo
             recibo.borrarRegistros();
+            comboEstudiantes.removeAllItems();
+            estudiante = null;
+            representante = null;
+            datosRepresentante.setText(" ");
+            datosEstudiante.setText(" ");
+            datosGrado.setText(" ");
 
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(
