@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +13,14 @@ import java.util.List;
 @ToString
 public class PagoReciboDTO {
 
+    private Integer id;
     private Integer idEstudiante;
 
     private BigDecimal montoTotal;
     private BigDecimal montoPagado;
+
+    private Date fechaPago;
+    private Boolean estado;
 
     @ToString.Exclude
     private List<DetallesPagoDTO> detallesPagoDTOList = new ArrayList<>();
@@ -39,7 +45,7 @@ public class PagoReciboDTO {
         for (DetallesPagoDTO detalle : detallesPagoDTOList) {
 
             // 3. Obtiene el monto pagado del detalle.
-            //    (Este getMontoPagado() es el que internamente suma los AbonosDTO)
+            //    (Este calcularMontoPagado() es el que internamente suma los AbonosDTO)
             BigDecimal montoDetalle = detalle.calcularMontoPagado();
 
             // 4. Suma el monto al acumulador general, verificando que no sea nulo.
@@ -74,6 +80,46 @@ public class PagoReciboDTO {
 
         // Asigna el resultado final al campo de este DTO.
         this.montoTotal = totalAdeudado;
+    }
+
+    public boolean tienependiente() {
+
+        // Obtener valores seguros (no nulos)
+        BigDecimal total = (montoTotal != null) ? montoTotal : BigDecimal.ZERO;
+        BigDecimal pagado = (montoPagado != null) ? montoPagado : BigDecimal.ZERO;
+
+        BigDecimal pendiente = total.subtract(pagado);
+
+        //Se redondea según estandares bancarios
+        BigDecimal pendienteRound = pendiente.setScale(2, RoundingMode.HALF_UP);
+        return pendienteRound.compareTo(BigDecimal.ZERO) > 0;
+
+    }
+
+    public void borrarRegistros() {
+
+        // 1. Limpiar la lista de Abonos en cada Detalle (opcional, si los Abonos no son Listas)
+        if (detallesPagoDTOList != null) {
+            for (DetallesPagoDTO dto : detallesPagoDTOList) {
+
+                // Si AbonoDTOList es una lista (List<AbonoDTO>), usa clear()
+                if (dto.getAbonoDTOList() != null) {
+                    dto.getAbonoDTOList().clear();
+                }
+            }
+        }
+
+        // 2. Limpiar la lista principal de Detalles de Pago
+        if (detallesPagoDTOList != null) {
+            detallesPagoDTOList.clear();
+        }
+
+        this.montoTotal = BigDecimal.ZERO;
+        this.montoPagado = BigDecimal.ZERO;
+        this.idEstudiante = null;
+        this.fechaPago = null;
+        this.id = null;
+
     }
 
 }

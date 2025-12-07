@@ -120,7 +120,7 @@ public class RegistrarPagoTableModel extends DefaultTableModel {
             if (elemento instanceof DetallesPago dp) {
                 idTemp = dp.getId();
             } else if (elemento instanceof Abono ab) {
-                idTemp = ab.getIdAbono();
+                idTemp = ab.getId();
             }
 
             if (idTemp == idTemporal) {

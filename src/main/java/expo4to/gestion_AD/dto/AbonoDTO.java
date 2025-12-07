@@ -10,6 +10,7 @@ import java.sql.Date;
 @ToString
 public class AbonoDTO {
 
+    private Integer id;
     private BigDecimal montoAbonado;
 
     private String descripcion;

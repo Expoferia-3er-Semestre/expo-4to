@@ -32,7 +32,7 @@ public class DetallesPago {
     @JoinColumn(name = "id_ano_escolar")
     private AnosEscolares anoEscolar;
     private String descripcion;
-    private String mesCorrespondiente;
+    private Integer mesCorrespondiente;
     private BigDecimal montoTotal;
     private BigDecimal montoPagado;
     @OneToMany(mappedBy = "detallesPago", cascade = CascadeType.ALL)
@@ -55,7 +55,7 @@ public class DetallesPago {
     }
 
     public boolean esMensualidad() {
-        return mesCorrespondiente != null && !mesCorrespondiente.isEmpty();
+        return mesCorrespondiente != null;
     }
 
 

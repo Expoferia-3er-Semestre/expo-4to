@@ -1,5 +1,6 @@
 package expo4to.gestion_AD.controlador;
 
+import expo4to.gestion_AD.dto.DetallesPagoDTO;
 import expo4to.gestion_AD.dto.PagoReciboDTO;
 import expo4to.gestion_AD.servicio.IPagoServicio;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,16 @@ public class PagoControlador {
             throw new RuntimeException("Error: ocurrió un error al guardar el pago: " + e.getMessage());
         }
 
+    }
+
+    public DetallesPagoDTO obtenerMensualidadPendiente(Integer idEstudiante) {
+        try {
+            return pagoServicio.obtenerMensualidadPendiente(idEstudiante);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("");
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("");
+        }
     }
 
 }
