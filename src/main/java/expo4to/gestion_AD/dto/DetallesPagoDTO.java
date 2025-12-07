@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +13,14 @@ import java.util.List;
 @ToString
 public class DetallesPagoDTO {
 
+    private Integer id;
     private TipoPagoDTO tipoPagoDTO;
-    private AnosEscolares anoEscolar;
+    private AnosEscolaresDTO anoEscolar;
 
     private String metodoPago;
     private String numTrans;
     private String descripcion;
-    private String mesCorrespondiente;
+    private Integer mesCorrespondiente;
 
     private BigDecimal montoTotal;
     private BigDecimal montoPagado;
@@ -37,7 +39,11 @@ public class DetallesPagoDTO {
 
         // Si la lista está vacía, el monto pagado es 0
         if (abonoDTOList == null || abonoDTOList.isEmpty()) {
-            return BigDecimal.ZERO;
+
+            if (this.montoPagado == null){
+                return BigDecimal.ZERO;
+            }
+            return montoPagado;
         }
 
         // Usamos Streams de Java para calcular la suma de manera eficiente
@@ -48,4 +54,29 @@ public class DetallesPagoDTO {
 
         return montoPagado;
     }
+
+    public BigDecimal calcularPendiente() {
+
+        // Es crucial asegurarse de que montoTotal y montoPagado no sean nulos antes de restar.
+        BigDecimal total = (this.montoTotal != null) ? this.montoTotal : BigDecimal.ZERO;
+        BigDecimal pagado = (this.montoPagado != null) ? this.montoPagado : BigDecimal.ZERO;
+
+        // Realiza la resta: Total - Pagado
+        return total.subtract(pagado);
+
+    }
+
+    public boolean tieneSaldoPendiente() {
+        // Obtener valores seguros (no nulos)
+        BigDecimal total = (montoTotal != null) ? montoTotal : BigDecimal.ZERO;
+        BigDecimal pagado = (montoPagado != null) ? montoPagado : BigDecimal.ZERO;
+
+        // Realizar la resta de forma segura
+        BigDecimal pendiente = total.subtract(pagado);
+
+        // Redondeo y comparación
+        BigDecimal pendienteRound = pendiente.setScale(2, RoundingMode.HALF_UP);
+        return pendienteRound.compareTo(BigDecimal.ZERO) > 0;
+    }
+
 }

@@ -17,7 +17,7 @@ public class AnoEscolarServicio implements IAnosEscolaresServicio{
     AnosEscolaresRepositorio anosRepositorio;
 
     @Override
-    public AnosEscolaresDTO buscarAnoActivo() {
+    public AnosEscolares buscarAnoActivo() {
 
         java.sql.Date fechaHoy = new java.sql.Date(System.currentTimeMillis());
 
@@ -27,7 +27,7 @@ public class AnoEscolarServicio implements IAnosEscolaresServicio{
             throw new NoSuchElementException();
         }
 
-        return transformarAno(optional.get());
+        return optional.get();
     }
 
     @Override
