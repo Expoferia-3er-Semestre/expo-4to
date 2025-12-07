@@ -1,6 +1,9 @@
 package expo4to.gestion_AD.servicio;
 
 import java.util.List;
+
+import expo4to.gestion_AD.dto.MateriaDTO;
+import expo4to.gestion_AD.dto.ProfesorDTO;
 import expo4to.gestion_AD.modelo.Materia;
 
 public interface IMateriaServicio {
@@ -11,6 +14,5 @@ public interface IMateriaServicio {
 
     public void guardarMateria(Materia materia);
 
-    public void eliminarMateria(Materia materia);
-
+    List<Materia> buscarMateriaPorProfesor (ProfesorDTO profesor);
 }

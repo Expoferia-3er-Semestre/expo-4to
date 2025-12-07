@@ -1,12 +1,10 @@
 package expo4to.gestion_AD.modelo;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "materias")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,6 +16,9 @@ public class Materia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nombre;
-    private String anio;
+    @ManyToOne
+    @JoinColumn(name = "anio_materia")
+    private String anioMateria;
+    private Profesor idProfesor;
 
 }

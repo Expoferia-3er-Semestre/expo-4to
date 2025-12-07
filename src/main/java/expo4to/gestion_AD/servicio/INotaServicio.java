@@ -11,6 +11,4 @@ public interface INotaServicio {
 
     public void guardarNota(Nota nota);
 
-    public void eliminarNota(Nota nota);
-
 }
