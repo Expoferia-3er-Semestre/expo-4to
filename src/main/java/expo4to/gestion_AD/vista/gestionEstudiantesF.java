@@ -30,6 +30,7 @@ public class gestionEstudiantesF extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
         actualizarLista();
+        jButtonActualizar.setEnabled(false);
         jTable1.getSelectionModel().addListSelectionListener(e -> {
 
             // Asegurarse de que el evento no sea el ajuste (ajusting) y que haya una selección válida

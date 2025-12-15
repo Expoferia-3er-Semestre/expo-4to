@@ -31,6 +31,7 @@ public class gestionRepresentantesF extends javax.swing.JFrame {
         representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
 
         actualizarLista();
+        jButtonActualizar.setEnabled(false);
         jTable1.getSelectionModel().addListSelectionListener(e -> {
 
             // Asegurarse de que el evento no sea el ajuste (ajusting) y que haya una selección válida

@@ -56,15 +56,6 @@ public class RepresentanteServicio implements IRepresentanteServicio{
     @Override
     public void guardarRepresentante(RepresentanteDTO representanteDTO) {
 
-        String cedulaABuscar = representanteDTO.getCedula();
-
-        Optional<Representante> repreEncontrado = representanteRepositorio.findByCedula(cedulaABuscar);
-
-        if (repreEncontrado.isPresent()) {
-            throw new IllegalArgumentException("Error: No se puede guardar el representante. " +
-                    "La cédula de representante (" + cedulaABuscar + ") ya existe en el sistema.");
-        }
-
         if (!this.verificador.esNombreOApellidoValido(representanteDTO.getNombre1()) ||
                 !this.verificador.esNombreOApellidoValido(representanteDTO.getNombre2())) {
             throw new IllegalArgumentException("El nombre ingresado no es valido.");
@@ -83,28 +74,32 @@ public class RepresentanteServicio implements IRepresentanteServicio{
             throw new IllegalArgumentException("El teléfono ingresado no es valido.");
         }
 
+        Representante representante = EstudianteMapper.toRepresentanteEntidad(representanteDTO);
 
-        EstudianteDTO estudianteDTO = representanteDTO.getEstudiantes().getLast();
+        // Si tiene estudiantes dentro, entonces es un nuevo representante con su estudiante
+        if (!representanteDTO.getEstudiantes().isEmpty()) {
+            EstudianteDTO estudianteDTO = representanteDTO.getEstudiantes().getLast();
 
-        if (!verificador.esNombreOApellidoValido(estudianteDTO.getNombre1()) ||
-                !verificador.esNombreOApellidoValido(estudianteDTO.getNombre2())) {
-            throw new IllegalArgumentException("El nombre ingresado no es valido.");
+            if (!verificador.esNombreOApellidoValido(estudianteDTO.getNombre1()) ||
+                    !verificador.esNombreOApellidoValido(estudianteDTO.getNombre2())) {
+                throw new IllegalArgumentException("El nombre ingresado no es valido.");
+            }
+            if (!verificador.esNombreOApellidoValido(estudianteDTO.getApellido1()) ||
+                    !verificador.esNombreOApellidoValido(estudianteDTO.getApellido2())) {
+                throw new IllegalArgumentException("El apellido ingresado no es valido.");
+            }
+            if (!verificador.esCedulaValida(estudianteDTO.getRepresentante().getCedula())) {
+                throw new IllegalArgumentException("La cédula ingresada no es valida.");
+            }
+            if (!verificador.esDireccionValida(estudianteDTO.getDireccion())) {
+                throw new IllegalArgumentException("La dirección ingresada no es valida.");
+            }
+            Estudiante estudiante = EstudianteMapper.toEstudianteEntidad(estudianteDTO);
+            representante.addEstudiante(estudiante);
         }
-        if (!verificador.esNombreOApellidoValido(estudianteDTO.getApellido1()) ||
-                !verificador.esNombreOApellidoValido(estudianteDTO.getApellido2())) {
-            throw new IllegalArgumentException("El apellido ingresado no es valido.");
-        }
-        if (!verificador.esCedulaValida(estudianteDTO.getRepresentante().getCedula())) {
-            throw new IllegalArgumentException("La cédula ingresada no es valida.");
-        }
-        if (!verificador.esDireccionValida(estudianteDTO.getDireccion())) {
-            throw new IllegalArgumentException("La dirección ingresada no es valida.");
-        }
+
 
         try {
-            Estudiante estudiante = EstudianteMapper.toEstudianteEntidad(estudianteDTO);
-            Representante representante = EstudianteMapper.toRepresentanteEntidad(representanteDTO);
-            representante.addEstudiante(estudiante);
             representanteRepositorio.save(representante);
         } catch (Exception e) {
             throw new RuntimeException("Ocurrió un error inesperado:" + e.getMessage());

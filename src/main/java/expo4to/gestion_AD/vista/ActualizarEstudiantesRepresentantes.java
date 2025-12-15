@@ -25,7 +25,7 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
     private RepresentanteControlador representanteControlador;
     private RepresentanteDTO representante;
     private EstudianteControlador estudianteControlador;
-    private EstudianteDTO estudiante = new EstudianteDTO();
+    private EstudianteDTO estudiante;
     private Verificador veri;
     boolean esEstudiante;
 
@@ -36,11 +36,11 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
         initComponents();
         setLocationRelativeTo(null);
         this.esEstudiante = esEstudiante;
-        representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
-        estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
         veri = ApplicationContextProvider.getBean(Verificador.class);
 
-        if (esEstudiante) {
+        if (this.esEstudiante) {
+            estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
+            this.estudiante = estudiante;
             jTextFieldPrimerNombreR.setEnabled(false);
             jTextField9SegundoNombreR.setEnabled(false);
             jTextFieldPrimerApellidoR.setEnabled(false);
@@ -49,6 +49,45 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
             jTextFieldNacimientoR.setEnabled(false);
             jTextFieldTelefono.setEnabled(false);
             jButtonBorrarR.setEnabled(false);
+            jTextFieldCedulaRepre.setEnabled(false);
+            jButtonBorrarR.setEnabled(false);
+            jButtonBuscar.setEnabled(false);
+            jTextFieldCedulaR.setEnabled(false);
+
+            jTextFieldPrimerNombre.setText(estudiante.getNombre1());
+            jTextFieldSegundoNombre.setText(estudiante.getNombre2());
+            jTextFieldPrimerApellido.setText(estudiante.getApellido1());
+            jTextFieldSegundoApellido.setText(estudiante.getApellido2());
+            jTextFieldDireccion.setText(estudiante.getDireccion());
+            jTextFieldFechaNacimiento.setText(String.valueOf(estudiante.getFechaNacimiento()));
+            jTextFieldCedulaRepre.setText(estudiante.getRepresentante().getCedula());
+            jComboBoxGradoyAnio.setSelectedItem(estudiante.getGrado());
+
+
+        } else {
+            representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
+            this.representante = representante;
+            jTextFieldPrimerNombre.setEnabled(false);
+            jTextFieldSegundoNombre.setEnabled(false);
+            jTextFieldPrimerApellido.setEnabled(false);
+            jTextFieldSegundoApellido.setEnabled(false);
+            jTextFieldDireccion.setEnabled(false);
+            jComboBoxGradoyAnio.setEnabled(false);
+            jTextFieldFechaNacimiento.setEnabled(false);
+            jButtonBuscar.setEnabled(false);
+            jTextFieldCedulaRepre.setEnabled(false);
+            jToggleButtonBorrar.setEnabled(false);
+            jTextFieldCedulaR.setEnabled(false);
+            jButtonBorrarR.setEnabled(false);
+
+            jTextFieldPrimerNombreR.setText(representante.getNombre1());
+            jTextField9SegundoNombreR.setText(representante.getNombre2());
+            jTextFieldPrimerApellidoR.setText(representante.getApellido1());
+            jTextFieldSegundoApellidoR.setText(representante.getApellido2());
+            jTextFieldCedulaR.setText(representante.getCedula());
+            jTextFieldDireccionR.setText(representante.getDireccion());
+            jTextFieldNacimientoR.setText(String.valueOf(representante.getFechaN()));
+            jTextFieldTelefono.setText(representante.getTelefono());
 
         }
 
@@ -594,7 +633,7 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
 
                 JOptionPane.showMessageDialog(
                         null,
-                        "Estudiante guardado con éxito.",
+                        "Estudiante actualizado con éxito.",
                         "Aviso",
                         JOptionPane.INFORMATION_MESSAGE
                 );
@@ -614,20 +653,7 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
 
             try {
 
-                representante = new RepresentanteDTO();
-                estudiante = new EstudianteDTO();
-
-                estudiante.setNombre1(jTextFieldPrimerNombre.getText().trim());
-                estudiante.setNombre2(jTextFieldSegundoNombre.getText().trim());
-                estudiante.setApellido1(jTextFieldPrimerApellido.getText().trim());
-                estudiante.setApellido2(jTextFieldSegundoApellido.getText().trim());
-                estudiante.setGrado((String) jComboBoxGradoyAnio.getSelectedItem());
-                estudiante.setDireccion(jTextFieldDireccion.getText().trim());
-                estudiante.setEstado(true);
-                estudiante.setFechaNacimiento(Utilidades.convertirStringA_SqlDate(jTextFieldFechaNacimiento.getText().trim()));
-                estudiante.setNivelAcademico(Utilidades.determinarNivelAcademicoPorSufijo(estudiante.getGrado()));
-
-                representante.setCedula(jTextFieldCedulaRepre.getText().trim());
+                representante.setCedula(jTextFieldCedulaR.getText().trim());
                 representante.setNombre1(jTextFieldPrimerNombreR.getText().trim());
                 representante.setNombre2(jTextField9SegundoNombreR.getText().trim());
                 representante.setApellido1(jTextFieldPrimerApellidoR.getText().trim());
@@ -637,14 +663,11 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
                 representante.setEstado(true);
                 representante.setFechaN(Utilidades.convertirStringA_SqlDate(jTextFieldNacimientoR.getText().trim()));
 
-                estudiante.setRepresentante(representante);
-                representante.addEstudiante(estudiante);
-
                 representanteControlador.guardarRepresentante(representante);
 
                 JOptionPane.showMessageDialog(
                         null,
-                        "Representante y estudiante guardados con éxito.",
+                        "Representante actualizado con éxito.",
                         "Aviso",
                         JOptionPane.INFORMATION_MESSAGE
                 );

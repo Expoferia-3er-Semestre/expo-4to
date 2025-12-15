@@ -29,6 +29,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
     private EstudianteDTO estudiante = new EstudianteDTO();
     private Verificador veri;
     boolean esEstudiante;
+    boolean puedeGuardar;
 
     /**
      * Creates new form actualizarEstudiantesRepresentantes
@@ -40,6 +41,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
         estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
         veri = ApplicationContextProvider.getBean(Verificador.class);
+        jButton1.setEnabled(false);
 
         if (esEstudiante) {
             jTextFieldPrimerNombreR.setEnabled(false);
@@ -480,6 +482,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                     "Alerta",
                     JOptionPane.WARNING_MESSAGE
             );
+            jButton1.setEnabled(false);
             return;
         }
 
@@ -487,7 +490,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         try {
             encontrado = representanteControlador.buscarRepresentantePorCedula(cedula);
             representante = encontrado;
-
+            jButton1.setEnabled(true);
         } catch (NoSuchElementException e) {
             JOptionPane.showMessageDialog(
                     null,
@@ -495,6 +498,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                     "Aviso",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            jButton1.setEnabled(false);
             return;
 
         } catch (Exception e) {
@@ -504,11 +508,8 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                     "Error",
                     JOptionPane.ERROR_MESSAGE
             );
+            jButton1.setEnabled(false);
             return;
-        }
-
-        if (esEstudiante) {
-            estudiante.setRepresentante(representante);
         }
 
         jTextFieldPrimerNombreR.setText(encontrado.getNombre1());
@@ -542,6 +543,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                     "Alerta",
                     JOptionPane.WARNING_MESSAGE
             );
+            jButton1.setEnabled(false);
             return;
         }
 
@@ -552,6 +554,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                     "Alerta",
                     JOptionPane.WARNING_MESSAGE
             );
+            jButton1.setEnabled(false);
             return;
         }
 
@@ -563,6 +566,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                     "Información",
                     JOptionPane.INFORMATION_MESSAGE
             );
+            jButton1.setEnabled(false);
         } catch (NoSuchElementException e) {
             JOptionPane.showMessageDialog(
                     null,
@@ -571,6 +575,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE
             );
             jTextFieldCedulaRepre.setText(jTextFieldCedulaR.getText());
+            jButton1.setEnabled(true);
         }
 
     }
@@ -589,7 +594,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                 estudiante.setEstado(true);
                 estudiante.setFechaNacimiento(Utilidades.convertirStringA_SqlDate(jTextFieldFechaNacimiento.getText().trim()));
                 estudiante.setNivelAcademico(Utilidades.determinarNivelAcademicoPorSufijo(estudiante.getGrado()));
-
+                estudiante.setRepresentante(representante);
 
                 estudianteControlador.guardarEstudiante(estudiante);
 
@@ -637,6 +642,17 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
                 representante.setTelefono(jTextFieldTelefono.getText().trim());
                 representante.setEstado(true);
                 representante.setFechaN(Utilidades.convertirStringA_SqlDate(jTextFieldNacimientoR.getText().trim()));
+
+                if (!estudiante.getRepresentante().getCedula().contains(representante.getCedula())) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "La cedula del estudiante debe ser la misma del representante.",
+                            "Alerta",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    jButton1.setEnabled(false);
+                    return;
+                }
 
                 estudiante.setRepresentante(representante);
                 representante.addEstudiante(estudiante);

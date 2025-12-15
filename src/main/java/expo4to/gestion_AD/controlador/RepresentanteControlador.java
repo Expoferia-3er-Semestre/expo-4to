@@ -33,7 +33,7 @@ public class RepresentanteControlador {
             return "Éxito: Representante guardado/actualizado.";
 
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Error de Validación: " + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
         catch (Exception e) {
             throw new RuntimeException("Error inesperado al guardar: " + e.getMessage());
@@ -43,9 +43,8 @@ public class RepresentanteControlador {
     public RepresentanteDTO buscarRepresentantePorCedula(String cedula) {
 
         try {
-            RepresentanteDTO representanteDTO = representanteServicio.buscarRepresentantePorCedula(cedula);
 
-            return  representanteDTO;
+            return representanteServicio.buscarRepresentantePorCedula(cedula);
 
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException("Error: El representante no existe en el sistema.");
