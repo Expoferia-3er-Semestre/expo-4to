@@ -15,7 +15,7 @@ public class Verificador {
     private static final int LONGITUD_MAXIMA = 100;
 
     // Regex para validar Cédula (asumiendo formato de 8 a 12 dígitos numéricos en este ejemplo genérico)
-    private static final String REGEX_CEDULA_GENERICA = "^\\d{8,12}$";
+    private static final String REGEX_CEDULA_GENERICA = "^\\d{7,10}$";
 
     // --- Métodos de Verificación ---
 
@@ -26,14 +26,13 @@ public class Verificador {
      */
     public boolean esNombreOApellidoValido(String valor) {
         if (valor == null || valor.trim().isEmpty()) {
-            return false;
+            throw new IllegalArgumentException("El nombre o apellido no puede quedar vacío.");
         }
         String valorLimpio = valor.trim();
 
         // 1. Verificar Longitud
         if (valorLimpio.length() < LONGITUD_MINIMA || valorLimpio.length() > LONGITUD_MAXIMA) {
-            System.out.println("Error: La longitud debe estar entre " + LONGITUD_MINIMA + " y " + LONGITUD_MAXIMA + " caracteres.");
-            return false;
+            throw new IllegalArgumentException("Error: La longitud debe estar entre " + LONGITUD_MINIMA + " y " + LONGITUD_MAXIMA + " caracteres.");
         }
 
         // 2. Verificar Formato (solo letras, espacios, guiones, apóstrofes)
@@ -41,8 +40,7 @@ public class Verificador {
         Matcher matcher = pattern.matcher(valorLimpio);
 
         if (!matcher.matches()) {
-            System.out.println("Error: El nombre contiene caracteres inválidos (solo letras, espacios, ' son permitidos).");
-            return false;
+            throw new IllegalArgumentException("Error: El nombre contiene caracteres inválidos (solo letras, espacios, ' son permitidos).");
         }
 
         return true;
@@ -58,8 +56,7 @@ public class Verificador {
         final int EDAD_MAXIMA = 90;
 
         if (edad < EDAD_MINIMA || edad > EDAD_MAXIMA) {
-            System.out.println("Error: La edad debe estar entre " + EDAD_MINIMA + " y " + EDAD_MAXIMA + ".");
-            return false;
+            throw new IllegalArgumentException("Error: La edad debe estar entre " + EDAD_MINIMA + " y " + EDAD_MAXIMA + ".");
         }
         return true;
     }
@@ -73,13 +70,12 @@ public class Verificador {
      */
     public boolean esCedulaValida(String cedula) {
         if (cedula == null || cedula.trim().isEmpty()) {
-            return false;
+            throw new IllegalArgumentException("La cedula no puede quedar vacía.");
         }
 
         // 1. Verificar Formato y Longitud (solo números, entre 8 y 12 dígitos)
         if (!cedula.matches(REGEX_CEDULA_GENERICA)) {
-            System.out.println("Error: La cédula debe contener solo números y tener entre 8 y 12 dígitos.");
-            return false;
+            throw new IllegalArgumentException("Error: La cédula debe contener solo números y tener entre 8 y 12 dígitos.");
         }
 
         // 2. Aquí iría la validación del DÍGITO VERIFICADOR específica del país.
@@ -110,23 +106,20 @@ public class Verificador {
      */
     public boolean esCorreoValido(String correo) {
         if (correo == null || correo.trim().isEmpty()) {
-            System.out.println("Error: El correo no puede estar vacío.");
-            return false;
+            throw new IllegalArgumentException("Error: El correo no puede estar vacío.");
         }
 
         String correoLimpio = correo.trim();
 
         // El método matches() de la clase String es un atajo para Pattern.compile(regex).matcher(input).matches()
         if (!correoLimpio.matches(REGEX_CORREO)) {
-            System.out.println("Error: El formato del correo electrónico es incorrecto.");
-            return false;
+            throw new IllegalArgumentException("Error: El formato del correo electrónico es incorrecto.");
         }
 
         // Validación adicional simple para evitar que comience o termine con punto o arroba
         if (correoLimpio.startsWith(".") || correoLimpio.endsWith(".") ||
                 correoLimpio.startsWith("@") || correoLimpio.endsWith("@")) {
-            System.out.println("Error: El correo no puede empezar o terminar con '.' o '@'.");
-            return false;
+            throw new IllegalArgumentException("Error: El correo no puede empezar o terminar con '.' o '@'.");
         }
 
         return true;
@@ -148,8 +141,7 @@ public class Verificador {
      */
     public boolean esTelefonoValido(String telefono) {
         if (telefono == null || telefono.trim().isEmpty()) {
-            System.out.println("Error: El número de teléfono no puede estar vacío.");
-            return false;
+            throw new IllegalArgumentException("Error: El número de teléfono no puede estar vacío.");
         }
 
         // 1. Limpiar el número de formato: Deja solo dígitos y el prefijo internacional (+58 si existe)
@@ -165,8 +157,7 @@ public class Verificador {
         // 3. Verificar si el número normalizado cumple con el patrón 04XX... y tiene 11 dígitos.
         // Patrón estricto: comienza con 0, seguido de un código de operador válido, seguido de 7 dígitos.
         if (!telefonoLimpio.matches("^0(412|414|416|424|426)\\d{7}$")) {
-            System.out.println("Error: El formato de teléfono es incorrecto o el código de operador es inválido. Debe ser 04XX-XXXXXXX (11 dígitos).");
-            return false;
+            throw new IllegalArgumentException("Error: El formato de teléfono es incorrecto o el código de operador es inválido. Debe ser 04XX-XXXXXXX (11 dígitos).");
         }
 
         return true;
@@ -187,8 +178,7 @@ public class Verificador {
      */
     public boolean esDireccionValida(String direccion) {
         if (direccion == null || direccion.trim().isEmpty()) {
-            System.out.println("Error: La dirección no puede estar vacía.");
-            return false;
+            throw new IllegalArgumentException("Error: La dirección no puede estar vacía.");
         }
 
         String direccionLimpia = direccion.trim();
@@ -196,14 +186,12 @@ public class Verificador {
         // 1. Verificar Longitud
         int longitud = direccionLimpia.length();
         if (longitud < LONGITUD_MINIMA_DIRECCION || longitud > LONGITUD_MAXIMA_DIRECCION) {
-            System.out.println("Error: La dirección debe tener entre " + LONGITUD_MINIMA_DIRECCION + " y " + LONGITUD_MAXIMA_DIRECCION + " caracteres.");
-            return false;
+            throw new IllegalArgumentException("Error: La dirección debe tener entre " + LONGITUD_MINIMA_DIRECCION + " y " + LONGITUD_MAXIMA_DIRECCION + " caracteres.");
         }
 
         // 2. Verificar Formato (Caracteres Seguros)
         if (!direccionLimpia.matches(REGEX_DIRECCION)) {
-            System.out.println("Error: La dirección contiene caracteres inválidos. Solo se permiten letras, números, espacios, y los símbolos #, -, /, ,, .");
-            return false;
+            throw new IllegalArgumentException("Error: La dirección contiene caracteres inválidos. Solo se permiten letras, números, espacios, y los símbolos #, -, /, ,, .");
         }
 
         return true;
@@ -219,7 +207,7 @@ public class Verificador {
      */
     public boolean esMontoPositivo(BigDecimal monto) {
         if (monto == null) {
-            return false; // El monto no debe ser nulo en transacciones
+            throw new IllegalArgumentException("El monto no puede quedar vacío."); // El monto no debe ser nulo en transacciones
         }
         // Compara si el monto es mayor o igual a cero (BigDecimal.ZERO)
         return monto.compareTo(BigDecimal.ZERO) >= 0;

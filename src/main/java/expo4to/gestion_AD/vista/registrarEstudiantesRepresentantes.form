@@ -238,19 +238,17 @@
             <Component class="javax.swing.JComboBox" name="jComboBoxGradoyAnio">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="12">
-                    <StringItem index="0" value="1er"/>
-                    <StringItem index="1" value="2do"/>
-                    <StringItem index="2" value="3ro"/>
-                    <StringItem index="3" value="4to"/>
-                    <StringItem index="4" value="5to"/>
-                    <StringItem index="5" value="6to"/>
-                    <StringItem index="6" value="7&#xb0;"/>
-                    <StringItem index="7" value="8&#xb0;"/>
-                    <StringItem index="8" value="9&#xb0;"/>
-                    <StringItem index="9" value="10&#xb0;"/>
-                    <StringItem index="10" value="11&#xb0;"/>
-                    <StringItem index="11" value=" "/>
+                  <StringArray count="10">
+                    <StringItem index="0" value="1&#xb0;"/>
+                    <StringItem index="1" value="2&#xb0;"/>
+                    <StringItem index="2" value="3&#xb0;"/>
+                    <StringItem index="3" value="4&#xb0;"/>
+                    <StringItem index="4" value="5&#xb0;"/>
+                    <StringItem index="5" value="6&#xb0;"/>
+                    <StringItem index="6" value="1er a&#xf1;o"/>
+                    <StringItem index="7" value="2do a&#xf1;o"/>
+                    <StringItem index="8" value="3er a&#xf1;o"/>
+                    <StringItem index="9" value="5to a&#xf1;o"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -276,6 +274,9 @@
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButtonBorrarActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -437,6 +438,9 @@
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBorrarRActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButtonBuscar">
               <Properties>
@@ -449,6 +453,9 @@
                 <Property name="borderPainted" type="boolean" value="false"/>
                 <Property name="contentAreaFilled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBuscarActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -463,6 +470,9 @@
             <Property name="text" type="java.lang.String" value="Guardar"/>
             <Property name="borderPainted" type="boolean" value="false"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

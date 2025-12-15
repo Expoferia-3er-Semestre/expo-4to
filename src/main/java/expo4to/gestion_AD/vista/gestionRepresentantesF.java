@@ -4,6 +4,14 @@
  */
 package expo4to.gestion_AD.vista;
 
+import expo4to.gestion_AD.controlador.ApplicationContextProvider;
+import expo4to.gestion_AD.controlador.RepresentanteControlador;
+import expo4to.gestion_AD.dto.RepresentanteDTO;
+import expo4to.gestion_AD.vista.customize.RepresentanteTableModel;
+
+import javax.swing.*;
+import java.util.List;
+
 /**
  *
  * @author usuario
@@ -11,12 +19,55 @@ package expo4to.gestion_AD.vista;
 public class gestionRepresentantesF extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(gestionRepresentantesF.class.getName());
-
+    private RepresentanteControlador representanteControlador;
+    private RepresentanteDTO representanteActual;
     /**
      * Creates new form gestionRepresentantesF
      */
     public gestionRepresentantesF() {
         initComponents();
+        representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
+        List<RepresentanteDTO> representantes = representanteControlador.listarRepresentantes();
+
+        if (representantes.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "No hay representantes registrados en el sistema",
+                    "Aviso",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+        }
+
+        RepresentanteTableModel tableModel = new RepresentanteTableModel(representantes);
+        jTable1.setModel(tableModel);
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+
+            // Asegurarse de que el evento no sea el ajuste (ajusting) y que haya una selección válida
+            if (!e.getValueIsAdjusting() && jTable1
+                    .getSelectedRow() != -1) {
+
+                // 1. Obtener la fila seleccionada en la VISTA (puede ser diferente al modelo si está ordenada)
+                int filaSeleccionadaVista = jTable1.getSelectedRow();
+
+                // 2. Mapear esa fila de la VISTA a la fila REAL del MODELO (si la tabla está ordenada)
+                int filaModelo = jTable1.convertRowIndexToModel(filaSeleccionadaVista);
+
+                // 3. Obtener el objeto DTO completo
+                RepresentanteTableModel modelo = (RepresentanteTableModel) jTable1.getModel();
+
+                // 4. ALMACENAR esta referencia en una variable de clase para su uso posterior
+                this.representanteActual = modelo.getRepresentanteAt(filaModelo);
+
+                // Opcional: Habilitar el botón de Actualizar/Editar
+                jButtonActualizar.setEnabled(true);
+            } else {
+                // Ninguna fila seleccionada o deselección
+                this.representanteActual = null;
+                jButtonActualizar.setEnabled(false);
+            }
+        });
+
     }
 
     /**
@@ -231,15 +282,12 @@ public class gestionRepresentantesF extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu1EstudiantesActionPerformed
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-        registrarEstudiantesRepresentantes registrar = new registrarEstudiantesRepresentantes();
-        dispose();
+        registrarEstudiantesRepresentantes registrar = new registrarEstudiantesRepresentantes(false);
         registrar.setVisible(true);
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-        registrarEstudiantesRepresentantes registrar = new registrarEstudiantesRepresentantes();
-        dispose();
-        registrar.setVisible(true);
+
     }//GEN-LAST:event_jButtonActualizarActionPerformed
 
     /**

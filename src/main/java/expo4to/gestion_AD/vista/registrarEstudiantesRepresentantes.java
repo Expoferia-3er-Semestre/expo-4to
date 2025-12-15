@@ -4,6 +4,18 @@
  */
 package expo4to.gestion_AD.vista;
 
+import expo4to.gestion_AD.controlador.ApplicationContextProvider;
+import expo4to.gestion_AD.controlador.EstudianteControlador;
+import expo4to.gestion_AD.controlador.RepresentanteControlador;
+import expo4to.gestion_AD.dto.EstudianteDTO;
+import expo4to.gestion_AD.dto.RepresentanteDTO;
+import expo4to.gestion_AD.util.Utilidades;
+import expo4to.gestion_AD.util.Verificador;
+
+import javax.swing.*;
+import java.sql.Date;
+import java.util.NoSuchElementException;
+
 /**
  *
  * @author usuario
@@ -11,13 +23,36 @@ package expo4to.gestion_AD.vista;
 public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(registrarEstudiantesRepresentantes.class.getName());
+    private RepresentanteControlador representanteControlador;
+    private RepresentanteDTO representante;
+    private EstudianteControlador estudianteControlador;
+    private EstudianteDTO estudiante = new EstudianteDTO();
+    private Verificador veri;
+    boolean esEstudiante;
 
     /**
      * Creates new form actualizarEstudiantesRepresentantes
      */
-    public registrarEstudiantesRepresentantes() {
+    public registrarEstudiantesRepresentantes(boolean esEstudiante) {
         initComponents();
         setLocationRelativeTo(null);
+        this.esEstudiante = esEstudiante;
+        representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
+        estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
+        veri = ApplicationContextProvider.getBean(Verificador.class);
+
+        if (esEstudiante) {
+            jTextFieldPrimerNombreR.setEnabled(false);
+            jTextField9SegundoNombreR.setEnabled(false);
+            jTextFieldPrimerApellidoR.setEnabled(false);
+            jTextFieldSegundoApellidoR.setEnabled(false);
+            jTextFieldDireccionR.setEnabled(false);
+            jTextFieldNacimientoR.setEnabled(false);
+            jTextFieldTelefono.setEnabled(false);
+            jButtonBorrarR.setEnabled(false);
+
+        }
+
     }
 
     /**
@@ -95,7 +130,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
 
         jLabel9.setText("Grado/Año");
 
-        jComboBoxGradoyAnio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1er", "2do", "3ro", "4to", "5to", "6to", "7°", "8°", "9°", "10°", "11°", " " }));
+        jComboBoxGradoyAnio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1°", "2°", "3°", "4°", "5°", "6°", "1er año", "2do año", "3er año", "5to año" }));
 
         jLabel10.setText("Fecha de Nacimiento");
 
@@ -103,6 +138,11 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         jToggleButtonBorrar.setBorder(null);
         jToggleButtonBorrar.setBorderPainted(false);
         jToggleButtonBorrar.setContentAreaFilled(false);
+        jToggleButtonBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButtonBorrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -202,11 +242,21 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         jButtonBorrarR.setBorder(null);
         jButtonBorrarR.setBorderPainted(false);
         jButtonBorrarR.setContentAreaFilled(false);
+        jButtonBorrarR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBorrarRActionPerformed(evt);
+            }
+        });
 
         jButtonBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/lupa (1).png"))); // NOI18N
         jButtonBuscar.setBorder(null);
         jButtonBuscar.setBorderPainted(false);
         jButtonBuscar.setContentAreaFilled(false);
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -287,6 +337,11 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setText("Guardar");
         jButton1.setBorderPainted(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -342,29 +397,272 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNacimientoRActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        guardar();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new registrarEstudiantesRepresentantes().setVisible(true));
+    private void jToggleButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButtonBorrarActionPerformed
+        // TODO add your handling code here:
+        borrarCamposE();
+    }//GEN-LAST:event_jToggleButtonBorrarActionPerformed
+
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        // TODO add your handling code here:
+        if (esEstudiante) buscarRepresentanteE();
+        else buscarRepresentanteR();
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void jButtonBorrarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarRActionPerformed
+        // TODO add your handling code here:
+        borrarCamposR();
+    }//GEN-LAST:event_jButtonBorrarRActionPerformed
+
+    public void borrarCamposE() {
+        jTextFieldPrimerNombre.setText("");
+        jTextFieldSegundoNombre.setText("");
+        jTextFieldPrimerApellido.setText("");
+        jTextFieldSegundoApellido.setText("");
+        jTextFieldDireccion.setText("");
+        jTextFieldFechaNacimiento.setText("");
+        jComboBoxGradoyAnio.setSelectedIndex(0);
+
+        if (!jTextFieldCedulaR.isEnabled()) {
+            jTextFieldCedulaRepre.setEnabled(true);
+            jTextFieldCedulaRepre.setText("");
+            jTextFieldCedulaR.setEnabled(true);
+            jTextFieldCedulaR.setText("");
+            jTextFieldPrimerNombreR.setText("");
+            jTextField9SegundoNombreR.setText("");
+            jTextFieldPrimerApellidoR.setText("");
+            jTextFieldSegundoApellidoR.setText("");
+            jTextFieldDireccionR.setText("");
+            jTextFieldNacimientoR.setText("");
+            jTextFieldTelefono.setText("");
+        }
+    }
+
+    public void borrarCamposR() {
+
+        if (!jTextFieldCedulaR.isEnabled()) {
+            jTextFieldCedulaRepre.setEnabled(true);
+            jTextFieldCedulaRepre.setText("");
+        }
+
+        jTextFieldPrimerNombreR.setText("");
+        jTextField9SegundoNombreR.setText("");
+        jTextFieldPrimerApellidoR.setText("");
+        jTextFieldSegundoApellidoR.setText("");
+        jTextFieldCedulaR.setText("");
+        jTextFieldDireccionR.setText("");
+        jTextFieldNacimientoR.setText("");
+        jTextFieldTelefono.setText("");
+
+
+        jTextFieldCedulaR.setEnabled(true);
+        jTextFieldPrimerNombreR.setEnabled(true);
+        jTextField9SegundoNombreR.setEnabled(true);
+        jTextFieldPrimerApellidoR.setEnabled(true);
+        jTextFieldSegundoApellidoR.setEnabled(true);
+        jTextFieldDireccionR.setEnabled(true);
+        jTextFieldNacimientoR.setEnabled(true);
+        jTextFieldTelefono.setEnabled(true);
+    }
+
+    public void buscarRepresentanteE() {
+
+        String cedula = jTextFieldCedulaR.getText().trim();
+
+        if (!veri.esCedulaValida(cedula)) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "El formato de la cédula es invalido.",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        RepresentanteDTO encontrado;
+        try {
+            encontrado = representanteControlador.buscarRepresentantePorCedula(cedula);
+            representante = encontrado;
+
+        } catch (NoSuchElementException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    e.getMessage(),
+                    "Aviso",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        if (esEstudiante) {
+            estudiante.setRepresentante(representante);
+        }
+
+        jTextFieldPrimerNombreR.setText(encontrado.getNombre1());
+        jTextField9SegundoNombreR.setText(encontrado.getNombre2());
+        jTextFieldPrimerApellidoR.setText(encontrado.getApellido1());
+        jTextFieldSegundoApellidoR.setText(encontrado.getApellido2());
+        jTextFieldDireccionR.setText(encontrado.getDireccion());
+        jTextFieldNacimientoR.setText(String.valueOf(encontrado.getFechaN()));
+        jTextFieldTelefono.setText(encontrado.getTelefono());
+        jTextFieldCedulaR.setEnabled(false);
+        jTextFieldPrimerNombreR.setEnabled(false);
+        jTextField9SegundoNombreR.setEnabled(false);
+        jTextFieldPrimerApellidoR.setEnabled(false);
+        jTextFieldSegundoApellidoR.setEnabled(false);
+        jTextFieldDireccionR.setEnabled(false);
+        jTextFieldNacimientoR.setEnabled(false);
+        jTextFieldTelefono.setEnabled(false);
+
+        jTextFieldCedulaRepre.setText(encontrado.getCedula());
+        jTextFieldCedulaRepre.setEnabled(false);
+    }
+
+    public void buscarRepresentanteR() {
+
+        String cedula = jTextFieldCedulaR.getText();
+
+        if (cedula.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Debe ingresar una cédula para poder buscar.",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        if (!veri.esCedulaValida(cedula)) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "El formato de la cédula es invalido.",
+                    "Alerta",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        try {
+            representanteControlador.buscarRepresentantePorCedula(cedula);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Cédula ya existente en la base de datos, intente de nuevo.",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (NoSuchElementException e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Cédula libre para nuevo registro",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            jTextFieldCedulaRepre.setText(jTextFieldCedulaR.getText());
+        }
+
+    }
+
+    public void guardar() {
+
+        if (esEstudiante) {
+
+            try {
+                estudiante.setNombre1(jTextFieldPrimerNombre.getText().trim());
+                estudiante.setNombre2(jTextFieldSegundoNombre.getText().trim());
+                estudiante.setApellido1(jTextFieldPrimerApellido.getText().trim());
+                estudiante.setApellido2(jTextFieldSegundoApellido.getText().trim());
+                estudiante.setGrado((String) jComboBoxGradoyAnio.getSelectedItem());
+                estudiante.setDireccion(jTextFieldDireccion.getText().trim());
+                estudiante.setEstado(true);
+                estudiante.setFechaNacimiento(Utilidades.convertirStringA_SqlDate(jTextFieldFechaNacimiento.getText().trim()));
+                estudiante.setNivelAcademico(Utilidades.determinarNivelAcademicoPorSufijo(estudiante.getGrado()));
+
+
+                estudianteControlador.guardarEstudiante(estudiante);
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Estudiante guardado con éxito.",
+                        "Aviso",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                dispose();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                System.err.println(e.getMessage());
+            }
+
+        } else {
+
+            try {
+
+                representante = new RepresentanteDTO();
+                estudiante = new EstudianteDTO();
+
+                estudiante.setNombre1(jTextFieldPrimerNombre.getText().trim());
+                estudiante.setNombre2(jTextFieldSegundoNombre.getText().trim());
+                estudiante.setApellido1(jTextFieldPrimerApellido.getText().trim());
+                estudiante.setApellido2(jTextFieldSegundoApellido.getText().trim());
+                estudiante.setGrado((String) jComboBoxGradoyAnio.getSelectedItem());
+                estudiante.setDireccion(jTextFieldDireccion.getText().trim());
+                estudiante.setEstado(true);
+                estudiante.setFechaNacimiento(Utilidades.convertirStringA_SqlDate(jTextFieldFechaNacimiento.getText().trim()));
+                estudiante.setNivelAcademico(Utilidades.determinarNivelAcademicoPorSufijo(estudiante.getGrado()));
+
+                representante.setCedula(jTextFieldCedulaRepre.getText().trim());
+                representante.setNombre1(jTextFieldPrimerNombreR.getText().trim());
+                representante.setNombre2(jTextField9SegundoNombreR.getText().trim());
+                representante.setApellido1(jTextFieldPrimerApellidoR.getText().trim());
+                representante.setApellido2(jTextFieldSegundoApellidoR.getText().trim());
+                representante.setDireccion(jTextFieldDireccionR.getText().trim());
+                representante.setTelefono(jTextFieldTelefono.getText().trim());
+                representante.setEstado(true);
+                representante.setFechaN(Utilidades.convertirStringA_SqlDate(jTextFieldNacimientoR.getText().trim()));
+
+                estudiante.setRepresentante(representante);
+                representante.addEstudiante(estudiante);
+
+                representanteControlador.guardarRepresentante(representante);
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Representante y estudiante guardados con éxito.",
+                        "Aviso",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+                dispose();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                System.err.println(e.getMessage());
+            }
+
+        }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

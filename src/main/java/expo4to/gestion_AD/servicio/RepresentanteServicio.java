@@ -2,6 +2,7 @@ package expo4to.gestion_AD.servicio;
 
 import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.dto.RepresentanteDTO;
+import expo4to.gestion_AD.mapper.EstudianteMapper;
 import expo4to.gestion_AD.modelo.Estudiante;
 import expo4to.gestion_AD.modelo.Representante;
 import expo4to.gestion_AD.repositorio.RepresentanteRepositorio;
@@ -30,7 +31,7 @@ public class RepresentanteServicio implements IRepresentanteServicio{
         List<RepresentanteDTO> dtos = new ArrayList<>();
 
         for (Representante representante : lista) {
-            dtos.add(transformarRepresentante(representante));
+            dtos.add(EstudianteMapper.toRepresentanteDTO(representante));
         }
 
         return dtos;
@@ -48,7 +49,7 @@ public class RepresentanteServicio implements IRepresentanteServicio{
         Representante representante = optional.get();
         representante.getEstudiantes().size();
 
-        return transformarRepresentante(representante);
+        return EstudianteMapper.toRepresentanteDTO(representante);
 
     }
 
@@ -82,9 +83,33 @@ public class RepresentanteServicio implements IRepresentanteServicio{
             throw new IllegalArgumentException("El teléfono ingresado no es valido.");
         }
 
-        Representante representante = transformarDTO(representanteDTO);
 
-        representanteRepositorio.save(representante);
+        EstudianteDTO estudianteDTO = representanteDTO.getEstudiantes().getLast();
+
+        if (!verificador.esNombreOApellidoValido(estudianteDTO.getNombre1()) ||
+                !verificador.esNombreOApellidoValido(estudianteDTO.getNombre2())) {
+            throw new IllegalArgumentException("El nombre ingresado no es valido.");
+        }
+        if (!verificador.esNombreOApellidoValido(estudianteDTO.getApellido1()) ||
+                !verificador.esNombreOApellidoValido(estudianteDTO.getApellido2())) {
+            throw new IllegalArgumentException("El apellido ingresado no es valido.");
+        }
+        if (!verificador.esCedulaValida(estudianteDTO.getRepresentante().getCedula())) {
+            throw new IllegalArgumentException("La cédula ingresada no es valida.");
+        }
+        if (!verificador.esDireccionValida(estudianteDTO.getDireccion())) {
+            throw new IllegalArgumentException("La dirección ingresada no es valida.");
+        }
+
+        try {
+            Estudiante estudiante = EstudianteMapper.toEstudianteEntidad(estudianteDTO);
+            Representante representante = EstudianteMapper.toRepresentanteEntidad(representanteDTO);
+            representante.addEstudiante(estudiante);
+            representanteRepositorio.save(representante);
+        } catch (Exception e) {
+            throw new RuntimeException("Ocurrió un error inesperado:" + e.getMessage());
+        }
+
     }
 
     @Override
@@ -92,46 +117,4 @@ public class RepresentanteServicio implements IRepresentanteServicio{
         representanteRepositorio.deleteById(id);
     }
 
-    public Representante transformarDTO(RepresentanteDTO representanteDTO) {
-
-        Boolean estado = Objects.requireNonNullElse(representanteDTO.getEstado(), true);
-
-        return new Representante(
-                representanteDTO.getCedula(),
-                representanteDTO.getNombre1(),
-                representanteDTO.getNombre2(),
-                representanteDTO.getApellido1(),
-                representanteDTO.getApellido2(),
-                representanteDTO.getTelefono(),
-                representanteDTO.getFechaN(),
-                representanteDTO.getDireccion(),
-                estado,
-                null
-        );
-
-    }
-
-    public RepresentanteDTO transformarRepresentante(Representante representante) {
-
-        RepresentanteDTO representanteDTO = new RepresentanteDTO();
-
-        representanteDTO.setCedula(representante.getCedula());
-        representanteDTO.setEstado(representante.getEstado());
-        representanteDTO.setNombre1(representante.getNombre1());
-        representanteDTO.setNombre2(representante.getNombre2());
-        representanteDTO.setApellido1(representante.getApellido1());
-        representanteDTO.setApellido2(representante.getApellido2());
-        representanteDTO.setDireccion(representante.getDireccion());
-        representanteDTO.setFechaN(representante.getFechaN());
-        representanteDTO.setTelefono(representante.getTelefono());
-
-        for (Estudiante estudiante : representante.getEstudiantes()) {
-            EstudianteDTO dto = estudianteServicio.transformarEstudiante(estudiante);
-            representanteDTO.addEstudiante(dto);
-            System.out.println("añadido");
-        }
-
-        return representanteDTO;
-
-    }
 }

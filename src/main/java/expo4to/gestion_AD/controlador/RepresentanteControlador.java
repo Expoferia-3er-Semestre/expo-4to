@@ -34,7 +34,8 @@ public class RepresentanteControlador {
 
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Error de Validación: " + e.getMessage());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException("Error inesperado al guardar: " + e.getMessage());
         }
     }

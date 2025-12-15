@@ -32,7 +32,7 @@ public class Representante {
     private Date fechaN;
     private String direccion;
     private Boolean estado;
-    @OneToMany(mappedBy = "representante")
+    @OneToMany(mappedBy = "representante", cascade = CascadeType.ALL)
     private List<Estudiante> estudiantes = new ArrayList<>();
 
     public void addEstudiante(Estudiante estudiante) {
