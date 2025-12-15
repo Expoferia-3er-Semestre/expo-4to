@@ -8,8 +8,8 @@ import expo4to.gestion_AD.controlador.ApplicationContextProvider;
 import expo4to.gestion_AD.controlador.EstudianteControlador;
 import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.vista.customize.EstudianteTableModel;
-import expo4to.gestion_AD.vista.customize.RepresentanteTableModel;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -26,12 +26,10 @@ public class gestionEstudiantesF extends javax.swing.JFrame {
      */
     public gestionEstudiantesF() {
         initComponents();
+
         setLocationRelativeTo(null);
         estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
-        List<EstudianteDTO> estudiantes = estudianteControlador.listarEstudiantes();
-
-        EstudianteTableModel tableModel = new EstudianteTableModel(estudiantes);
-        jTable1.setModel(tableModel);
+        actualizarLista();
         jTable1.getSelectionModel().addListSelectionListener(e -> {
 
             // Asegurarse de que el evento no sea el ajuste (ajusting) y que haya una selección válida
@@ -257,11 +255,29 @@ public class gestionEstudiantesF extends javax.swing.JFrame {
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
         registrarEstudiantesRepresentantes registrar = new registrarEstudiantesRepresentantes( true);
         registrar.setVisible(true);
+        actualizarLista();
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-
+        ActualizarEstudiantesRepresentantes actualizar = new ActualizarEstudiantesRepresentantes(true, estudianteActual, null);
+        actualizar.setVisible(true);
+        actualizarLista();
     }//GEN-LAST:event_jButtonActualizarActionPerformed
+
+    public void actualizarLista() {
+        List<EstudianteDTO> estudiantes = estudianteControlador.listarEstudiantes();
+        if (estudiantes.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "No hay estudiantes registrados en el sistema",
+                    "Aviso",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+        }
+        EstudianteTableModel tableModel = new EstudianteTableModel(estudiantes);
+        jTable1.setModel(tableModel);
+    }
 
     /**
      * @param args the command line arguments

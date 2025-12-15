@@ -6,7 +6,9 @@ package expo4to.gestion_AD.vista;
 
 import expo4to.gestion_AD.controlador.ApplicationContextProvider;
 import expo4to.gestion_AD.controlador.RepresentanteControlador;
+import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.dto.RepresentanteDTO;
+import expo4to.gestion_AD.vista.customize.EstudianteTableModel;
 import expo4to.gestion_AD.vista.customize.RepresentanteTableModel;
 
 import javax.swing.*;
@@ -27,20 +29,8 @@ public class gestionRepresentantesF extends javax.swing.JFrame {
     public gestionRepresentantesF() {
         initComponents();
         representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
-        List<RepresentanteDTO> representantes = representanteControlador.listarRepresentantes();
 
-        if (representantes.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "No hay representantes registrados en el sistema",
-                    "Aviso",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-            return;
-        }
-
-        RepresentanteTableModel tableModel = new RepresentanteTableModel(representantes);
-        jTable1.setModel(tableModel);
+        actualizarLista();
         jTable1.getSelectionModel().addListSelectionListener(e -> {
 
             // Asegurarse de que el evento no sea el ajuste (ajusting) y que haya una selección válida
@@ -287,8 +277,27 @@ public class gestionRepresentantesF extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-
+        ActualizarEstudiantesRepresentantes actualizar = new ActualizarEstudiantesRepresentantes(false, null, representanteActual);
+        actualizar.setVisible(true);
+        actualizarLista();
     }//GEN-LAST:event_jButtonActualizarActionPerformed
+
+    public void actualizarLista() {
+        List<RepresentanteDTO> representantes = representanteControlador.listarRepresentantes();
+
+        if (representantes.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "No hay representantes registrados en el sistema",
+                    "Aviso",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+        }
+
+        RepresentanteTableModel tableModel = new RepresentanteTableModel(representantes);
+        jTable1.setModel(tableModel);
+    }
 
     /**
      * @param args the command line arguments
