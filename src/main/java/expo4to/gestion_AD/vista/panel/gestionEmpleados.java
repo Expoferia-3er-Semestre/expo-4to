@@ -4,12 +4,18 @@
  */
 package expo4to.gestion_AD.vista.panel;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author usuario
  */
 public class gestionEmpleados extends javax.swing.JPanel {
 
+    int yUbicacion, xUbicacion;
     /**
      * Creates new form gestionEmpleados
      */

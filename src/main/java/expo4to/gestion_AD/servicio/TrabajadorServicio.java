@@ -1,6 +1,7 @@
 package expo4to.gestion_AD.servicio;
 
 import expo4to.gestion_AD.dto.TrabajadorDTO;
+import expo4to.gestion_AD.mapper.TrabajadorMapper;
 import expo4to.gestion_AD.modelo.Trabajador;
 import expo4to.gestion_AD.repositorio.TrabajadorRepositorio;
 import expo4to.gestion_AD.util.CifradorContrasenas;
@@ -90,10 +91,12 @@ public class TrabajadorServicio implements ITrabajadorServicio{
             throw new IllegalArgumentException("La dirección ingresada no es valida.");
         }
 
-        Trabajador trabajador = transformarDTO(trabajadorDTO);
-
-        trabajadorRepositorio.save(trabajador);
-
+        try {
+            Trabajador trabajador = TrabajadorMapper.toTrabajadorEntidad(trabajadorDTO);
+            trabajadorRepositorio.save(trabajador);
+        } catch (Exception e) {
+            throw new RuntimeException("Ocurrió un error inesperado:" + e.getMessage());
+        }
     }
 
     @Override
