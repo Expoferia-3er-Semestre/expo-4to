@@ -9,23 +9,29 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import javax.swing.*;
 import java.awt.*;
 
 @SpringBootApplication
 public class GestionAdApplication {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = new SpringApplicationBuilder(GestionAdApplication.class)
-                .headless(false) // IMPORTANTE: Permite que aparezcan ventanas
-                .web(WebApplicationType.NONE)
-                .run(args);        // Inicia Spring y ejecuta el CommandLineRunner
 
-        // 2. Obtenemos el Bean de la ventana del contexto
-        EventQueue.invokeLater(() -> {
-                    // Es buena práctica de Swing iniciar la UI en el Event Dispatch Thread
-                    login frame = context.getBean(login.class);
-                    frame.setVisible(true);
-        SpringApplication.run(GestionAdApplication.class, args);
-        });
+            ConfigurableApplicationContext context = new SpringApplicationBuilder(GestionAdApplication.class)
+                    .headless(false) // IMPORTANTE: Permite que aparezcan ventanas
+                    .web(WebApplicationType.NONE)
+                    .run(args);        // Inicia Spring y ejecuta el CommandLineRunner
+
+            // 2. Obtenemos el Bean de la ventana del contexto
+            EventQueue.invokeLater(() -> {
+                // Es buena práctica de Swing iniciar la UI en el Event Dispatch Thread
+                login frame = context.getBean(login.class);
+                frame.setVisible(true);
+                SpringApplication.run(GestionAdApplication.class, args);
+            });
+
+
+
+
     }
 }
