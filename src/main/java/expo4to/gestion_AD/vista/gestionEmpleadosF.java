@@ -442,14 +442,13 @@ public class gestionEmpleadosF extends javax.swing.JFrame {
 
     private void ButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAgregarActionPerformed
         registrarEmpleado registrar = new registrarEmpleado();
-        dispose();
         registrar.setVisible(true);     
     }//GEN-LAST:event_ButtonAgregarActionPerformed
 
     private void ButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonActualizarActionPerformed
-        registrarEmpleado registrar = new registrarEmpleado();
-        dispose();
-        registrar.setVisible(true);     
+        ActualizarEmpleado actualizar = new ActualizarEmpleado(trabajadorActual);
+        actualizar.setVisible(true);
+        actualizarLista();
     }//GEN-LAST:event_ButtonActualizarActionPerformed
 
     private void jButtonCerrarProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarProgramaActionPerformed

@@ -68,11 +68,7 @@ public class TrabajadorServicio implements ITrabajadorServicio{
     public void guardarTrabajador(TrabajadorDTO trabajadorDTO) {
 
         String passwordPlana = trabajadorDTO.getContrasena();
-        if (passwordPlana != null) {
-            String passwordHash = cifrador.cifrarContrasena(passwordPlana);
-
-            trabajadorDTO.setContrasena(passwordHash);
-        } else {
+        if (passwordPlana == null) {
             throw new IllegalArgumentException("La contraseña no puede quedar vacía.");
         }
 

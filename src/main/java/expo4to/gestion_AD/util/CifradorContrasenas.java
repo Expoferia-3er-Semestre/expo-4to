@@ -53,7 +53,7 @@ public class CifradorContrasenas {
     // --- Ejemplo de Uso ---
     public static void main(String[] args) {
         CifradorContrasenas cifrador = new CifradorContrasenas();
-        String contrasenaOriginal = "profesor123";
+        String contrasenaOriginal = "prueba123";
 
         // 1. Cifrar (Hashing)
         String hashGenerado = cifrador.cifrarContrasena(contrasenaOriginal);

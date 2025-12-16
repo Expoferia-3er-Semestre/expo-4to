@@ -9,6 +9,7 @@ import expo4to.gestion_AD.controlador.TrabajadorControlador;
 import expo4to.gestion_AD.dto.TrabajadorDTO;
 import expo4to.gestion_AD.util.CifradorContrasenas;
 import expo4to.gestion_AD.util.Utilidades;
+import lombok.ToString;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,19 +22,31 @@ import java.util.logging.Logger;
  *
  * @author usuario
  */
-public class registrarEmpleado extends JFrame {
-    
-    private static final Logger logger = Logger.getLogger(registrarEmpleado.class.getName());
+public class ActualizarEmpleado extends JFrame {
+
+    private static final Logger logger = Logger.getLogger(ActualizarEmpleado.class.getName());
     CifradorContrasenas cifrador;
     TrabajadorControlador trabajadorControlador;
+    TrabajadorDTO trabajador;
     /**
      * Creates new form registrarEmpleado
      */
-    public registrarEmpleado() {
+    public ActualizarEmpleado(TrabajadorDTO trabajador) {
         initComponents();
         setLocationRelativeTo(null);
+        this.trabajador = trabajador;
         trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
         cifrador = ApplicationContextProvider.getBean(CifradorContrasenas.class);
+
+        jTextField1PrimerNombre.setText(this.trabajador.getNombre1());
+        jTextFieldSegundoNombre.setText(this.trabajador.getNombre2());
+        jTextFieldPrimerApellido.setText(this.trabajador.getApellido1());
+        jTextFieldSegundoApellido.setText(this.trabajador.getApellido2());
+        jTextFieldCedula.setText(this.trabajador.getCedula());
+        jTextFieldCorreo.setText(this.trabajador.getCorreo());
+        Direccion.setText(this.trabajador.getDireccion());
+        jTextFieldFechaNacimiento.setText(String.valueOf(this.trabajador.getFechaN()));
+        jTextFieldTelefono.setText(this.trabajador.getTelefono());
     }
 
     /**
@@ -299,21 +312,21 @@ public class registrarEmpleado extends JFrame {
 
     public void borrar() {
 
-        jTextField1PrimerNombre.setText("");
-        jTextFieldSegundoNombre.setText("");
-        jTextFieldPrimerApellido.setText("");
-        jTextFieldSegundoApellido.setText("");
-        jTextFieldCedula.setText("");
-        jTextFieldClave.setText("");
-        jTextFieldConfirmarClave.setText("");
-        jTextFieldCorreo.setText("");
-        Direccion.setText("");
-        jTextFieldFechaNacimiento.setText("");
-        jTextFieldTelefono.setText("");
+        jTextField1PrimerNombre.setText(this.trabajador.getNombre1());
+        jTextFieldSegundoNombre.setText(this.trabajador.getNombre2());
+        jTextFieldPrimerApellido.setText(this.trabajador.getApellido1());
+        jTextFieldSegundoApellido.setText(this.trabajador.getApellido2());
+        jTextFieldCedula.setText(this.trabajador.getCedula());
+        jTextFieldCorreo.setText(this.trabajador.getCorreo());
+        Direccion.setText(this.trabajador.getDireccion());
+        jTextFieldFechaNacimiento.setText(String.valueOf(this.trabajador.getFechaN()));
+        jTextFieldTelefono.setText(this.trabajador.getTelefono());
 
     }
 
     public void guardar() {
+
+        TrabajadorDTO trabajador = this.trabajador;
 
         String clave = new String(jTextFieldClave.getPassword());
         String confirmarClave = new String(jTextFieldConfirmarClave.getPassword());
@@ -329,7 +342,6 @@ public class registrarEmpleado extends JFrame {
         }
 
         try {
-            TrabajadorDTO trabajador = new TrabajadorDTO();
             trabajador.setCedula(jTextFieldCedula.getText());
 
             trabajador.setNombre1(jTextField1PrimerNombre.getText());
@@ -359,12 +371,18 @@ public class registrarEmpleado extends JFrame {
                 default:
                     throw new IllegalStateException("Unexpected value: " + cargo);
             }
-            trabajador.setContrasena(cifrador.cifrarContrasena(clave));
+
+            if (!clave.trim().isEmpty()) {
+                trabajador.setContrasena(cifrador.cifrarContrasena(clave));
+            } else {
+                trabajador.setContrasena(this.trabajador.getContrasena());
+            }
+
             trabajadorControlador.guardarTrabajador(trabajador);
 
             JOptionPane.showMessageDialog(
                     null,
-                    "Trabajador registrado con éxito.",
+                    "Trabajador actualizado con éxito.",
                     "Éxito",
                     JOptionPane.INFORMATION_MESSAGE
             );
@@ -379,31 +397,6 @@ public class registrarEmpleado extends JFrame {
             );
         }
         
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | UnsupportedLookAndFeelException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        EventQueue.invokeLater(() -> new registrarEmpleado().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

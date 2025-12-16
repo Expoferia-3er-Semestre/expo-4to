@@ -52,6 +52,7 @@ public class TrabajadorMapper {
         entidad.setDireccion(dto.getDireccion());
         entidad.setEstado(dto.getEstado());
         entidad.setCorreo(dto.getCorreo());
+        entidad.setContrasena(dto.getContrasena());
         entidad.setRol(dto.getRol());
 
 
