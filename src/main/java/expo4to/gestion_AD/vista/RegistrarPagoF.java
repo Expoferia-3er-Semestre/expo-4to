@@ -799,8 +799,7 @@ public class RegistrarPagoF extends javax.swing.JFrame {
         comboEstudiantes.removeAllItems();
 
         try{
-            RepresentanteDTO representante = representanteControlador.buscarRepresentantePorCedula(cedula);
-            this.representante = representante;
+            this.representante = representanteControlador.buscarRepresentantePorCedula(cedula);
 
             datosRepresentante.setText(this.representante.getNombre1() + " " + this.representante.getApellido1());
             comboEstudiantes.addItem(null);

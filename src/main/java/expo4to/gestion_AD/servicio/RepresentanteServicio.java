@@ -47,9 +47,17 @@ public class RepresentanteServicio implements IRepresentanteServicio{
             throw new NoSuchElementException();
         }
         Representante representante = optional.get();
-        representante.getEstudiantes().size();
+        RepresentanteDTO dto = EstudianteMapper.toRepresentanteDTO(representante);
 
-        return EstudianteMapper.toRepresentanteDTO(representante);
+        if (representante.getEstudiantes().isEmpty()) {
+            throw new NoSuchElementException("Este representante no tiene estudiantes inscritos");
+        }
+
+        for (Estudiante estudiante : representante.getEstudiantes()) {
+            dto.addEstudiante(EstudianteMapper.toEstudianteDTO(estudiante));
+        }
+
+        return dto;
 
     }
 

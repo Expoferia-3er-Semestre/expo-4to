@@ -9,6 +9,7 @@ import expo4to.gestion_AD.controlador.EstudianteControlador;
 import expo4to.gestion_AD.controlador.RepresentanteControlador;
 import expo4to.gestion_AD.controlador.TrabajadorControlador;
 import expo4to.gestion_AD.dto.TrabajadorDTO;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,17 +21,16 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
     private final EstudianteControlador estudianteControlador;
     private final RepresentanteControlador representanteControlador;
     private final TrabajadorControlador trabajadorControlador;
-    private final TrabajadorDTO trabajador;
+
     /**
      * Creates new form ControlEstudiosHomeF
      */
-    public ControlEstudiosHomeF(TrabajadorDTO trabajador) {
+    public ControlEstudiosHomeF() {
         this.estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
         this.representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
         this.trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
-        this.trabajador = trabajador;
+
         initComponents();
-        
     }
 
     /**
@@ -77,6 +77,7 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         jPanel4.setPreferredSize(new java.awt.Dimension(183, 172));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Estudiantes");
 
         ButtonEstudiantes.setBackground(new java.awt.Color(184, 232, 249));
@@ -93,13 +94,14 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(40, 40, 40))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(ButtonEstudiantes)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(ButtonEstudiantes))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jLabel2)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,6 +117,7 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         jPanel5.setPreferredSize(new java.awt.Dimension(183, 172));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Representantes");
 
         ButtonRepresentantes.setBackground(new java.awt.Color(184, 232, 249));
@@ -153,6 +156,7 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         jPanel6.setPreferredSize(new java.awt.Dimension(183, 172));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Empleados");
 
         ButtonEmpleados.setBackground(new java.awt.Color(184, 232, 249));
@@ -192,6 +196,7 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         jPanel7.setPreferredSize(new java.awt.Dimension(183, 172));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Boletin");
 
         ButtonBoletin.setBackground(new java.awt.Color(184, 232, 249));
@@ -226,6 +231,7 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         jPanel8.setPreferredSize(new java.awt.Dimension(183, 172));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Constancias");
 
         ButtonConstancias.setBackground(new java.awt.Color(184, 232, 249));
@@ -252,13 +258,14 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
                 .addComponent(ButtonConstancias)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel9.setBackground(new java.awt.Color(184, 232, 249));
         jPanel9.setPreferredSize(new java.awt.Dimension(183, 172));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Not. Certificadas");
 
         ButtonNotCertificadas.setBackground(new java.awt.Color(184, 232, 249));
@@ -281,7 +288,7 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ButtonNotCertificadas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addContainerGap())
         );
@@ -293,6 +300,11 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         ButtonSalir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         ButtonSalir.setText("Salir");
         ButtonSalir.setBorderPainted(false);
+        ButtonSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonSalirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -311,7 +323,7 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
                     .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(222, 222, 222)
+                .addGap(216, 216, 216)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -327,16 +339,20 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
                 .addGap(54, 54, 54)
                 .addComponent(jLabel1)
                 .addGap(41, 41, 41)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)))
+                .addGap(43, 43, 43)
                 .addComponent(ButtonSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
         );
@@ -416,6 +432,29 @@ public class ControlEstudiosHomeF extends javax.swing.JFrame {
         dispose();
         gestionRepresentante.setVisible(true);
     }//GEN-LAST:event_ButtonRepresentantesActionPerformed
+
+    private void ButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSalirActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cerrar todo el programa?", "Confirmación.", JOptionPane.YES_NO_OPTION);
+
+        switch (opcion){
+            case JOptionPane.YES_OPTION:
+            System.out.println("Cerrando el programa.");
+            System.exit(0);
+            break;
+            case JOptionPane.NO_OPTION:
+            System.out.println("No se cerró el programa.");
+            break;
+            case JOptionPane.CANCEL_OPTION:
+            System.out.println("No se cerrará el programa, acción cancelada.");
+            break;
+            case JOptionPane.CLOSED_OPTION:
+            System.out.println("No se cerrará el programa. Confirmación cerrada.");
+            break;
+            default:
+            System.out.println("Opción desconocida.");
+
+        }
+    }//GEN-LAST:event_ButtonSalirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonBoletin;

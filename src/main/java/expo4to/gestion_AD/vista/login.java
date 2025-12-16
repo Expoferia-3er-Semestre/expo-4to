@@ -71,7 +71,6 @@ public class login extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(600, 397));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(400, 300));
@@ -79,20 +78,23 @@ public class login extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Bienvenido");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, -1, -1));
 
         jLabel2.setBackground(new java.awt.Color(0, 0, 0));
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Iniciar Sesion");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, -1, -1));
 
         jLabel3.setBackground(new java.awt.Color(0, 0, 0));
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Correo Electronico");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 210, -1, -1));
 
-        correoCampo.setForeground(new java.awt.Color(217, 217, 217));
+        correoCampo.setForeground(new java.awt.Color(0, 0, 0));
         correoCampo.setText("tu-correo@ejemplo.com");
         correoCampo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,6 +104,7 @@ public class login extends javax.swing.JFrame {
         jPanel1.add(correoCampo, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 250, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Contraseña");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, -1, -1));
 
@@ -115,6 +118,8 @@ public class login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 380, 250, -1));
+
+        campoContra.setForeground(new java.awt.Color(0, 0, 0));
         jPanel1.add(campoContra, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 250, -1));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logo_liceo.png"))); // NOI18N
@@ -201,7 +206,7 @@ public class login extends javax.swing.JFrame {
                 dispose();
                 break;
             case 3:
-                new ControlEstudiosHomeF(dto).setVisible(true);
+                new ControlEstudiosHomeF().setVisible(true);
                 dispose();
                 break;
             default:

@@ -4,8 +4,11 @@
  */
 package expo4to.gestion_AD.vista;
 
+import expo4to.gestion_AD.controlador.ApplicationContextProvider;
 import expo4to.gestion_AD.controlador.TrabajadorControlador;
+import expo4to.gestion_AD.dto.EstudianteDTO;
 import expo4to.gestion_AD.dto.TrabajadorDTO;
+import expo4to.gestion_AD.vista.customize.EstudianteTableModel;
 import expo4to.gestion_AD.vista.customize.TrabajadorTableModel;
 
 import java.awt.Color;
@@ -26,14 +29,42 @@ public class gestionEmpleadosF extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(gestionEmpleadosF.class.getName());
     private TrabajadorControlador trabajadorControlador;
-
+    private TrabajadorDTO trabajadorActual;
     /**
      * Creates new form gestionEmpleadosF
      */
     public gestionEmpleadosF() {
         initComponents();
-        this.setUndecorated(true);
+        trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
+        actualizarLista();
         this.setLocationRelativeTo(null);
+        ButtonActualizar.setEnabled(false);
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+
+            // Asegurarse de que el evento no sea el ajuste (ajusting) y que haya una selección válida
+            if (!e.getValueIsAdjusting() && jTable1
+                    .getSelectedRow() != -1) {
+
+                // 1. Obtener la fila seleccionada en la VISTA (puede ser diferente al modelo si está ordenada)
+                int filaSeleccionadaVista = jTable1.getSelectedRow();
+
+                // 2. Mapear esa fila de la VISTA a la fila REAL del MODELO (si la tabla está ordenada)
+                int filaModelo = jTable1.convertRowIndexToModel(filaSeleccionadaVista);
+
+                // 3. Obtener el objeto DTO completo
+                TrabajadorTableModel modelo = (TrabajadorTableModel) jTable1.getModel();
+
+                // 4. ALMACENAR esta referencia en una variable de clase para su uso posterior
+                this.trabajadorActual = modelo.getTrabajadorAt(filaModelo);
+
+                // Opcional: Habilitar el botón de Actualizar/Editar
+                ButtonActualizar.setEnabled(true);
+            } else {
+                // Ninguna fila seleccionada o deselección
+                this.trabajadorActual = null;
+                ButtonActualizar.setEnabled(false);
+            }
+        });
 
 
     }
@@ -152,8 +183,13 @@ public class gestionEmpleadosF extends javax.swing.JFrame {
 
         jButtonCerrarSesion.setBackground(new java.awt.Color(255, 51, 51));
         jButtonCerrarSesion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButtonCerrarSesion.setText("Cerrar Sesión");
+        jButtonCerrarSesion.setText("Atrás");
         jButtonCerrarSesion.setBorderPainted(false);
+        jButtonCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCerrarSesionActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -453,6 +489,12 @@ public class gestionEmpleadosF extends javax.swing.JFrame {
         yUbicacion = evt.getY();
     }//GEN-LAST:event_jPanel1MousePressed
 
+    private void jButtonCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarSesionActionPerformed
+        dispose();
+        ControlEstudiosHomeF controlEstudiosHomeF = new ControlEstudiosHomeF();
+        controlEstudiosHomeF.setVisible(true);
+    }//GEN-LAST:event_jButtonCerrarSesionActionPerformed
+
     public void actualizarLista(){
         List<TrabajadorDTO> trabajadores = trabajadorControlador.listarTrabajadores();
 
@@ -470,30 +512,6 @@ public class gestionEmpleadosF extends javax.swing.JFrame {
         jTable1.setModel(tableModel);
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-     */
-    try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
-            }
-        }
-    } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-        logger.log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
-
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(() -> new gestionEmpleadosF().setVisible(true));
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ButtonActualizar;

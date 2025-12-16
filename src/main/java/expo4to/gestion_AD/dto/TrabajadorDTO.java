@@ -5,7 +5,8 @@ import lombok.Data;
 import java.sql.Date;
 
 @Data
-public class TrabajadorDTO {
+public class
+TrabajadorDTO {
 
     private Integer id;
     private String cedula;

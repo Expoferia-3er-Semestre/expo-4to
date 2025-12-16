@@ -28,7 +28,6 @@ public class gestionEstudiantesF extends javax.swing.JFrame {
      */
     public gestionEstudiantesF() {
         initComponents();
-
         setLocationRelativeTo(null);
         estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
         actualizarLista();
@@ -182,8 +181,13 @@ public class gestionEstudiantesF extends javax.swing.JFrame {
 
         jButtonCerrarSesion.setBackground(new java.awt.Color(255, 51, 51));
         jButtonCerrarSesion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButtonCerrarSesion.setText("Cerrar Sesión");
+        jButtonCerrarSesion.setText("Atrás");
         jButtonCerrarSesion.setBorderPainted(false);
+        jButtonCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCerrarSesionActionPerformed(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -487,6 +491,12 @@ public class gestionEstudiantesF extends javax.swing.JFrame {
         xUbicacion = evt.getX();
         yUbicacion = evt.getY();
     }//GEN-LAST:event_jPanel1MousePressed
+
+    private void jButtonCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarSesionActionPerformed
+        dispose();
+        ControlEstudiosHomeF controlEstudiosHomeF = new ControlEstudiosHomeF();
+        controlEstudiosHomeF.setVisible(true);
+    }//GEN-LAST:event_jButtonCerrarSesionActionPerformed
     
     int xUbicacion, yUbicacion;
     public void actualizarLista() {
