@@ -13,13 +13,14 @@ import expo4to.gestion_AD.util.Utilidades;
 import expo4to.gestion_AD.util.Verificador;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.NoSuchElementException;
 
 /**
  *
  * @author usuario
  */
-public class ActualizarEstudiantesRepresentantes extends JFrame {
+public class ActualizarEstudiantesRepresentantes extends JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ActualizarEstudiantesRepresentantes.class.getName());
     private RepresentanteControlador representanteControlador;
@@ -32,9 +33,11 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
     /**
      * Creates new form actualizarEstudiantesRepresentantes
      */
-    public ActualizarEstudiantesRepresentantes(boolean esEstudiante, EstudianteDTO estudiante, RepresentanteDTO representante) {
+    public ActualizarEstudiantesRepresentantes(boolean esEstudiante, EstudianteDTO estudiante, RepresentanteDTO representante, Frame owner, boolean modal) {
+        super(owner, modal);
         setUndecorated(true);
         initComponents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         this.esEstudiante = esEstudiante;
         veri = ApplicationContextProvider.getBean(Verificador.class);
@@ -145,7 +148,7 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
         jButtonBuscar = new JButton();
         jButton1 = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

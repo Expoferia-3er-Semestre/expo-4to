@@ -445,13 +445,13 @@ public class gestionEstudiantesF extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonArchivarActionPerformed
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-        registrarEstudiantesRepresentantes registrar = new registrarEstudiantesRepresentantes( true);
+        registrarEstudiantesRepresentantes registrar = new registrarEstudiantesRepresentantes( true, this, true);
         registrar.setVisible(true);
         actualizarLista();
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-        ActualizarEstudiantesRepresentantes actualizar = new ActualizarEstudiantesRepresentantes(true, estudianteActual, null);
+        ActualizarEstudiantesRepresentantes actualizar = new ActualizarEstudiantesRepresentantes(true, estudianteActual, null, this, true);
         actualizar.setVisible(true);
         actualizarLista();
     }//GEN-LAST:event_jButtonActualizarActionPerformed

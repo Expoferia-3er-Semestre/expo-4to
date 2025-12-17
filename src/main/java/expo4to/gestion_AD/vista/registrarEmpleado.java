@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author usuario
  */
-public class registrarEmpleado extends JFrame {
+public class registrarEmpleado extends JDialog {
     
     private int xUbicacion, yUbicacion;
     private static final Logger logger = Logger.getLogger(registrarEmpleado.class.getName());
@@ -30,9 +30,11 @@ public class registrarEmpleado extends JFrame {
     /**
      * Creates new form registrarEmpleado
      */
-    public registrarEmpleado() {
+    public registrarEmpleado(Frame owner, boolean modal) {
+        super(owner, modal);
         setUndecorated(true);
         initComponents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
         cifrador = ApplicationContextProvider.getBean(CifradorContrasenas.class);
@@ -79,7 +81,7 @@ public class registrarEmpleado extends JFrame {
         jPanel10 = new javax.swing.JPanel();
         jButtonCerrarPrograma = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -438,31 +440,6 @@ public class registrarEmpleado extends JFrame {
             );
         }
         
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | UnsupportedLookAndFeelException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        EventQueue.invokeLater(() -> new registrarEmpleado().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

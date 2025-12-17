@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author usuario
  */
-public class ActualizarEmpleado extends JFrame {
+public class ActualizarEmpleado extends JDialog {
 
     private static final Logger logger = Logger.getLogger(ActualizarEmpleado.class.getName());
     CifradorContrasenas cifrador;
@@ -31,9 +31,11 @@ public class ActualizarEmpleado extends JFrame {
     /**
      * Creates new form registrarEmpleado
      */
-    public ActualizarEmpleado(TrabajadorDTO trabajador) {
+    public ActualizarEmpleado(TrabajadorDTO trabajador, Frame owner, boolean modal) {
+        super(owner, modal);
         setUndecorated(true);
         initComponents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         this.trabajador = trabajador;
         trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
@@ -89,7 +91,7 @@ public class ActualizarEmpleado extends JFrame {
         jTextFieldTelefono = new JTextField();
         jButtonGuardar = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new Color(255, 255, 255));
 

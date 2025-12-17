@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
  *
  * @author usuario
  */
-public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
+public class registrarEstudiantesRepresentantes extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(registrarEstudiantesRepresentantes.class.getName());
     private RepresentanteControlador representanteControlador;
@@ -36,9 +36,11 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
     /**
      * Creates new form actualizarEstudiantesRepresentantes
      */
-    public registrarEstudiantesRepresentantes(boolean esEstudiante) {
+    public registrarEstudiantesRepresentantes(boolean esEstudiante, Frame owner, boolean modal) {
+        super(owner, modal);
         setUndecorated(true);
         initComponents();
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         this.esEstudiante = esEstudiante;
         representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
@@ -113,7 +115,7 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
         jPanel10 = new javax.swing.JPanel();
         jButtonCerrarPrograma = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
