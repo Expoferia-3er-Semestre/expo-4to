@@ -6,6 +6,9 @@ package expo4to.gestion_AD.vista;
 
 import expo4to.gestion_AD.controlador.TrabajadorControlador;
 import expo4to.gestion_AD.dto.TrabajadorDTO;
+import java.awt.Color;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -20,6 +23,7 @@ import java.util.NoSuchElementException;
 @Component
 public class login extends javax.swing.JFrame {
     
+    private int xUbicacion, yUbicacion;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(login.class.getName());
     private final TrabajadorControlador trabajadorControlador;
     /**
@@ -30,7 +34,6 @@ public class login extends javax.swing.JFrame {
         this.trabajadorControlador = expo4to.gestion_AD.controlador.ApplicationContextProvider.getBean(TrabajadorControlador.class);
         initComponents();
         setLocationRelativeTo(null); // centra la ventana en pantalla
-        correoCampo.setText("");
 
 
         campoContra.addActionListener(new ActionListener() {
@@ -69,6 +72,9 @@ public class login extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
         campoContra = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jButtonCerrarPrograma = new javax.swing.JButton();
+        jButtonMinimiza = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,6 +102,14 @@ public class login extends javax.swing.JFrame {
 
         correoCampo.setForeground(new java.awt.Color(0, 0, 0));
         correoCampo.setText("tu-correo@ejemplo.com");
+        correoCampo.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                correoCampoFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                correoCampoFocusLost(evt);
+            }
+        });
         correoCampo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 correoCampoActionPerformed(evt);
@@ -125,6 +139,61 @@ public class login extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/logo_liceo.png"))); // NOI18N
         jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 430, 360));
 
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jPanel2MouseDragged(evt);
+            }
+        });
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanel2MousePressed(evt);
+            }
+        });
+
+        jButtonCerrarPrograma.setBackground(new java.awt.Color(255, 51, 51));
+        jButtonCerrarPrograma.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonCerrarPrograma.setText("X");
+        jButtonCerrarPrograma.setBorderPainted(false);
+        jButtonCerrarPrograma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCerrarProgramaActionPerformed(evt);
+            }
+        });
+
+        jButtonMinimiza.setBackground(new java.awt.Color(51, 153, 255));
+        jButtonMinimiza.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonMinimiza.setText("_");
+        jButtonMinimiza.setBorderPainted(false);
+        jButtonMinimiza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMinimizaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(534, Short.MAX_VALUE)
+                .addComponent(jButtonMinimiza)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonCerrarPrograma)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonCerrarPrograma)
+                    .addComponent(jButtonMinimiza))
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,16 +215,67 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_correoCampoActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        // TODO add your handling code here:
+    
         iniciarSesion();
     }//GEN-LAST:event_loginButtonActionPerformed
 
+    private void correoCampoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_correoCampoFocusGained
+        if (correoCampo.getText().equals("tu-correo@ejemplo.com") || correoCampo.getText().isEmpty()){
+            correoCampo.setText("");
+            correoCampo.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_correoCampoFocusGained
+
+    private void correoCampoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_correoCampoFocusLost
+        if (correoCampo.getText().isEmpty() || correoCampo.getText().equals("tu-correo@ejemplo.com")){
+            correoCampo.setText("tu-correo@ejemplo.com");
+            correoCampo.setForeground(Color.GRAY);
+        }
+    }//GEN-LAST:event_correoCampoFocusLost
+
+    private void jButtonCerrarProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarProgramaActionPerformed
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Está seguro que desea cerrar todo el programa?", "Confirmación.", JOptionPane.YES_NO_OPTION);
+
+        switch (opcion){
+            case JOptionPane.YES_OPTION:
+            System.out.println("Cerrando el programa.");
+            System.exit(0);
+            break;
+            case JOptionPane.NO_OPTION:
+            System.out.println("No se cerró el programa.");
+            break;
+            case JOptionPane.CANCEL_OPTION:
+            System.out.println("No se cerrará el programa, acción cancelada.");
+            break;
+            case JOptionPane.CLOSED_OPTION:
+            System.out.println("No se cerrará el programa. Confirmación cerrada.");
+            break;
+            default:
+            System.out.println("Opción desconocida.");
+
+        }
+    }//GEN-LAST:event_jButtonCerrarProgramaActionPerformed
+
+    private void jButtonMinimizaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMinimizaActionPerformed
+        this.setState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_jButtonMinimizaActionPerformed
+    
+    private void jPanel2MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseDragged
+        Point point = MouseInfo.getPointerInfo().getLocation();
+        setLocation(point.x - xUbicacion, point.y - yUbicacion);
+    }//GEN-LAST:event_jPanel2MouseDragged
+
+    private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
+        xUbicacion = evt.getX();
+        yUbicacion = evt.getY();
+    }//GEN-LAST:event_jPanel2MousePressed
+
     private void iniciarSesion() {
 
-        if (correoCampo.getText().trim().isEmpty()) {
+        if (correoCampo.getText().trim().isEmpty() || correoCampo.getText().equals("tu-correo@ejemplo.com")) {
             JOptionPane.showMessageDialog(
                     null,
-                    "El correo no puede quedar vacio.",
+                    "Por favor ingrese un correo.",
                     "Alerta",
                     JOptionPane.WARNING_MESSAGE
             );
@@ -243,12 +363,15 @@ public class login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField campoContra;
     private javax.swing.JTextField correoCampo;
+    private javax.swing.JButton jButtonCerrarPrograma;
+    private javax.swing.JButton jButtonMinimiza;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton loginButton;
     // End of variables declaration//GEN-END:variables
 }
