@@ -27,11 +27,7 @@ public class GestionAdApplication {
                 // Es buena práctica de Swing iniciar la UI en el Event Dispatch Thread
                 login frame = context.getBean(login.class);
                 frame.setVisible(true);
-                SpringApplication.run(GestionAdApplication.class, args);
             });
-
-
-
 
     }
 }

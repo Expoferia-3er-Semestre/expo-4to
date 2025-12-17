@@ -32,7 +32,6 @@ public class login extends javax.swing.JFrame {
         setLocationRelativeTo(null); // centra la ventana en pantalla
         correoCampo.setText("");
 
-
         campoContra.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
