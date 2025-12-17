@@ -48,6 +48,7 @@ public class RegistrarPagoF extends javax.swing.JFrame {
      * Creates new form RegistrarPagoF
      */
     public RegistrarPagoF(TrabajadorDTO trabajador) {
+        setUndecorated(true);
         this.trabajador = trabajador;
         this.representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
         this.pagoControlador = ApplicationContextProvider.getBean(PagoControlador.class);

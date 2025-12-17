@@ -33,6 +33,7 @@ public class ActualizarEstudiantesRepresentantes extends JFrame {
      * Creates new form actualizarEstudiantesRepresentantes
      */
     public ActualizarEstudiantesRepresentantes(boolean esEstudiante, EstudianteDTO estudiante, RepresentanteDTO representante) {
+        setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
         this.esEstudiante = esEstudiante;

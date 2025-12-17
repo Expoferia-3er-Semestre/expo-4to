@@ -13,6 +13,7 @@ import expo4to.gestion_AD.util.Utilidades;
 import expo4to.gestion_AD.util.Verificador;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.Date;
 import java.util.NoSuchElementException;
 
@@ -29,12 +30,14 @@ public class registrarEstudiantesRepresentantes extends javax.swing.JFrame {
     private EstudianteDTO estudiante = new EstudianteDTO();
     private Verificador veri;
     boolean esEstudiante;
-    boolean puedeGuardar;
+    private int xUbicacion;
+    private int yUbicacion;
 
     /**
      * Creates new form actualizarEstudiantesRepresentantes
      */
     public registrarEstudiantesRepresentantes(boolean esEstudiante) {
+        setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
         this.esEstudiante = esEstudiante;

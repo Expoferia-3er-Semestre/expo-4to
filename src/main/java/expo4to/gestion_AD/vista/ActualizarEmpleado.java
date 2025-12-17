@@ -32,6 +32,7 @@ public class ActualizarEmpleado extends JFrame {
      * Creates new form registrarEmpleado
      */
     public ActualizarEmpleado(TrabajadorDTO trabajador) {
+        setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
         this.trabajador = trabajador;

@@ -30,7 +30,7 @@ public class login extends javax.swing.JFrame {
      * Creates new form login
      */
     public login() {
-
+        setUndecorated(true);
         this.trabajadorControlador = expo4to.gestion_AD.controlador.ApplicationContextProvider.getBean(TrabajadorControlador.class);
         initComponents();
         setLocationRelativeTo(null); // centra la ventana en pantalla

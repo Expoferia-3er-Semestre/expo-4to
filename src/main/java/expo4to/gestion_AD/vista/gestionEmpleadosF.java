@@ -34,6 +34,7 @@ public class gestionEmpleadosF extends javax.swing.JFrame {
      * Creates new form gestionEmpleadosF
      */
     public gestionEmpleadosF() {
+        setUndecorated(true);
         initComponents();
         trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
         actualizarLista();

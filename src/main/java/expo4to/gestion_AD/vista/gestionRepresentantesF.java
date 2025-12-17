@@ -30,6 +30,7 @@ public class gestionRepresentantesF extends javax.swing.JFrame {
      * Creates new form gestionRepresentantesF
      */
     public gestionRepresentantesF() {
+        setUndecorated(true);
         initComponents();
         representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
 

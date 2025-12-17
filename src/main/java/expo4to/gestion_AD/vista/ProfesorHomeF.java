@@ -19,6 +19,7 @@ public class ProfesorHomeF extends javax.swing.JFrame {
      * Creates new form ProfesorHomeF
      */
     public ProfesorHomeF(TrabajadorDTO trabajador) {
+        setUndecorated(true);
         this.trabajador = trabajador;
         initComponents();
         setLocationRelativeTo(null);

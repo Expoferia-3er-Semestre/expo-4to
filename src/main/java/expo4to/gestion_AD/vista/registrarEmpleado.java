@@ -31,6 +31,7 @@ public class registrarEmpleado extends JFrame {
      * Creates new form registrarEmpleado
      */
     public registrarEmpleado() {
+        setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
         trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
@@ -65,9 +66,9 @@ public class registrarEmpleado extends JFrame {
         jLabel10 = new javax.swing.JLabel();
         Direccion = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextFieldClave = new javax.swing.JTextField();
+        jTextFieldClave = new javax.swing.JPasswordField();
         jLabel11 = new javax.swing.JLabel();
-        jTextFieldConfirmarClave = new javax.swing.JTextField();
+        jTextFieldConfirmarClave = new javax.swing.JPasswordField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jTextFieldFechaNacimiento = new javax.swing.JTextField();
@@ -487,8 +488,8 @@ public class registrarEmpleado extends JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1PrimerNombre;
     private javax.swing.JTextField jTextFieldCedula;
-    private javax.swing.JTextField jTextFieldClave;
-    private javax.swing.JTextField jTextFieldConfirmarClave;
+    private javax.swing.JPasswordField jTextFieldClave;
+    private javax.swing.JPasswordField jTextFieldConfirmarClave;
     private javax.swing.JTextField jTextFieldCorreo;
     private javax.swing.JTextField jTextFieldFechaNacimiento;
     private javax.swing.JTextField jTextFieldPrimerApellido;

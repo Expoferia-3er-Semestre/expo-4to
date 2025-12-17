@@ -27,6 +27,7 @@ public class gestionEstudiantesF extends javax.swing.JFrame {
      * Creates new form gestionEstudiantesF
      */
     public gestionEstudiantesF() {
+        setUndecorated(true);
         initComponents();
         setLocationRelativeTo(null);
         estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);

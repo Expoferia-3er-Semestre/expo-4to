@@ -9,8 +9,9 @@ import expo4to.gestion_AD.controlador.EstudianteControlador;
 import expo4to.gestion_AD.controlador.RepresentanteControlador;
 import expo4to.gestion_AD.controlador.TrabajadorControlador;
 import expo4to.gestion_AD.dto.TrabajadorDTO;
-import java.awt.Color;
-import javax.swing.JOptionPane;
+
+import java.awt.*;
+import javax.swing.*;
 
 /**
  *
@@ -19,18 +20,14 @@ import javax.swing.JOptionPane;
 public class ControlEstudiosHomeF extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ControlEstudiosHomeF.class.getName());
-    private final EstudianteControlador estudianteControlador;
-    private final RepresentanteControlador representanteControlador;
-    private final TrabajadorControlador trabajadorControlador;
+    private int xUbicacion;
+    private int yUbicacion;
 
     /**
      * Creates new form ControlEstudiosHomeF
      */
     public ControlEstudiosHomeF() {
-        this.estudianteControlador = ApplicationContextProvider.getBean(EstudianteControlador.class);
-        this.representanteControlador = ApplicationContextProvider.getBean(RepresentanteControlador.class);
-        this.trabajadorControlador = ApplicationContextProvider.getBean(TrabajadorControlador.class);
-
+        setUndecorated(true);
         initComponents();
         
         jPanel7.setEnabled(false);// Coloca de color gris "Boletín".
